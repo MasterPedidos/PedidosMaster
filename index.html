@@ -387,17 +387,13 @@ function atualizarTotal(){
     total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
   }
 
-function enviarWhatsApp(){
-  if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
-  // ✅ Salvar pedido no celular do usuário
-  
-  localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
-  let msg="📦 *Pedido:*%0A";
-  for(let c in carrinho){
-    const p=carrinho[c];
-    msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
-  }
-  function recuperarPedido(){
+  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
+  const t = document.getElementById("total-carrinho");
+  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
+}
+
+// ✅ Recuperar último pedido
+function recuperarPedido(){
   const salvo = JSON.parse(localStorage.getItem("ultimo_pedido") || "{}");
   if(Object.keys(salvo).length === 0){
     alert("Não há nenhum pedido salvo.");
@@ -408,13 +404,25 @@ function enviarWhatsApp(){
   mostrarCarrinho();
 }
 
+// ✅ Enviar pedido
+function enviarWhatsApp(){
+  if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
+
+  // Salvar pedido
+  localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
+
+  let msg="📦 *Pedido:*%0A";
+  for(let c in carrinho){
+    const p=carrinho[c];
+    msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
+  }
   const total = Object.values(carrinho).reduce((a,b)=>a + b.valor*b.qtd, 0);
   msg += `%0A💰 *Total:* R$ ${total.toFixed(2)}`;
   if(telefoneDisplay) msg += `%0A📞 *Contato:* ${telefoneDisplay}`;
 
-  // Altere o número abaixo se quiser
   window.open("https://wa.me/5519992394899?text=" + msg, "_blank");
 }
+
 </script>
 <script>
 let installPrompt;
