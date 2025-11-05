@@ -348,32 +348,33 @@ function mostrarCarrinho(){
 }
 
 function alterarQtd(codigo, delta, dentroCarrinho=false){
-  const prod=produtos.find(p=>p.Código===codigo);
+  const prod = produtos.find(p => p.Código === codigo);
   if(!prod) return;
 
-  const qtdAtual=carrinho[codigo]?.qtd||0;
-  let novaQtd=qtdAtual+delta;
-  if(novaQtd<0) novaQtd=0;
+  // ✅ Garante que o valor SEMPRE será número
+  prod.valor = Number(prod.valor);
 
-  if(novaQtd>0) carrinho[codigo]={...prod, qtd:novaQtd};
+  const qtdAtual = carrinho[codigo]?.qtd || 0;
+  let novaQtd = qtdAtual + delta;
+  if (novaQtd < 0) novaQtd = 0;
+
+  if (novaQtd > 0) carrinho[codigo] = { ...prod, qtd: novaQtd };
   else delete carrinho[codigo];
 
-  const i1=document.getElementById(`qtd-${codigo}`);
-  const i2=document.getElementById(`qtd-carrinho-${codigo}`);
-  if(i1) i1.value=novaQtd;
-  if(i2) i2.value=novaQtd;
+  const i1 = document.getElementById(`qtd-${codigo}`);
+  const i2 = document.getElementById(`qtd-carrinho-${codigo}`);
+  if (i1) i1.value = novaQtd;
+  if (i2) i2.value = novaQtd;
 
   atualizarTotal();
+  atualizarContadorCarrinho();
 }
 
 function atualizarTotal(){
-  let total=0;
-  for(let c in carrinho) total += carrinho[c].valor * carrinho[c].qtd;
-
-  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
-  const t=document.getElementById("total-carrinho");
-  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
-}
+  let total = 0;
+  for(let c in carrinho){
+    total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
+  }
 
 function enviarWhatsApp(){
   if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
