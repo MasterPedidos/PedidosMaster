@@ -342,7 +342,7 @@ function mostrarCarrinho(){
     const p=carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
-        <img src="${p.imagem}" alt="${p.descricao}">
+        <img src="${p.imagem}" alt="${p.descricao}" loading="lazy" decoding="async" style="width:60px;height:60px;object-fit:contain;">
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
