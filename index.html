@@ -21,9 +21,17 @@
 /* Base */
 html, body {
   height: 100%; margin:0; padding:0; overflow-x:hidden;
-  overscroll-behavior-y: none; background:#f7f7f7;
+  overscroll-behavior-y: none; background:#ffffff !important;
   font-family: Arial, sans-serif; text-align:center;
 }
+
+/* Garante fundo branco em todas as telas */
+#tela-marcas,
+#tela-produtos,
+#tela-carrinho {
+  background:#ffffff !important;
+}
+
 /* iOS 100% */
 @supports (-webkit-touch-callout: none) { body { height: -webkit-fill-available; } }
 
