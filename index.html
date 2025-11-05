@@ -29,23 +29,53 @@ html, body {
 
 /* Topo */
 header {
-  background:#2b7bba; color:white; padding:10px;
-  font-size:18px; font-weight:bold; position:sticky; top:0; z-index:10;
-
+  background:#2b7bba;
+  color:white;
+  padding:6px 10px; /* faixa menor */
+  font-size:17px;
+  font-weight:bold;
+  position:sticky;
+  top:0;
+  z-index:10;
   display:flex;
-  justify-content:center; /* CENTRALIZA */
+  justify-content:space-between;
   align-items:center;
-  gap:12px; /* Espaçamento equilibrado */
-  flex-wrap:wrap; /* Permite ajustar corretamente em telas pequenas */
 }
-#versao { background:#ffcc00; color:#000; font-weight:bold; padding:4px 8px;
-  border-radius:8px; font-size:13px; border:1px solid #333; }
-#total {font-size:15px; font-weight:bold;}
-.logo-wrap{display:flex; align-items:center; gap:8px;}
-.logo-wrap img{
-  height:64px; /* Aumentado */
+
+.top-esq, .top-dir {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.top-centro {
+  text-align:center;
+  font-size:16px;
+  line-height:1.2;
+  flex:1;
+}
+
+#versao {
+  background:#ffcc00;
+  color:#000;
+  font-weight:bold;
+  padding:2px 6px;
+  border-radius:6px;
+  font-size:12px;
+  border:1px solid #333;
+}
+
+header img {
+  height:38px; /* reduzido */
   width:auto;
 }
+
+#voltar, #btnCarrinho, #btnEnviarPedido {
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:14px;
+}
+
 
 /* Marcas */
 #marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
@@ -101,14 +131,21 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 </div>
 
 <header>
-  <div class="logo-wrap">
+  <div class="top-esq">
     <img src="ativos/logo.svg" alt="Master Distribuidora">
     <span id="versao">v2.1</span>
+    <button id="voltar" onclick="mostrarMarcas()">Marcas</button>
   </div>
-  <button id="voltar" onclick="mostrarMarcas()">⬅️ Marcas</button>>
-  <div>Pedidos OnLine<br><span id="total">Total: R$ 0,00</span></div>
-  <button id="btnCarrinho" onclick="mostrarCarrinho()">🛒 Carrinho</button>
-  <button id="btnEnviarPedido" onclick="enviarWhatsApp()">📦 Enviar Pedido</button>
+
+  <div class="top-centro">
+    Pedidos OnLine<br>
+    <span id="total">Total: R$ 0,00</span>
+  </div>
+
+  <div class="top-dir">
+    <button id="btnCarrinho" onclick="mostrarCarrinho()">🛒 Carrinho</button>
+    <button id="btnEnviarPedido" onclick="enviarWhatsApp()">📦 Enviar Pedido</button>
+  </div>
 </header>
 
 <!-- TELA 1: MARCAS -->
