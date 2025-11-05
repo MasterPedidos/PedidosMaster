@@ -284,7 +284,26 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 });
 
-
+<script>
+// Gera miniatura do Imgur automaticamente (320px)
+function getThumb(url) {
+  if (!url) return "https://i.imgur.com/jzjHhHG.png";
+  try {
+    // Normaliza para i.imgur.com
+    let u = url.replace("://imgur.com/", "://i.imgur.com/");
+    // Extrai base e extensão
+    const m = u.match(/i\.imgur\.com\/([^\.]+)(\.[a-zA-Z0-9]+)?$/);
+    if (!m) return u; // se não bater, retorna original
+    const id = m[1];
+    const ext = m[2] || ".png";
+    // Sufixo 'm' => ~320px
+    return `https://i.imgur.com/${id}m${ext}`;
+  } catch(e) {
+    return url;
+  }
+}
+</script>
+  
 // Telas
 function mostrarProdutos(marca){
   document.getElementById("tela-marcas").classList.add("hidden");
@@ -300,7 +319,8 @@ function mostrarProdutos(marca){
   produtos
     .filter(p=>marca==="Tudo"||p.marca===marca)
     .forEach(prod=>{
-      const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+      const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? getThumb(prod.imagem) : "https://i.imgur.com/jzjHhHG.png";
+      <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async" width="320" height="160">
       container.innerHTML += `
         <div class="produto">
           <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
@@ -342,7 +362,8 @@ function mostrarCarrinho(){
     const p=carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
-        <img src="${p.imagem}" alt="${p.descricao}" loading="lazy" decoding="async" style="width:60px;height:60px;object-fit:contain;">
+        <img src="${getThumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" width="60" height="60" style="width:60px;height:60px;object-fit:contain;">
+
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
