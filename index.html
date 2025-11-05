@@ -423,6 +423,30 @@ function enviarWhatsApp(){
   window.open("https://wa.me/5519992394899?text=" + msg, "_blank");
 }
 
+function atualizarContadorCarrinho(){
+  let totalQtd = 0;
+  for (let c in carrinho){
+    totalQtd += Number(carrinho[c].qtd);
+  }
+  document.getElementById("cart-count").innerText = totalQtd;
+}
+
+function atualizarTotal(){
+  let total = 0;
+  for(let c in carrinho){
+    total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
+  }
+
+  // Atualiza total no topo
+  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
+
+  // Atualiza total na tela do carrinho
+  const t = document.getElementById("total-carrinho");
+  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
+
+  atualizarContadorCarrinho(); // ✅ Necessário aqui também
+}
+ 
 </script>
 <script>
 let installPrompt;
