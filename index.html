@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 });
 
-<script>
+
 // Gera miniatura do Imgur automaticamente (320px)
 function getThumb(url) {
   if (!url) return "https://i.imgur.com/jzjHhHG.png";
@@ -319,20 +319,21 @@ function mostrarProdutos(marca){
   produtos
     .filter(p=>marca==="Tudo"||p.marca===marca)
     .forEach(prod=>{
-      const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? getThumb(prod.imagem) : "https://i.imgur.com/jzjHhHG.png";
-      <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async" width="320" height="160">
-      container.innerHTML += `
-        <div class="produto">
-          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-          <h4>${prod.descricao}</h4>
-          <small>(${prod.Código})</small>
-          <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
-          <div class="qtd-container">
-            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
-            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
-          </div>
-        </div>`;
+   const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? getThumb(prod.imagem) : "https://i.imgur.com/jzjHhHG.png";
+
+container.innerHTML += `
+  <div class="produto">
+    <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+    <h4>${prod.descricao}</h4>
+    <small>(${prod.Código})</small>
+    <p><b>R$ ${Number(prod.valor).toFixed(2)}</b></p>
+    <div class="qtd-container">
+      <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+      <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
+      <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+    </div>
+  </div>`;
+
     });
 }
 
