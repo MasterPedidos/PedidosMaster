@@ -31,7 +31,7 @@ html, body {
 header {
   background:#2b7bba;
   color:white;
-  padding:6px 10px; /* faixa menor */
+  padding:8px;
   font-size:17px;
   font-weight:bold;
   position:sticky;
@@ -42,18 +42,35 @@ header {
   align-items:center;
 }
 
-.top-esq, .top-dir {
-  display:flex;
-  align-items:center;
-  gap:8px;
+.titulo-topo {
+  flex:1;
+  text-align:center;
+  line-height:1.2;
 }
 
-.top-centro {
-  text-align:center;
-  font-size:16px;
-  line-height:1.2;
-  flex:1;
+#total {
+  font-size:14px;
+  font-weight:normal;
 }
+
+.top-btn {
+  background:white;
+  color:#2b7bba;
+  border:none;
+  border-radius:8px;
+  padding:7px 12px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.top-btn.enviar {
+  background:#25d366;
+  color:white;
+}
+
+#btnEnviarPedido { display:none; } /* Só aparece no carrinho */
+
 
 #versao {
   background:#ffcc00;
@@ -131,21 +148,20 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 </div>
 
 <header>
-  <div class="top-esq">
-    <img src="ativos/logo.svg" alt="Master Distribuidora">
-    <span id="versao">v2.1</span>
-    <button id="voltar" onclick="mostrarMarcas()">Marcas</button>
-  </div>
+  <button id="voltar" onclick="mostrarMarcas()" class="top-btn">🔙 Marcas</button>
 
-  <div class="top-centro">
+  <div class="titulo-topo">
     Pedidos OnLine<br>
     <span id="total">Total: R$ 0,00</span>
   </div>
 
-  <div class="top-dir">
-    <button id="btnCarrinho" onclick="mostrarCarrinho()">🛒 Carrinho</button>
-    <button id="btnEnviarPedido" onclick="enviarWhatsApp()">📦 Enviar Pedido</button>
-  </div>
+  <button id="btnCarrinho" onclick="mostrarCarrinho()" class="top-btn">
+    🛒 <span id="cart-count">0</span>
+  </button>
+
+  <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">
+    📩 Enviar
+  </button>
 </header>
 
 <!-- TELA 1: MARCAS -->
