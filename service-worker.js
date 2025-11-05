@@ -5,7 +5,7 @@ const APP_SHELL = [
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './assets/logo.svg'
+  './ativos/logo.svg'
 ];
 
 self.addEventListener('install', (event) => {
