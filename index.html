@@ -303,9 +303,11 @@ function getThumb(url) {
   }
 }
 </script>
-  
+
+<script>
 // Telas
 function mostrarProdutos(marca){
+
   document.getElementById("tela-marcas").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
   document.getElementById("tela-produtos").classList.remove("hidden");
@@ -401,17 +403,6 @@ function alterarQtd(codigo, delta, dentroCarrinho=false){
 
   atualizarTotal();
   atualizarContadorCarrinho();
-}
-
-function atualizarTotal(){
-  let total = 0;
-  for(let c in carrinho){
-    total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
-  }
-
-  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
-  const t = document.getElementById("total-carrinho");
-  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
 }
 
 // ✅ Recuperar último pedido
