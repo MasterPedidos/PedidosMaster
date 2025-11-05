@@ -25,6 +25,11 @@ html, body {
   font-family: Arial, sans-serif; text-align:center;
 }
 
+#splash {
+  transition: opacity .3s ease;
+}
+
+  
 /* Garante fundo branco em todas as telas */
 #tela-marcas,
 #tela-produtos,
@@ -146,6 +151,15 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 /* Splash (tela azul + logo central) */
 #splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
 #splash img { width: 180px; height: auto; }
+
+#tela-marcas,
+#tela-produtos,
+#tela-carrinho,
+body, html {
+  background:#ffffff !important;
+}
+
+  
 </style>
 </head>
 <body>
@@ -221,9 +235,14 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 <script>
 // ===== PWA + Splash =====
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js');
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const sp = document.getElementById("splash");
+    if (sp) sp.style.opacity = "0";
+    setTimeout(() => { sp.style.display = "none"; }, 300);
+  }, 400);
+});
+
 }
 window.addEventListener('load', () => {
   const sp = document.getElementById('splash');
