@@ -168,6 +168,9 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 <div id="tela-marcas">
   <div id="telefone-container"></div>
   <h3>Escolha uma Marca</h3>
+  <button id="btnRecuperar" style="display:none; margin-bottom:10px; background:#ffcc00; color:#000; padding:8px 14px; border-radius:8px; border:none; font-weight:bold;" onclick="recuperarPedido()">
+  🕘 Recuperar último pedido
+  </button>
   <div id="marcas-container">
     <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
     <button class="marca-btn" onclick="mostrarProdutos('Bauducco')">Bauducco</button>
@@ -271,8 +274,16 @@ function editarTelefone(){
 document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("btnSalvarContato").addEventListener("click", salvarTelefone);
   renderTelefone();
+
+  // Se não tiver telefone salvo → abre popup
   if(!telefoneDigits) abrirPopup();
+
+  // ✅ Mostrar botão RECUPERAR se existir pedido salvo
+  if(localStorage.getItem("ultimo_pedido")){
+    document.getElementById("btnRecuperar").style.display = "inline-block";
+  }
 });
+
 
 // Telas
 function mostrarProdutos(marca){
@@ -378,11 +389,25 @@ function atualizarTotal(){
 
 function enviarWhatsApp(){
   if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
+  // ✅ Salvar pedido no celular do usuário
+  
+  localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
   let msg="📦 *Pedido:*%0A";
   for(let c in carrinho){
     const p=carrinho[c];
     msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
   }
+  function recuperarPedido(){
+  const salvo = JSON.parse(localStorage.getItem("ultimo_pedido") || "{}");
+  if(Object.keys(salvo).length === 0){
+    alert("Não há nenhum pedido salvo.");
+    return;
+  }
+  carrinho = salvo;
+  atualizarTotal();
+  mostrarCarrinho();
+}
+
   const total = Object.values(carrinho).reduce((a,b)=>a + b.valor*b.qtd, 0);
   msg += `%0A💰 *Total:* R$ ${total.toFixed(2)}`;
   if(telefoneDisplay) msg += `%0A📞 *Contato:* ${telefoneDisplay}`;
