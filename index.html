@@ -3,90 +3,95 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- ✅ Modo APP / Fullscreen -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2b7bba">
 
-<!-- ✅ PWA -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" sizes="300x300" href="icones/icone-192.png">
-<link rel="apple-touch-icon" href="icones/icone-192.png">
+<link rel="icon" sizes="192x192" href="ícones/icone-192.png">
+<link rel="apple-touch-icon" href="ícones/icone-192.png">
 
 <title>Pedidos OnLine</title>
 
 <style>
 html, body {
-  height: 100%; margin:0; padding:0; background:#f7f7f7;
-  font-family: Arial, sans-serif; text-align:center;
+  height: 100%; margin:0; padding:0; overflow-x:hidden;
+  background:#f7f7f7; font-family: Arial, sans-serif;
 }
 
-/* ✅ Splash */
-#splash { position: fixed; inset: 0; background: #2b7bba;
-  display: flex; align-items: center; justify-content: center; z-index: 9999; }
+/* SPLASH */
+#splash {
+  position:fixed; inset:0; background:#2b7bba;
+  display:flex; justify-content:center; align-items:center;
+  z-index:9999;
+}
 #splash img { width: 180px; }
 
-/* ✅ TOPO CENTRALIZADO */
+/* TOPO */
 header {
   background:#2b7bba; color:white; padding:10px;
-  font-size:18px; font-weight:bold; position:sticky; top:0; z-index:10;
-  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px;
-  text-align:center;
+  display:flex; justify-content:center; align-items:center; gap:15px;
 }
-.logo-wrap{display:flex; align-items:center; gap:8px; justify-content:center;}
-.logo-wrap img{height:64px; width:auto;}
-#versao{background:#ffcc00; color:#000; padding:4px 8px; border-radius:8px;}
-#btnCarrinho, #btnEnviarPedido, #voltar{
-  margin-top:5px;
-  background:white; color:#2b7bba; border:2px solid #2b7bba;
-  font-weight:bold; border-radius:8px; padding:8px 12px;
+.logo-wrap { display:flex; align-items:center; gap:10px; }
+.logo-wrap img { height:48px; }
+
+#versao { background:#ffcc00; color:#000; padding:4px 8px; border-radius:8px; }
+
+#total { font-weight:bold; }
+
+/* Botões do topo */
+#voltar, #btnCarrinho, #btnEnviarPedido {
+  background:white; color:#2b7bba; border:none; font-weight:bold;
+  padding:6px 12px; border-radius:8px; cursor:pointer;
 }
-#btnEnviarPedido{background:#25d366; color:white; border:none; display:none;}
-#voltar{background:#e74c3c; border:none; color:white;}
+#voltar { background:#e74c3c; color:white; }
+#btnEnviarPedido { background:#25d366; color:white; display:none; }
 
-.hidden{display:none;}
+/* Marcas */
+#marcas-container {
+  display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;
+}
+.marca-btn {
+  min-width:125px; background:#2b7bba; color:white;
+  border:none; border-radius:10px; padding:10px; cursor:pointer;
+}
+.marca-btn.tudo { background:#25d366; }
 
-#marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; padding:10px;}
-.marca-btn{background:#2b7bba; color:white; border:none; padding:10px; border-radius:8px;}
-.marca-btn.tudo{background:#25d366;}
+/* Produtos */
+#produtos-container {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:12px; padding:12px; max-width:700px; margin:auto;
+}
+.produto {
+  background:white; border-radius:12px; padding:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.15);
+}
+.produto img { width:100%; height:160px; object-fit:contain; }
 
-#produtos-container{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:12px; max-width:700px; margin:auto;}
-.produto{background:white; border-radius:12px; padding:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.produto img{width:100%; height:160px; object-fit:contain;}
-
-.qtd-container{display:flex; justify-content:center; gap:5px;}
-.qtd-container button{background:#2b7bba; border:none; color:white; width:28px; height:28px; border-radius:6px;}
-.qtd-container input{width:38px; text-align:center;}
-
-.carrinho-item{background:white; border-radius:10px; padding:10px; margin:8px; display:flex; align-items:center; gap:10px; max-width:700px; margin:auto;}
-.carrinho-item img{width:60px; height:60px; object-fit:contain;}
-
-#popup{position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center;}
-#popup-content{background:white; padding:20px; border-radius:10px;}
+/* Carrinho */
+.hidden { display:none; }
 </style>
 </head>
 <body>
 
-<!-- Splash -->
 <div id="splash"><img src="ativos/logo.svg"></div>
 
 <header>
-  <div class="logo-wrap"><img src="ativos/logo.svg"><span id="versao">v2.1</span></div>
-  <button id="voltar" onclick="mostrarMarcas()">Marcas</button>
+  <div class="logo-wrap">
+    <img src="ativos/logo.svg">
+    <span id="versao">v2.1</span>
+  </div>
   <div>Pedidos OnLine<br><span id="total">Total: R$ 0,00</span></div>
-  <button id="btnCarrinho" onclick="mostrarCarrinho()">🛒 Carrinho</button>
-  <button id="btnEnviarPedido" onclick="enviarWhatsApp()">📩 Enviar Pedido</button>
+  <button id="voltar" onclick="mostrarMarcas()">Marcas</button>
+  <button id="btnCarrinho" onclick="mostrarCarrinho()">Carrinho</button>
+  <button id="btnEnviarPedido" onclick="enviarWhatsApp()">Enviar</button>
 </header>
 
 <div id="tela-marcas">
   <h3>Escolha uma Marca</h3>
-  <div id="marcas-container">
-    <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
-    <button class="marca-btn" onclick="mostrarProdutos('Danone')">Danone</button>
-    <button class="marca-btn" onclick="mostrarProdutos('Frutap')">Frutap</button>
-  </div>
+  <div id="marcas-container"></div>
 </div>
 
 <div id="tela-produtos" class="hidden">
@@ -101,107 +106,12 @@ header {
 </div>
 
 <script>
-if('serviceWorker' in navigator){
+if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js');
 }
 
-window.addEventListener('load',()=>setTimeout(()=>{document.getElementById('splash').style.display='none';},400));
-
-/* ✅ LISTA REDUZIDA PARA TESTES */
-const produtos = [
-  {"Código":"129","descricao":"Danette Chocolate","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/CNshggM.png"},
-  {"Código":"45","descricao":"Danoninho Morango","marca":"Danone","valor":118.8,"imagem":"https://imgur.com/D0pQUZg.png"},
-  {"Código":"2494","descricao":"Torta Chocolate Frutap","marca":"Frutap","valor":30,"imagem":"https://imgur.com/5Sflomp.png"}
-];
-
-let carrinho = {};
-
-function mostrarProdutos(marca){
-  document.getElementById("tela-marcas").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.add("hidden");
-  document.getElementById("tela-produtos").classList.remove("hidden");
-
-  document.getElementById("titulo-marca").textContent = marca;
-  const c=document.getElementById("produtos-container");
-  c.innerHTML="";
-
-  produtos.filter(p=>marca==="Tudo"||p.marca===marca).forEach(p=>{
-    c.innerHTML+=`
-    <div class="produto">
-      <img src="${p.imagem}">
-      <b>${p.descricao}</b>
-      <p>R$ ${p.valor.toFixed(2)}</p>
-      <div class="qtd-container">
-        <button onclick="alterarQtd('${p.Código}',-1)">-</button>
-        <input id="qtd-${p.Código}" value="${carrinho[p.Código]?.qtd||0}">
-        <button onclick="alterarQtd('${p.Código}',1)">+</button>
-      </div>
-    </div>`;
-  });
-}
-
-function mostrarMarcas(){
-  document.getElementById("tela-produtos").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.add("hidden");
-  document.getElementById("tela-marcas").classList.remove("hidden");
-}
-
-function mostrarCarrinho(){
-  document.getElementById("tela-marcas").classList.add("hidden");
-  document.getElementById("tela-produtos").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.remove("hidden");
-
-  const c=document.getElementById("itens-carrinho");
-  c.innerHTML="";
-  let total=0;
-  for(let i in carrinho){
-    const p=carrinho[i];
-    total+=p.valor*p.qtd;
-    c.innerHTML+=`
-    <div class="carrinho-item">
-      <img src="${p.imagem}">
-      <b>${p.descricao}</b>
-      <div class="qtd-container">
-        <button onclick="alterarQtd('${p.Código}',-1,true)">-</button>
-        <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
-        <button onclick="alterarQtd('${p.Código}',1,true)">+</button>
-      </div>
-    </div>`;
-  }
-  document.getElementById("total-carrinho").textContent = "Total: R$ "+total.toFixed(2);
-  document.getElementById("total").textContent = "Total: R$ "+total.toFixed(2);
-}
-
-function alterarQtd(c,d){
-  const p=produtos.find(x=>x.Código===c);
-  if(!p) return;
-  const q=(carrinho[c]?.qtd||0)+d;
-  if(q>0) carrinho[c]={...p,qtd:q}; else delete carrinho[c];
-  document.getElementById("qtd-"+c)?.value=q||0;
-  document.getElementById("qtd-carrinho-"+c)?.value=q||0;
-  mostrarCarrinho();
-}
-
-function enviarWhatsApp(){
-  let msg="Pedido:%0A";
-  for(let i in carrinho){
-    const p=carrinho[i];
-    msg+=`• ${p.descricao} - ${p.qtd} un.%0A`;
-  }
-  window.open("https://wa.me/5519992394899?text="+msg,"_blank");
-}
-
-/* ✅ Perguntar para instalar como APP */
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e)=>{
-  e.preventDefault();
-  deferredPrompt=e;
-  setTimeout(()=>{
-    if(confirm("Deseja instalar o aplicativo na tela inicial?")){
-      deferredPrompt.prompt();
-      deferredPrompt=null;
-    }
-  },2000);
+window.addEventListener('load', () => {
+  setTimeout(()=>{ document.getElementById('splash').style.display='none'; }, 600);
 });
 </script>
 
