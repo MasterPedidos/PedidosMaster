@@ -151,24 +151,6 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
   border-radius: 10px; /* opcional para deixar bonito */
 }
 
-  /* Miniaturas do carrinho - fundo SEMPRE branco */
-.thumb-box {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.thumb-box img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain !important;
-  background: none !important;
-}
-
 
 </style>
 </head>
@@ -180,7 +162,7 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 </div>
 
 <header>
-  <button id="voltar" onclick="mostrarMarcas()" class="top-btn">🔙 Marcas</button>
+  <button id="voltar" onclick="mostrarMarcas()" class="top-btn">?? Marcas</button>
 
   <div class="titulo-topo">
     Pedidos OnLine<br>
@@ -188,11 +170,11 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
   </div>
 
   <button id="btnCarrinho" onclick="mostrarCarrinho()" class="top-btn">
-    🛒 <span id="cart-count">0</span>
+    ?? <span id="cart-count">0</span>
   </button>
 
   <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">
-    📦 Enviar
+    ?? Enviar
   </button>
 </header>
 
@@ -204,7 +186,7 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
   <div id="telefone-container"></div>
   <h3>Escolha uma Marca</h3>
   <button id="btnRecuperar" style="display:none; margin-bottom:10px; background:#ffcc00; color:#000; padding:8px 14px; border-radius:8px; border:none; font-weight:bold;" onclick="recuperarPedido()">
-    🔄 Recuperar último pedido
+    ?? Recuperar último pedido
   </button>
   <div id="marcas-container">
     <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
@@ -321,24 +303,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function thumb(url) {
   if (!url) return "https://i.imgur.com/jzjHhHG.png";
-
-  try {
-    url = url.replace("://imgur.com/", "://i.imgur.com/");
-
-    const match = url.match(/i\.imgur\.com\/([^\.]+)/);
-    if (!match) return url;
-
-    const id = match[1];
-
-    // s = 90px (perfeito p/ carrinho) e mantém PNG = sem fundo preto
-    return `https://i.imgur.com/${id}s.png`;
-
-  } catch (e) {
-    return url;
-  }
+  return url.replace(/(\.[a-zA-Z0-9]+)$/, "m$1");
 }
-
-
 
 // Telas
 function mostrarProdutos(marca){
@@ -389,7 +355,7 @@ function mostrarCarrinho(){
   const container=document.getElementById("itens-carrinho");
   container.innerHTML="";
   if(Object.keys(carrinho).length===0){
-    container.innerHTML="<p>Seu carrinho está vazio 🛒</p>";
+    container.innerHTML="<p>Seu carrinho está vazio ??</p>";
     document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
     return;
   }
@@ -397,8 +363,7 @@ function mostrarCarrinho(){
     const p=carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
-        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" 
-             style="width:60px;height:60px;object-fit:contain;background:white;border-radius:8px;">
+        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" style="width:60px;height:60px;object-fit:contain;">
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
@@ -413,7 +378,6 @@ function mostrarCarrinho(){
   }
   atualizarTotal();
 }
-
 
 function alterarQtd(codigo, delta, dentroCarrinho=false){
   const prod = produtos.find(p => p.Código === codigo);
