@@ -6,12 +6,10 @@
 <!-- ? Modo APP / Fullscreen no celular -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2b7bba">
 
-<meta name="color-scheme" content="light only">
-  
 <!-- ? PWA -->
 <link rel="manifest" href="manifest.json">
 <link rel="icon" sizes="300x300" href="icones/icone-192.png">
@@ -23,22 +21,9 @@
 /* Base */
 html, body {
   height: 100%; margin:0; padding:0; overflow-x:hidden;
-  overscroll-behavior-y: none; background:#ffffff !important;
+  overscroll-behavior-y: none; background:#f7f7f7;
   font-family: Arial, sans-serif; text-align:center;
 }
-
-#splash {
-  transition: opacity .3s ease;
-}
-
-  
-/* Garante fundo branco em todas as telas */
-#tela-marcas,
-#tela-produtos,
-#tela-carrinho {
-  background:#ffffff !important;
-}
-
 /* iOS 100% */
 @supports (-webkit-touch-callout: none) { body { height: -webkit-fill-available; } }
 
@@ -151,34 +136,8 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 #popup button { margin-top:10px; background:#2b7bba; color:white; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
 
 /* Splash (tela azul + logo central) */
-#splash { position: fixed; inset: 0; background: transparent; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+#splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
 #splash img { width: 180px; height: auto; }
-
-#tela-marcas,
-#tela-produtos,
-#tela-carrinho,
-body, html {
-  background:#ffffff !important;
-}
-
-html, body, #tela-marcas, #tela-produtos, #tela-carrinho {
-  background:#ffffff !important;
-}
-
-
-:root {
-  color-scheme: light !important;
-}
-
-html, body,
-#tela-marcas,
-#tela-produtos,
-#tela-carrinho {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
-
-  
 </style>
 </head>
 <body>
@@ -253,15 +212,15 @@ html, body,
 
 <script>
 // ===== PWA + Splash =====
-
-  document.addEventListener("DOMContentLoaded", () => {
-  const sp = document.getElementById("splash");
-  setTimeout(() => {
-    sp.style.opacity = "0";
-    setTimeout(() => { sp.style.display = "none"; }, 300);
-  }, 400);
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js');
+  });
+}
+window.addEventListener('load', () => {
+  const sp = document.getElementById('splash');
+  setTimeout(()=>{ sp.style.display='none'; }, 400);
 });
-
 
 // ===== PRODUTOS =====
 // ?? COLAR SUA LISTA COMPLETA AQUI (substitua o array abaixo pelo seu grande array)
@@ -325,30 +284,17 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 });
 
-
-// Gera miniatura do Imgur automaticamente (320px)
-function getThumb(url) {
+<script>
+function thumb(url) {
   if (!url) return "https://i.imgur.com/jzjHhHG.png";
-  try {
-    // Normaliza para i.imgur.com
-    let u = url.replace("://imgur.com/", "://i.imgur.com/");
-    // Extrai base e extensão
-    const m = u.match(/i\.imgur\.com\/([^\.]+)(\.[a-zA-Z0-9]+)?$/);
-    if (!m) return u; // se não bater, retorna original
-    const id = m[1];
-    const ext = m[2] || ".png";
-    // Sufixo 'm' => ~320px
-    return `https://i.imgur.com/${id}m${ext}`;
-  } catch(e) {
-    return url;
-  }
+  return url.replace(/(\.[a-zA-Z0-9]+)$/, "m$1");
 }
 </script>
 
-<script>
+  
+
 // Telas
 function mostrarProdutos(marca){
-
   document.getElementById("tela-marcas").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
   document.getElementById("tela-produtos").classList.remove("hidden");
@@ -362,21 +308,19 @@ function mostrarProdutos(marca){
   produtos
     .filter(p=>marca==="Tudo"||p.marca===marca)
     .forEach(prod=>{
-   const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? getThumb(prod.imagem) : "https://i.imgur.com/jzjHhHG.png";
-
-container.innerHTML += `
-  <div class="produto">
-    <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-    <h4>${prod.descricao}</h4>
-    <small>(${prod.Código})</small>
-    <p><b>R$ ${Number(prod.valor).toFixed(2)}</b></p>
-    <div class="qtd-container">
-      <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-      <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
-      <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
-    </div>
-  </div>`;
-
+      const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+      container.innerHTML += `
+        <div class="produto">
+          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+          <h4>${prod.descricao}</h4>
+          <small>(${prod.Código})</small>
+          <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
+          <div class="qtd-container">
+            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
+            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+          </div>
+        </div>`;
     });
 }
 
@@ -406,8 +350,7 @@ function mostrarCarrinho(){
     const p=carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
-        <img src="${getThumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" width="60" height="60" style="width:60px;height:60px;object-fit:contain;">
-
+        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" style="width:60px;height:60px;object-fit:contain;">
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
@@ -444,6 +387,17 @@ function alterarQtd(codigo, delta, dentroCarrinho=false){
 
   atualizarTotal();
   atualizarContadorCarrinho();
+}
+
+function atualizarTotal(){
+  let total = 0;
+  for(let c in carrinho){
+    total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
+  }
+
+  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
+  const t = document.getElementById("total-carrinho");
+  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
 }
 
 // ? Recuperar último pedido
