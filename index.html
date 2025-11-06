@@ -165,9 +165,6 @@ html, body, #tela-marcas, #tela-produtos, #tela-carrinho {
   background:#ffffff !important;
 }
 
-#splash {
-
-}
 
 :root {
   color-scheme: light !important;
@@ -256,7 +253,8 @@ html, body,
 
 <script>
 // ===== PWA + Splash =====
-document.addEventListener("DOMContentLoaded", () => {
+
+  document.addEventListener("DOMContentLoaded", () => {
   const sp = document.getElementById("splash");
   setTimeout(() => {
     sp.style.opacity = "0";
@@ -265,7 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-  
 // ===== PRODUTOS =====
 // ?? COLAR SUA LISTA COMPLETA AQUI (substitua o array abaixo pelo seu grande array)
 let produtos = [];
