@@ -6,7 +6,7 @@
 <!-- ? Modo APP / Fullscreen no celular -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="white">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2b7bba">
 
@@ -165,10 +165,6 @@ html, body, #tela-marcas, #tela-produtos, #tela-carrinho {
   background:#ffffff !important;
 }
 
-#splash {
-  display:none !important;
-}
-
 :root {
   color-scheme: light !important;
 }
@@ -256,20 +252,23 @@ html, body,
 
 <script>
 // ===== PWA + Splash =====
-if ('serviceWorker' in navigator) {
+
+<script>
 document.addEventListener("DOMContentLoaded", () => {
+  const sp = document.getElementById("splash");
   setTimeout(() => {
-    const sp = document.getElementById("splash");
-    if (sp) sp.style.opacity = "0";
+    sp.style.opacity = "0";
     setTimeout(() => { sp.style.display = "none"; }, 300);
-  }, 400);
+  }, 500);
 });
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
 }
-window.addEventListener('load', () => {
-  const sp = document.getElementById('splash');
-  setTimeout(()=>{ sp.style.display='none'; }, 400);
-});
+</script>
+
+
+  
 
 // ===== PRODUTOS =====
 // ?? COLAR SUA LISTA COMPLETA AQUI (substitua o array abaixo pelo seu grande array)
