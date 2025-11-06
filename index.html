@@ -346,9 +346,20 @@ function mostrarMarcas(){
 }
 
 function getProdutoImg(codigo){
-  const img = document.querySelector(`#qtd-${codigo}`)?.closest('.produto')?.querySelector('img');
-  return img ? img.src : "https://i.imgur.com/jzjHhHG.png";
+  // Tenta pegar a imagem na tela de produtos (se estiver visível)
+  const input = document.getElementById(`qtd-${codigo}`);
+  if (input) {
+    const img = input.closest('.produto')?.querySelector('img');
+    if (img) return img.src;
+  }
+
+  // Se não achar, usa a imagem salva no carrinho
+  if (carrinho[codigo]?.imagem) return carrinho[codigo].imagem;
+
+  // Fallback final (imagem padrão)
+  return "https://i.imgur.com/jzjHhHG.png";
 }
+
   
 function mostrarCarrinho(){
   document.getElementById("tela-marcas").classList.add("hidden");
