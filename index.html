@@ -114,6 +114,26 @@ header {
 /* Splash (tela azul + logo central) */
 #splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
 #splash img { width: 180px; height: auto; }
+
+.linha-info {
+  display:flex;
+  justify-content:space-between;
+  margin-top:4px;
+  font-size:13px;
+  color:#444;
+}
+
+.preco-linha {
+  display:flex;
+  justify-content:space-between;
+  margin-top:6px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -301,29 +321,37 @@ function mostrarProdutos(marca){
   const container=document.getElementById("produtos-container");
   container.innerHTML="";
   produtos
-    .filter(p=>marca==="Tudo"||p.marca===marca)
-    .forEach(prod=>{
-      const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
-      const un = precoUnidade(prod); // pode ser null
-      container.innerHTML += `
-        <div class="produto">
-          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-          <h4>${prod.descricao}</h4>
-          <small>(${prod.Código})</small>
+  .filter(p => marca === "Tudo" || p.marca === marca)
+  .forEach(prod => {
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
 
-          <div class="preco-linha">
-            <span class="preco-un">${un ? "R$ "+un.toFixed(2) : "—"}</span>
-            <span class="preco-cx">cx R$ ${Number(prod.valor).toFixed(2)}</span>
-          </div>
+    // ✅ Cálculo do valor da unidade
+    const un = prod.unidades ? (Number(prod.valor) / Number(prod.unidades)) : null;
 
-          <div class="qtd-container">
-            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
-            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
-          </div>
-        </div>`;
-    });
-}
+    container.innerHTML += `
+      <div class="produto">
+        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+        <h4>${prod.descricao}</h4>
+
+        <div class="linha-info">
+          <small>(Cod ${prod.Código})</small>
+          <small>Caixa c/ ${prod.unidades || "?"} un.</small>
+        </div>
+
+        <div class="preco-linha">
+          <span class="preco-un">Unid. R$ ${un ? un.toFixed(2) : "—"}</span>
+          <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
+        </div>
+
+        <div class="qtd-container">
+          <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+          <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
+          <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+        </div>
+      </div>
+    `;
+  });
+
 
 function mostrarMarcas(){
   document.getElementById("tela-produtos").classList.add("hidden");
