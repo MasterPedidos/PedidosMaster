@@ -44,7 +44,7 @@ html, body {
 
 /* Topo */
 header {
-  background: #2b7bba;
+  background:#2b7bba;
   color:white;
   padding:8px;
   font-size:17px;
@@ -165,6 +165,10 @@ html, body, #tela-marcas, #tela-produtos, #tela-carrinho {
   background:#ffffff !important;
 }
 
+#splash {
+
+}
+
 :root {
   color-scheme: light !important;
 }
@@ -252,24 +256,16 @@ html, body,
 
 <script>
 // ===== PWA + Splash =====
-
-<script>
 document.addEventListener("DOMContentLoaded", () => {
   const sp = document.getElementById("splash");
   setTimeout(() => {
     sp.style.opacity = "0";
     setTimeout(() => { sp.style.display = "none"; }, 300);
-  }, 500);
+  }, 400);
 });
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
 
 
   
-
 // ===== PRODUTOS =====
 // ?? COLAR SUA LISTA COMPLETA AQUI (substitua o array abaixo pelo seu grande array)
 let produtos = [];
