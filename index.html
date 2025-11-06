@@ -321,8 +321,25 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function thumb(url) {
   if (!url) return "https://i.imgur.com/jzjHhHG.png";
-  return url.replace(/(\.[a-zA-Z0-9]+)$/, "m$1");
+
+  try {
+    // Garante domínio correto
+    url = url.replace("://imgur.com/", "://i.imgur.com/");
+
+    // Extrai ID da imagem
+    const match = url.match(/i\.imgur\.com\/([^\.]+)/);
+    if (!match) return url;
+
+    const id = match[1];
+
+    // Miniatura PNG com transparência preservada
+    return `https://i.imgur.com/${id}m.png`;
+
+  } catch (e) {
+    return url;
+  }
 }
+
 
 // Telas
 function mostrarProdutos(marca){
