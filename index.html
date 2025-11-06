@@ -138,6 +138,20 @@ header {
   font-weight:bold;
 }
 
+.produto h4 {
+  margin: 2px 0 0 0 !important; /* Remove espaço acima e abaixo */
+  font-size: 15px;
+}
+
+.produto small {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block; /* Garante alinhamento certinho */
+}
+
+.linha-info {
+  margin-top: 2px !important; /* Diminui o espaço antes dessa linha */
+}
 
 
 
@@ -343,9 +357,9 @@ function mostrarProdutos(marca){
           <small>(Cod ${prod.Código})</small>
           <small>Cx c/ ${prod.unidades || "?"} un.</small>
         </div>
-
+        
         <div class="preco-linha">
-          <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
+          <span class="preco-un">${un ? un.toFixed(2) : "—"}</span>
           <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
         </div>
 
