@@ -154,6 +154,21 @@ header {
 }
 
 
+.linha-info {
+  display:flex;
+  justify-content:space-between;
+  margin-top:2px !important;
+  font-size:14px; /* Aumenta a fonte */
+  font-weight:bold; /* Deixa ambos em negrito */
+  color:#333;
+  white-space:nowrap; /* Evita quebra de linha */
+}
+
+.linha-info span {
+  display:inline-block;
+}
+
+                                 
 
 </style>
 </head>
@@ -354,8 +369,8 @@ function mostrarProdutos(marca){
         <h4>${prod.descricao}</h4>
 
         <div class="linha-info">
-          <small>(Cod ${prod.Código})</small>
-          <small>Cx c/ ${prod.unidades || "?"} un.</small>
+          <span class="info-cod">(Cod ${prod.Código})</span>
+          <span class="info-cx">Cx c/ ${prod.unidades || "?"} un.</span>
         </div>
         
         <div class="preco-linha">
