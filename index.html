@@ -79,11 +79,18 @@ header {
 
 /* Preços: unidade à esquerda | caixa à direita */
 .preco-linha {
-  display:flex; align-items:center; justify-content:space-between;
-  gap:10px; margin-top:6px;
+  display:flex;
+  justify-content:space-between;
+  margin-top:6px;
+  font-size:15px;
+  font-weight:bold;
+  white-space:nowrap; /* ✅ impede quebra de linha */
 }
-.preco-un { font-weight:bold; color:#2b7bba; }          /* unidade */
-.preco-cx { font-weight:bold; color:#333; }             /* caixa */
+
+<div class="preco-linha">
+  <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
+  <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
+</div>
 
 /* Qtd */
 .qtd-container { display:flex; align-items:center; justify-content:center; margin-top:6px; }
@@ -338,7 +345,7 @@ function mostrarProdutos(marca){
         </div>
 
         <div class="preco-linha">
-          <span class="preco-un">Unid. R$ ${un ? un.toFixed(2) : "—"}</span>
+          <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
           <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
         </div>
 
