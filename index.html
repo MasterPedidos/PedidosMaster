@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 
+<!-- ? Modo APP / Fullscreen no celular -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2b7bba">
 
+<!-- ? PWA -->
 <link rel="manifest" href="manifest.json">
 <link rel="icon" sizes="300x300" href="icones/icone-192.png">
 <link rel="apple-touch-icon" href="icones/icone-192.png">
@@ -16,13 +18,16 @@
 <title>Pedidos OnLine</title>
 
 <style>
+/* Base */
 html, body {
   height: 100%; margin:0; padding:0; overflow-x:hidden;
   overscroll-behavior-y: none; background:#f7f7f7;
   font-family: Arial, sans-serif; text-align:center;
 }
+/* iOS 100% */
 @supports (-webkit-touch-callout: none) { body { height: -webkit-fill-available; } }
 
+/* Topo */
 header {
   background:#2b7bba;
   color:white;
@@ -37,79 +42,112 @@ header {
   align-items:center;
 }
 
-.titulo-topo { flex:1; text-align:center; line-height:1.2; }
+.titulo-topo {
+  flex:1;
+  text-align:center;
+  line-height:1.2;
+}
+
 #total { font-size:14px; font-weight:normal; }
 
 .top-btn {
-  background:white; color:#2b7bba; border:none;
-  border-radius:8px; padding:7px 12px;
-  font-size:15px; font-weight:bold; cursor:pointer;
+  background:white;
+  color:#2b7bba;
+  border:none;
+  border-radius:8px;
+  padding:7px 12px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .top-btn.enviar { background:#25d366; color:white; }
+
 #btnEnviarPedido { display:none; }
 
+header img {
+  height:38px;
+  width:auto;
+}
+
+/* Marcas */
 #marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
 .marca-btn {
-  flex: 1 1 120px; min-width:130px; max-width:160px; padding:10px;
-  border:none; border-radius:10px; font-size:14px;
-  background:#2b7bba; color:white; cursor:pointer;
+  flex: 1 1 120px; min-width: 130px; max-width: 160px; padding:10px;
+  border:none; border-radius:10px; font-size:14px; background:#2b7bba; color:white;
+  cursor:pointer;
 }
 .marca-btn.tudo {background:#25d366; font-weight:bold;}
 
+/* Produtos */
 #produtos-container { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:12px; max-width:700px; margin:auto; }
 .produto { background:white; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:10px; }
 .produto img { width:100%; height:160px; object-fit:contain; border-radius:10px; background:#fff; }
 
+/* Qtd */
 .qtd-container { display:flex; align-items:center; justify-content:center; margin-top:5px; }
 .qtd-container button { width:28px; height:28px; border:none; border-radius:6px; background:#2b7bba; color:white; font-size:18px; font-weight:bold; cursor:pointer; }
 .qtd-container input { width:40px; text-align:center; margin:0 5px; border:1px solid #ccc; border-radius:6px; }
 
+/* Carrinho */
 #tela-carrinho { padding:15px; }
-.carrinho-item { background:white; border-radius:10px; margin:8px auto; padding:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px; display:flex; align-items:center; gap:10px; }
+.carrinho-item {
+  background:white; border-radius:10px; margin:8px auto; padding:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
 
+/* ✅ Miniaturas com fundo branco */
 .carrinho-item img {
-  width:60px !important;
-  height:60px !important;
+  width:60px;
+  height:60px;
   object-fit:contain !important;
-  background:#ffffff !important;
+  background:white !important;
+  border-radius:8px !important;
   padding:4px !important;
-  border-radius:10px !important;
-  box-shadow:0 0 0 1px #eee;
 }
 
-.precos-carrinho {
-  font-size:14px;
-  font-weight:bold;
-  color:#2b7bba;
-}
-
+/* Popup telefone */
 .hidden {display:none;}
+#popup { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:100; }
+#popup-content { background:white; padding:20px; border-radius:10px; max-width:300px; text-align:center; }
 
+/* Splash */
 #splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
 #splash img { width: 180px; height: auto; }
 </style>
 </head>
-
 <body>
 
-<div id="splash"><img src="ativos/logo.svg"></div>
+<!-- Splash -->
+<div id="splash">
+  <img src="ativos/logo.svg" alt="Master Distribuidora">
+</div>
 
 <header>
   <button id="voltar" onclick="mostrarMarcas()" class="top-btn">🏷️ Marcas</button>
+
   <div class="titulo-topo">
-    Pedidos OnLine<br><span id="total">Total: R$ 0,00</span>
+    Pedidos OnLine<br>
+    <span id="total">Total: R$ 0,00</span>
   </div>
-  <button id="btnCarrinho" onclick="mostrarCarrinho()" class="top-btn">🛒 <span id="cart-count">0</span></button>
-  <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">📲 Enviar</button>
+
+  <button id="btnCarrinho" onclick="mostrarCarrinho()" class="top-btn">
+    🛒 <span id="cart-count">0</span>
+  </button>
+
+  <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">
+    📦 Enviar
+  </button>
 </header>
-<!-- TELA 1: MARCAS -->
+
+<!-- MARCAS -->
 <div id="tela-marcas">
   <div id="telefone-container"></div>
   <h3>Escolha uma Marca</h3>
 
   <button id="btnRecuperar" style="display:none; margin-bottom:10px; background:#ffcc00; color:#000; padding:8px 14px; border-radius:8px; border:none; font-weight:bold;" onclick="recuperarPedido()">
-    🔄 Recuperar último pedido
+    ♻️ Recuperar último pedido
   </button>
 
   <div id="marcas-container">
@@ -129,22 +167,13 @@ header {
   </div>
 </div>
 
-<!-- POPUP DE CONTATO -->
-<div id="popup" class="hidden">
-  <div id="popup-content">
-    <h4>Informe seu número de contato</h4>
-    <input id="telefone-input" placeholder="(19) 99999-9999" maxlength="15" inputmode="numeric">
-    <button id="btnSalvarContato">Salvar</button>
-  </div>
-</div>
-
-<!-- TELA 2: PRODUTOS -->
+<!-- PRODUTOS -->
 <div id="tela-produtos" class="hidden">
   <h3 id="titulo-marca"></h3>
   <div id="produtos-container"></div>
 </div>
 
-<!-- TELA 3: CARRINHO -->
+<!-- CARRINHO -->
 <div id="tela-carrinho" class="hidden">
   <h3> Meu Carrinho</h3>
   <div id="itens-carrinho"></div>
@@ -161,140 +190,135 @@ window.addEventListener('load', () => {
   setTimeout(()=>{ document.getElementById('splash').style.display='none'; }, 400);
 });
 
-// ===== DADOS =====
 let produtos = [];
-fetch("produtos.json").then(r=>r.json()).then(d=>produtos=d);
+fetch("produtos.json").then(r => r.json()).then(d => produtos = d);
 
 let carrinho = {},
     telefoneDigits = localStorage.getItem("telefone_digits")||"",
     telefoneDisplay = localStorage.getItem("telefone_display")||"";
 
-// ===== TELEFONE =====
-document.addEventListener("input", e=>{
-  if(e.target.id==="telefone-input"){
-    let v=e.target.value.replace(/\D/g,"");
-    if(v.length>=7)e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-    else if(v.length>2)e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`;
-    else e.target.value=v;
-  }
-});
-
-function renderTelefone(){
-  const el=document.getElementById("telefone-container");
-  el.innerHTML = telefoneDigits
-    ? `<span>${telefoneDisplay}</span><button onclick="editarTelefone()">✏️ Editar</button>`
-    : `<span style="color:#666;">Nenhum contato cadastrado</span> <button onclick="abrirPopup()">Cadastrar</button>`;
-}
-function abrirPopup(){document.getElementById("popup").classList.remove("hidden");}
-function fecharPopup(){document.getElementById("popup").classList.add("hidden");}
-function salvarTelefone(){
-  const inp=document.getElementById("telefone-input");
-  const digits=inp.value.replace(/\D/g,"");
-  if(digits.length<10) return alert("Número inválido!");
-  const ddd=digits.slice(0,2), corpo=digits.slice(2);
-  telefoneDigits=digits;
-  telefoneDisplay=`(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
-  localStorage.setItem("telefone_digits", telefoneDigits);
-  localStorage.setItem("telefone_display", telefoneDisplay);
-  fecharPopup(); renderTelefone();
-}
-function editarTelefone(){ localStorage.clear(); telefoneDigits=""; telefoneDisplay=""; abrirPopup(); }
-
-document.addEventListener("DOMContentLoaded",()=>{ document.getElementById("btnSalvarContato").addEventListener("click", salvarTelefone); renderTelefone(); });
-
-// ===== LISTA / THUMB VELOZ =====
-function thumb(url){
-  if(!url) return "https://i.imgur.com/jzjHhHG.png";
+function thumb(url) {
+  if (!url) return "https://i.imgur.com/jzjHhHG.png";
   return url.replace(/(\.[a-zA-Z0-9]+)$/, "m$1");
 }
 
-// ===== TELAS =====
 function mostrarProdutos(marca){
-  tela("produtos");
-  document.getElementById("titulo-marca").textContent = (marca==="Tudo"?"Todos os Produtos":"Marca: "+marca);
-  const box=document.getElementById("produtos-container");
-  box.innerHTML="";
-  produtos.filter(p=>marca==="Tudo"||p.marca===marca).forEach(p=>{
-    box.innerHTML+=`
-    <div class="produto">
-      <img src="${thumb(p.imagem)}">
-      <h4>${p.descricao}</h4>
-      <small>(${p.Código})</small>
-      <p><b>R$ ${p.valor.toFixed(2)}</b></p>
-      <div class="qtd-container">
-        <button onclick="alterarQtd('${p.Código}',-1)">-</button>
-        <input id="qtd-${p.Código}" value="${carrinho[p.Código]?.qtd||0}">
-        <button onclick="alterarQtd('${p.Código}',1)">+</button>
-      </div>
-    </div>`;
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.remove("hidden");
+
+  const container=document.getElementById("produtos-container");
+  document.getElementById("titulo-marca").textContent = marca==="Tudo"?"Todos os Produtos":"Marca: "+marca;
+  container.innerHTML="";
+  produtos.filter(p=>marca==="Tudo"||p.marca===marca).forEach(prod=>{
+    const img = prod.imagem&&prod.imagem.trim()!=="" ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+    container.innerHTML+=`
+      <div class="produto">
+        <img src="${img}" loading="lazy">
+        <h4>${prod.descricao}</h4>
+        <small>(${prod.Código})</small>
+        <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
+        <div class="qtd-container">
+          <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+          <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
+          <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+        </div>
+      </div>`;
   });
 }
 
+function mostrarMarcas(){
+  document.getElementById("tela-produtos").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.add("hidden");
+  document.getElementById("tela-marcas").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="inline-block";
+  document.getElementById("btnEnviarPedido").style.display="none";
+}
+
 function mostrarCarrinho(){
-  tela("carrinho");
-  const box=document.getElementById("itens-carrinho"); box.innerHTML="";
-  if(Object.keys(carrinho).length===0) return box.innerHTML="<p>🛍️ Carrinho vazio</p>";
-  for(let c in carrinho){
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="none";
+  document.getElementById("btnEnviarPedido").style.display="inline-block";
+
+  const container=document.getElementById("itens-carrinho");
+  container.innerHTML="";
+  if(Object.keys(carrinho).length===0){
+    container.innerHTML="<p>Seu carrinho está vazio 🛒</p>";
+    document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
+    return;
+  }
+  for (let c in carrinho){
     const p=carrinho[c];
-    box.innerHTML+=`
+    container.innerHTML+=`
     <div class="carrinho-item">
       <img src="${thumb(p.imagem)}">
       <div style="flex:1; text-align:left;">
         <b>${p.descricao}</b><br>
         <small>(${p.Código})</small><br>
-        <span class="precos-carrinho">R$ ${p.valor.toFixed(2)} un • Caixa</span>
+        <span>R$ ${p.valor.toFixed(2)}</span>
       </div>
       <div class="qtd-container">
-        <button onclick="alterarQtd('${p.Código}',-1,true)">-</button>
+        <button onclick="alterarQtd('${p.Código}', -1, true)">-</button>
         <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
-        <button onclick="alterarQtd('${p.Código}',1,true)">+</button>
+        <button onclick="alterarQtd('${p.Código}', 1, true)">+</button>
       </div>
     </div>`;
   }
   atualizarTotal();
 }
 
-function tela(t){
-  document.getElementById("tela-marcas").classList.add("hidden");
-  document.getElementById("tela-produtos").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.add("hidden");
-  document.getElementById("tela-"+t).classList.remove("hidden");
-  document.getElementById("btnCarrinho").style.display = (t==="carrinho"?"none":"inline-block");
-  document.getElementById("btnEnviarPedido").style.display = (t==="carrinho"?"inline-block":"none");
-}
-
-// ===== CARRINHO =====
 function alterarQtd(codigo, delta){
-  const p=produtos.find(x=>x.Código===codigo);
+  const p = produtos.find(x=>x.Código===codigo);
   if(!p) return;
-  p.valor=Number(p.valor);
-  let q=(carrinho[codigo]?.qtd||0)+delta;
-  if(q<=0){ delete carrinho[codigo]; q=0; }
-  else carrinho[codigo]={...p,qtd:q};
-
-  const a=document.getElementById(`qtd-${codigo}`), b=document.getElementById(`qtd-carrinho-${codigo}`);
-  if(a) a.value=q; if(b) b.value=q;
+  p.valor = Number(p.valor);
+  let q = carrinho[codigo]?.qtd||0;
+  q = Math.max(0, q+delta);
+  if(q>0) carrinho[codigo]={...p,qtd:q}; else delete carrinho[codigo];
+  const i=document.getElementById(`qtd-${codigo}`); if(i) i.value=q;
+  const c=document.getElementById(`qtd-carrinho-${codigo}`); if(c) c.value=q;
   atualizarTotal();
 }
 
 function atualizarTotal(){
-  let total=0; for(let c in carrinho) total+=carrinho[c].valor*carrinho[c].qtd;
+  let total = Object.values(carrinho).reduce((t,p)=>t + p.valor*p.qtd,0);
   document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
-  const tc=document.getElementById("total-carrinho"); if(tc) tc.innerText="Total: R$ "+total.toFixed(2);
-  let count=0; for(let c in carrinho) count+=carrinho[c].qtd;
-  document.getElementById("cart-count").innerText=count;
+  const t=document.getElementById("total-carrinho"); if(t) t.innerText="Total: R$ "+total.toFixed(2);
+  document.getElementById("cart-count").innerText = Object.values(carrinho).reduce((t,p)=>t+p.qtd,0);
 }
 
-// ===== ENVIAR WHATS =====
+function recuperarPedido(){
+  const salvo = JSON.parse(localStorage.getItem("ultimo_pedido")||"{}");
+  if(Object.keys(salvo).length===0) return alert("Nenhum pedido salvo.");
+  carrinho = salvo;
+  atualizarTotal();
+  mostrarCarrinho();
+}
+
 function enviarWhatsApp(){
-  if(Object.keys(carrinho).length===0) return alert("Carrinho vazio!");
-  let msg="📝 *Pedido:*%0A";
-  for(let c in carrinho) msg+=`• ${carrinho[c].descricao} (${c}) - ${carrinho[c].qtd} un.%0A`;
-  let total=Object.values(carrinho).reduce((a,b)=>a+b.valor*b.qtd,0);
+  if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
+  localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
+  let msg="🛍️ *Pedido:*%0A";
+  for(let c in carrinho){
+    const p=carrinho[c];
+    msg+=`• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
+  }
+  const total = Object.values(carrinho).reduce((t,p)=>t + p.valor*p.qtd,0);
   msg+=`%0A💰 *Total:* R$ ${total.toFixed(2)}`;
   if(telefoneDisplay) msg+=`%0A📞 *Contato:* ${telefoneDisplay}`;
   window.open("https://wa.me/5519992394899?text="+msg,"_blank");
 }
+</script>
+
+<script>
+let installPrompt;
+window.addEventListener("beforeinstallprompt",(e)=>{
+  e.preventDefault();
+  installPrompt=e;
+  setTimeout(()=>{
+    if(confirm("Deseja instalar o aplicativo na tela inicial?")) installPrompt.prompt();
+  },3000);
+});
 </script>
 
 </body>
