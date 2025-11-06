@@ -152,6 +152,15 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
   border-radius: 10px; /* opcional para deixar bonito */
 }
 
+ .mini-carrinho {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: contain !important;
+  background: #ffffff !important; /* <-- FUNDO BRANCO DE VERDADE */
+  border-radius: 10px !important;
+  padding: 4px !important;
+}
+
 
 </style>
 </head>
@@ -364,7 +373,9 @@ function mostrarCarrinho(){
     const p=carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
-        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" style="width:60px;height:60px;object-fit:contain;">
+
+        <img src="${thumb(p.imagem)}" alt="${p.descricao}" class="mini-carrinho" loading="lazy" decoding="async">
+        
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
