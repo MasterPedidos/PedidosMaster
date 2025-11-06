@@ -6,8 +6,7 @@
 <!-- ? Modo APP / Fullscreen no celular -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<!-- CORRIGIDO AQUI -->
-<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2b7bba">
 
@@ -26,6 +25,18 @@ html, body {
   height: 100%; margin:0; padding:0; overflow-x:hidden;
   overscroll-behavior-y: none; background:#ffffff !important;
   font-family: Arial, sans-serif; text-align:center;
+}
+
+#splash {
+  transition: opacity .3s ease;
+}
+
+  
+/* Garante fundo branco em todas as telas */
+#tela-marcas,
+#tela-produtos,
+#tela-carrinho {
+  background:#ffffff !important;
 }
 
 /* iOS 100% */
@@ -73,7 +84,30 @@ header {
   color:white;
 }
 
-#btnEnviarPedido { display:none; }
+#btnEnviarPedido { display:none; } /* Só aparece no carrinho */
+
+
+#versao {
+  background:#ffcc00;
+  color:#000;
+  font-weight:bold;
+  padding:2px 6px;
+  border-radius:6px;
+  font-size:12px;
+  border:1px solid #333;
+}
+
+header img {
+  height:38px; /* reduzido */
+  width:auto;
+}
+
+#voltar, #btnCarrinho, #btnEnviarPedido {
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:14px;
+}
+
 
 /* Marcas */
 #marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
@@ -99,6 +133,11 @@ header {
 .qtd-container button { width:28px; height:28px; border:none; border-radius:6px; background:#2b7bba; color:white; font-size:18px; font-weight:bold; cursor:pointer; }
 .qtd-container input { width:40px; text-align:center; margin:0 5px; border:1px solid #ccc; border-radius:6px; }
 
+/* Botões topo direito */
+button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; font-size:14px; border-radius:8px; cursor:pointer; }
+#btnCarrinho, #btnEnviarPedido { background:white; color:#2b7bba; border:2px solid #2b7bba; font-size:16px; padding:10px 18px; border-radius:10px; font-weight:bold; cursor:pointer; }
+#btnEnviarPedido { display:none; background:#25d366; color:white; border:none; }
+
 /* Carrinho */
 #tela-carrinho { padding:15px; }
 .carrinho-item { background:white; border-radius:10px; margin:8px auto; padding:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
@@ -111,14 +150,29 @@ header {
 #popup input { width:90%; padding:6px; margin-top:8px; border:1px solid #ccc; border-radius:6px; text-align:center; }
 #popup button { margin-top:10px; background:#2b7bba; color:white; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
 
-/* Splash */
+/* Splash (tela azul + logo central) */
 #splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
 #splash img { width: 180px; height: auto; }
 
-/* ✅ Correção nº 2 — Mantemos somente este bloco */
+#tela-marcas,
+#tela-produtos,
+#tela-carrinho,
+body, html {
+  background:#ffffff !important;
+}
+
+html, body, #tela-marcas, #tela-produtos, #tela-carrinho {
+  background:#ffffff !important;
+}
+
+#splash {
+  display:none !important;
+}
+
 :root {
   color-scheme: light !important;
 }
+
 html, body,
 #tela-marcas,
 #tela-produtos,
@@ -126,6 +180,8 @@ html, body,
   background: #ffffff !important;
   color: #000000 !important;
 }
+
+  
 </style>
 </head>
 <body>
@@ -136,7 +192,7 @@ html, body,
 </div>
 
 <header>
-  <button id="voltar" onclick="mostrarMarcas()" class="top-btn">🔙 Marcas</button>
+  <button id="voltar" onclick="mostrarMarcas()" class="top-btn">?? Marcas</button>
 
   <div class="titulo-topo">
     Pedidos OnLine<br>
@@ -144,11 +200,11 @@ html, body,
   </div>
 
   <button id="btnCarrinho" onclick="mostrarCarrinho()" class="top-btn">
-    🛒 <span id="cart-count">0</span>
+    ?? <span id="cart-count">0</span>
   </button>
 
   <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">
-    📩 Enviar
+    ?? Enviar
   </button>
 </header>
 
@@ -157,7 +213,7 @@ html, body,
   <div id="telefone-container"></div>
   <h3>Escolha uma Marca</h3>
   <button id="btnRecuperar" style="display:none; margin-bottom:10px; background:#ffcc00; color:#000; padding:8px 14px; border-radius:8px; border:none; font-weight:bold;" onclick="recuperarPedido()">
-  🕘 Recuperar último pedido
+  ?? Recuperar último pedido
   </button>
   <div id="marcas-container">
     <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
@@ -193,30 +249,281 @@ html, body,
 
 <!-- TELA 3: CARRINHO -->
 <div id="tela-carrinho" class="hidden">
-  <h3>🛒 Meu Carrinho</h3>
+  <h3>?? Meu Carrinho</h3>
   <div id="itens-carrinho"></div>
   <h3 id="total-carrinho">Total: R$ 0,00</h3>
 </div>
 
 <script>
-// ✅ Correção nº 3 — Splash unificado
+// ===== PWA + Splash =====
+if ('serviceWorker' in navigator) {
 document.addEventListener("DOMContentLoaded", () => {
-  const sp = document.getElementById("splash");
   setTimeout(() => {
-    sp.style.opacity = "0";
+    const sp = document.getElementById("splash");
+    if (sp) sp.style.opacity = "0";
     setTimeout(() => { sp.style.display = "none"; }, 300);
-  }, 500);
+  }, 400);
 });
 
-// ===== PWA =====
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
+}
+window.addEventListener('load', () => {
+  const sp = document.getElementById('splash');
+  setTimeout(()=>{ sp.style.display='none'; }, 400);
+});
+
+// ===== PRODUTOS =====
+// ?? COLAR SUA LISTA COMPLETA AQUI (substitua o array abaixo pelo seu grande array)
+let produtos = [];
+
+fetch("produtos.json")
+  .then(r => r.json())
+  .then(dados => produtos = dados);
+
+let carrinho = {},
+    telefoneDigits = localStorage.getItem("telefone_digits")||"",
+    telefoneDisplay = localStorage.getItem("telefone_display")||"";
+
+// Máscara telefone
+document.addEventListener("input", e=>{
+  if(e.target.id==="telefone-input"){
+    let v=e.target.value.replace(/\D/g,"");
+    if(v.length>11)v=v.slice(0,11);
+    if(v.length>=7)e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if(v.length>2)e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`;
+    else e.target.value=v;
+  }
+});
+
+function renderTelefone(){
+  const el=document.getElementById("telefone-container");
+  el.innerHTML = telefoneDigits
+    ? `<span>${telefoneDisplay}</span><button onclick="editarTelefone()">?? Editar</button>`
+    : `<span style="color:#666;">Nenhum contato cadastrado</span> <button onclick="abrirPopup()">Cadastrar</button>`;
+}
+function abrirPopup(){document.getElementById("popup").style.display="flex";}
+function fecharPopup(){document.getElementById("popup").style.display="none";}
+function salvarTelefone(){
+  const inp=document.getElementById("telefone-input");
+  const digits=inp.value.replace(/\D/g,"");
+  if(digits.length<10) return alert("Número inválido! Use DDD + celular.");
+  const ddd=digits.slice(0,2), corpo=digits.slice(2);
+  const exib=corpo.length===8?`(${ddd}) ${corpo.slice(0,4)}-${corpo.slice(4)}`:`(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
+  telefoneDigits=digits; telefoneDisplay=exib;
+  localStorage.setItem("telefone_digits", telefoneDigits);
+  localStorage.setItem("telefone_display", telefoneDisplay);
+  fecharPopup(); renderTelefone();
+}
+function editarTelefone(){
+  localStorage.removeItem("telefone_digits");
+  localStorage.removeItem("telefone_display");
+  telefoneDigits=""; telefoneDisplay="";
+  abrirPopup();
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  document.getElementById("btnSalvarContato").addEventListener("click", salvarTelefone);
+  renderTelefone();
+
+  // Se não tiver telefone salvo ? abre popup
+  if(!telefoneDigits) abrirPopup();
+
+  // ? Mostrar botão RECUPERAR se existir pedido salvo
+  if(localStorage.getItem("ultimo_pedido")){
+    document.getElementById("btnRecuperar").style.display = "inline-block";
+  }
+});
+
+
+// Gera miniatura do Imgur automaticamente (320px)
+function getThumb(url) {
+  if (!url) return "https://i.imgur.com/jzjHhHG.png";
+  try {
+    // Normaliza para i.imgur.com
+    let u = url.replace("://imgur.com/", "://i.imgur.com/");
+    // Extrai base e extensão
+    const m = u.match(/i\.imgur\.com\/([^\.]+)(\.[a-zA-Z0-9]+)?$/);
+    if (!m) return u; // se não bater, retorna original
+    const id = m[1];
+    const ext = m[2] || ".png";
+    // Sufixo 'm' => ~320px
+    return `https://i.imgur.com/${id}m${ext}`;
+  } catch(e) {
+    return url;
+  }
 }
 </script>
 
 <script>
-/* (todo o restante do seu JS permanece exatamente como estava) */
-</script>
+// Telas
+function mostrarProdutos(marca){
 
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="inline-block";
+  document.getElementById("btnEnviarPedido").style.display="none";
+
+  document.getElementById("titulo-marca").textContent = (marca==="Tudo"?"Todos os Produtos":"Marca: "+marca);
+
+  const container=document.getElementById("produtos-container");
+  container.innerHTML="";
+  produtos
+    .filter(p=>marca==="Tudo"||p.marca===marca)
+    .forEach(prod=>{
+   const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? getThumb(prod.imagem) : "https://i.imgur.com/jzjHhHG.png";
+
+container.innerHTML += `
+  <div class="produto">
+    <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+    <h4>${prod.descricao}</h4>
+    <small>(${prod.Código})</small>
+    <p><b>R$ ${Number(prod.valor).toFixed(2)}</b></p>
+    <div class="qtd-container">
+      <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+      <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
+      <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+    </div>
+  </div>`;
+
+    });
+}
+
+function mostrarMarcas(){
+  document.getElementById("tela-produtos").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.add("hidden");
+  document.getElementById("tela-marcas").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="inline-block";
+  document.getElementById("btnEnviarPedido").style.display="none";
+}
+
+function mostrarCarrinho(){
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="none";
+  document.getElementById("btnEnviarPedido").style.display="inline-block";
+
+  const container=document.getElementById("itens-carrinho");
+  container.innerHTML="";
+  if(Object.keys(carrinho).length===0){
+    container.innerHTML="<p>Seu carrinho está vazio ??</p>";
+    document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
+    return;
+  }
+  for (let c in carrinho){
+    const p=carrinho[c];
+    container.innerHTML += `
+      <div class="carrinho-item">
+        <img src="${getThumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" width="60" height="60" style="width:60px;height:60px;object-fit:contain;">
+
+        <div style="flex:1; text-align:left;">
+          <b>${p.descricao}</b><br>
+          <small>(${p.Código})</small><br>
+          <span>R$ ${p.valor.toFixed(2)}</span>
+        </div>
+        <div class="qtd-container">
+          <button onclick="alterarQtd('${p.Código}', -1, true)">-</button>
+          <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
+          <button onclick="alterarQtd('${p.Código}', 1, true)">+</button>
+        </div>
+      </div>`;
+  }
+  atualizarTotal();
+}
+
+function alterarQtd(codigo, delta, dentroCarrinho=false){
+  const prod = produtos.find(p => p.Código === codigo);
+  if(!prod) return;
+
+  // ? Garante que o valor SEMPRE será número
+  prod.valor = Number(prod.valor);
+
+  const qtdAtual = carrinho[codigo]?.qtd || 0;
+  let novaQtd = qtdAtual + delta;
+  if (novaQtd < 0) novaQtd = 0;
+
+  if (novaQtd > 0) carrinho[codigo] = { ...prod, qtd: novaQtd };
+  else delete carrinho[codigo];
+
+  const i1 = document.getElementById(`qtd-${codigo}`);
+  const i2 = document.getElementById(`qtd-carrinho-${codigo}`);
+  if (i1) i1.value = novaQtd;
+  if (i2) i2.value = novaQtd;
+
+  atualizarTotal();
+  atualizarContadorCarrinho();
+}
+
+// ? Recuperar último pedido
+function recuperarPedido(){
+  const salvo = JSON.parse(localStorage.getItem("ultimo_pedido") || "{}");
+  if(Object.keys(salvo).length === 0){
+    alert("Não há nenhum pedido salvo.");
+    return;
+  }
+  carrinho = salvo;
+  atualizarTotal();
+  mostrarCarrinho();
+}
+
+// ? Enviar pedido
+function enviarWhatsApp(){
+  if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
+
+  // Salvar pedido
+  localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
+
+  let msg="?? *Pedido:*%0A";
+  for(let c in carrinho){
+    const p=carrinho[c];
+    msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
+  }
+  const total = Object.values(carrinho).reduce((a,b)=>a + b.valor*b.qtd, 0);
+  msg += `%0A?? *Total:* R$ ${total.toFixed(2)}`;
+  if(telefoneDisplay) msg += `%0A?? *Contato:* ${telefoneDisplay}`;
+
+  window.open("https://wa.me/5519992394899?text=" + msg, "_blank");
+}
+
+function atualizarContadorCarrinho(){
+  let totalQtd = 0;
+  for (let c in carrinho){
+    totalQtd += Number(carrinho[c].qtd);
+  }
+  document.getElementById("cart-count").innerText = totalQtd;
+}
+
+function atualizarTotal(){
+  let total = 0;
+  for(let c in carrinho){
+    total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
+  }
+
+  // Atualiza total no topo
+  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
+
+  // Atualiza total na tela do carrinho
+  const t = document.getElementById("total-carrinho");
+  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
+
+  atualizarContadorCarrinho(); // ? Necessário aqui também
+}
+ 
+</script>
+<script>
+let installPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  installPrompt = e;
+
+  // Espera 3 segundos e oferece a instalação
+  setTimeout(() => {
+    if (confirm("Deseja instalar o aplicativo na tela inicial?")) {
+      installPrompt.prompt();
+    }
+  }, 3000);
+});
+</script>
 </body>
 </html>
