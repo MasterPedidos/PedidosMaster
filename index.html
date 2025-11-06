@@ -323,22 +323,21 @@ function thumb(url) {
   if (!url) return "https://i.imgur.com/jzjHhHG.png";
 
   try {
-    // Garante domínio correto
     url = url.replace("://imgur.com/", "://i.imgur.com/");
 
-    // Extrai ID da imagem
     const match = url.match(/i\.imgur\.com\/([^\.]+)/);
     if (!match) return url;
 
     const id = match[1];
 
-    // Miniatura PNG com transparência preservada
-    return `https://i.imgur.com/${id}m.png`;
+    // s = 90px (perfeito p/ carrinho) e mantém PNG = sem fundo preto
+    return `https://i.imgur.com/${id}s.png`;
 
   } catch (e) {
     return url;
   }
 }
+
 
 
 // Telas
@@ -390,7 +389,7 @@ function mostrarCarrinho(){
   const container=document.getElementById("itens-carrinho");
   container.innerHTML="";
   if(Object.keys(carrinho).length===0){
-    container.innerHTML="<p>Seu carrinho está vazio ??</p>";
+    container.innerHTML="<p>Seu carrinho está vazio 🛒</p>";
     document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
     return;
   }
@@ -398,11 +397,8 @@ function mostrarCarrinho(){
     const p=carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
-
-        <div class="thumb-box">
-          <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async">
-        </div>
-        
+        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async" 
+             style="width:60px;height:60px;object-fit:contain;background:white;border-radius:8px;">
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
@@ -417,6 +413,7 @@ function mostrarCarrinho(){
   }
   atualizarTotal();
 }
+
 
 function alterarQtd(codigo, delta, dentroCarrinho=false){
   const prod = produtos.find(p => p.Código === codigo);
