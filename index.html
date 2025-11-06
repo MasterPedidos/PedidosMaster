@@ -325,7 +325,6 @@ function mostrarProdutos(marca){
   .forEach(prod => {
     const imgSrc = (prod.imagem && prod.imagem.trim() !== "") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
 
-    // ✅ Cálculo do valor da unidade
     const un = prod.unidades ? (Number(prod.valor) / Number(prod.unidades)) : null;
 
     container.innerHTML += `
@@ -351,6 +350,7 @@ function mostrarProdutos(marca){
       </div>
     `;
   });
+} // ✅ ESTA LINHA É A CORREÇÃO
 
 
 function mostrarMarcas(){
