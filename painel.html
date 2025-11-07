@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Painel de Produtos</title>
+<style>
+body { font-family: Arial; margin: 30px; background: #fafafa; max-width: 450px; }
+input, button { padding: 10px; margin-top: 10px; width: 100%; font-size: 16px; }
+#preview { margin-top: 15px; max-width: 200px; display: none; border: 1px solid #ccc; }
+label { margin-top: 10px; display: block; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h2>✅ Cadastrar ou Atualizar Produto</h2>
+
+<label>Código do Produto:</label>
+<input type="text" id="codigo" placeholder="Ex: 129" onblur="carregarProduto()">
+
+<label>Descrição:</label>
+<input type="text" id="descricao">
+
+<label>Marca:</label>
+<input type="text" id="marca">
+
+<label>Valor:</label>
+<input type="number" step="0.01" id="valor">
+
+<label>Unidades:</label>
+<input type="number" id="unidades">
+
+<label>Selecione a imagem (.webp):</label>
+<input type="file" id="fileInput" accept=".webp">
+
+<img id="preview">
+
+<div id="progressContainer" style="display:none; margin-top:15px;">
+    <label>Enviando imagem...</label>
+    <progress id="progressBar" value="0" max="100" style="width:100%;"></progress>
+</div>
+
+
+
+<!-- AQUI FOI ALTERADO -->
+<button id="btnSalvar" onclick="enviar()">Salvar Produto</button>
+
+<script>
+const apiKey = "429fad28d0cb4e5d9e40ce28fa0fc13b"; // SUA CHAVE IMGBB
+
+// Pré-visualização da imagem
+document.getElementById("fileInput").onchange = function(){
+    const img = document.getElementById("preview");
+    img.src = URL.createObjectURL(this.files[0]);
+    img.style.display = "block";
+};
+
+// Preencher automaticamente os campos ao digitar o código
+async function carregarProduto(){
+    const codigo = document.getElementById("codigo").value.trim();
+    if(!codigo) return;
+
+    const resp = await fetch("produtos.json");
+    const lista = await resp.json();
+    const produto = lista.find(p => p["Código"] == codigo);
+
+    if(produto){
+        document.getElementById("descricao").value = produto.descricao;
+        document.getElementById("marca").value = produto.marca;
+        document.getElementById("valor").value = produto.valor;
+        document.getElementById("unidades").value = produto.unidades;
+    }
+}
+
+// Salvar / Atualizar
+async function enviar(){
+
+    // DESATIVA BOTÃO PARA EVITAR VÁRIOS CLIQUES
+    const btn = document.getElementById("btnSalvar");
+    btn.disabled = true;
+    btn.innerText = "Enviando...";
+
+    const codigo = document.getElementById("codigo").value.trim();
+    const descricao = document.getElementById("descricao").value.trim();
+    const marca = document.getElementById("marca").value.trim();
+    const valor = document.getElementById("valor").value.trim();
+    const unidades = document.getElementById("unidades").value.trim();
+    const file = document.getElementById("fileInput").files[0];
+
+    if(!codigo || !descricao || !marca || !valor || !unidades || !file){
+        alert("Preencha todos os campos e selecione uma imagem!");
+
+        // REATIVA BOTÃO
+        btn.innerText = "Salvar Produto";
+        btn.disabled = false;
+        return;
+    }
+
+    // Convertendo imagem p/ Base64
+   const base64 = await toBase64(file).catch(err => {
+    alert("Erro ao converter imagem! Selecione novamente.");
+    return;
+});
+
+
+    // Enviando imagem ao imgbb
+// Mostra barra de progresso
+document.getElementById("progressContainer").style.display = "block";
+document.getElementById("progressBar").value = 0;
+
+let formData = new FormData();
+formData.append("image", base64.split(",")[1]);
+
+const upload = await new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + apiKey);
+
+    xhr.upload.onprogress = function(e){
+        if(e.lengthComputable){
+            let percent = (e.loaded / e.total) * 100;
+            document.getElementById("progressBar").value = percent;
+        }
+    };
+
+    xhr.onload = function(){
+        resolve(JSON.parse(xhr.responseText));
+    };
+
+    xhr.onerror = function(){
+        reject("Erro no upload");
+    };
+
+    xhr.send(formData);
+});
+
+
+    if(!upload.success){
+        alert("❌ Erro ao enviar a imagem!");
+
+        // REATIVA BOTÃO
+        btn.innerText = "Salvar Produto";
+        btn.disabled = false;
+        return;
+    }
+
+    const imagem = upload.data.url;
+
+    // Enviando dados para a API local atualizar o JSON
+    await fetch(`http://localhost:8081/update?codigo=${codigo}&descricao=${encodeURIComponent(descricao)}&marca=${encodeURIComponent(marca)}&valor=${valor}&unidades=${unidades}&imagem=${encodeURIComponent(imagem)}`);
+
+    // REATIVA BOTÃO
+    btn.innerText = "Salvar Produto";
+    btn.disabled = false;
+
+    alert("✅ Produto cadastrado / atualizado com sucesso!");
+}
+
+async function enviarGit(){
+    const btn = document.getElementById("btnGit");
+    btn.disabled = true;
+    btn.innerText = "Enviando...";
+
+    let r = await fetch("http://localhost:8081/push").then(r => r.text());
+
+    alert(r);
+
+    btn.disabled = false;
+    btn.innerText = "Enviar para GitHub";
+}
+
+
+
+
+// Função Base64
+function toBase64(file){
+    return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+        reader.onload = ()=> resolve(reader.result);
+        reader.onerror = err => reject(err);
+        reader.readAsDataURL(file);
+    });
+}
+</script>
+
+</body>
+</html>
