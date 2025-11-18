@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -146,6 +146,14 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
   <h3 id="total-carrinho">Total: R$ 0,00</h3>
 </div>
 
+<!-- TELA 4: ÚLTIMO PEDIDO -->
+<div id="ultimo-pedido">
+  <h3>Último Pedido</h3>
+  <div id="itens-ultimo-pedido"></div>
+</div>
+
+<button onclick="exibirUltimoPedido()">Ver Último Pedido</button>
+
 <script>
 // ===== PWA + Splash =====
 if ('serviceWorker' in navigator) {
@@ -159,7 +167,6 @@ window.addEventListener('load', () => {
 });
 
 // ===== PRODUTOS =====
-// 👉 COLAR SUA LISTA COMPLETA AQUI (substitua o array abaixo pelo seu grande array)
 const produtos = [
   {"Código":"129","descricao":"Danette Chocol 360G","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/CNshggM.png"},
   {"Código":"64","descricao":"Danette Branco 360G","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/GCbUBfn.png"},
@@ -314,21 +321,6 @@ function atualizarTotal(){
   document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
   const t=document.getElementById("total-carrinho");
   if(t) t.innerText = "Total: R$ " + total.toFixed(2);
-}
-
-function enviarWhatsApp(){
-  if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
-  let msg="🛒 *Pedido:*%0A";
-  for(let c in carrinho){
-    const p=carrinho[c];
-    msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
-  }
-  const total = Object.values(carrinho).reduce((a,b)=>a + b.valor*b.qtd, 0);
-  msg += `%0A💰 *Total:* R$ ${total.toFixed(2)}`;
-  if(telefoneDisplay) msg += `%0A📞 *Contato:* ${telefoneDisplay}`;
-
-  // Altere o número abaixo se quiser
-  window.open("https://wa.me/5519992394899?text=" + msg, "_blank");
 }
 </script>
 </body>
