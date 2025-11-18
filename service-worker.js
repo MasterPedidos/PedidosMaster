@@ -1,46 +1,55 @@
-const CACHE_NAME = "pm-cache-v1";
+// ===================================
+// SERVICE WORKER - Sempre Atualizado
+// ===================================
 
+// Nome do cache (mude ao atualizar arquivos base)
+const CACHE_NAME = "pm-cache-v3";
+
+// Arquivos essenciais que podem ser usados offline
+const FILES_TO_CACHE = [
+  "index.html",
+  "manifest.json"
+  // ❌ IMPORTANTE: NÃO coloco produtos.json aqui!
+  // Assim o navegador SEMPRE baixa o mais novo do GitHub.
+];
+
+// INSTALAÇÃO — cria o cache inicial
 self.addEventListener("install", event => {
+  self.skipWaiting(); // ativa imediatamente
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll([
-        "./",  // Garante que o arquivo inicial do PWA seja cacheado
-        "index.html",
-        "produtos.json",
-        "manifest.json",
-        "ativo/logo.svg",  // Atualiza o logo
-        "ícone/ícone-192.png",  // Atualiza o ícone 192
-        "ícone/ícone-512.png"   // Atualiza o ícone 512
-      ]);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(FILES_TO_CACHE))
   );
-  self.skipWaiting();
 });
 
+// ATIVAÇÃO — remove caches antigos
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-      )
-    )
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys
+          .filter(k => k !== CACHE_NAME)
+          .map(k => caches.delete(k))
+      );
+    })
   );
   self.clients.claim();
 });
 
+// FETCH — tenta buscar online SEMPRE primeiro
 self.addEventListener("fetch", event => {
+  const request = event.request;
+
+  // Sempre buscar produtos.json no servidor (nunca usar cache)
+  if (request.url.includes("produtos.json")) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  // Para outros arquivos: usa rede, e cai no cache caso offline
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return (
-        response ||  // Caso não ache na cache, vai fazer o fetch normalmente
-        fetch(event.request).then(fetchResponse => {
-          const clone = fetchResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, clone);
-          });
-          return fetchResponse;
-        })
-      );
-    })
+    fetch(request)
+      .then(response => response)
+      .catch(() => caches.match(request))
   );
 });
