@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Cat�logo Digital</title>
@@ -82,20 +83,221 @@ button#voltar {
     width:60px; height:60px; border-radius:8px; object-fit:contain;
 }
 .hidden {display:none;}
+=======
+<!-- ? Modo APP / Fullscreen no celular -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2b7bba">
+
+<!-- ? PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" sizes="300x300" href="icones/icone-192.png">
+<link rel="apple-touch-icon" href="icones/icone-192.png">
+
+<title>Pedidos OnLine</title>
+
+<style>
+/* Base */
+html, body {
+  height: 100%; margin:0; padding:0; overflow-x:hidden;
+  overscroll-behavior-y: none; background:#f7f7f7;
+  font-family: Arial, sans-serif; text-align:center;
+}
+/* iOS 100% */
+@supports (-webkit-touch-callout: none) { body { height: -webkit-fill-available; } }
+
+/* Topo */
+header {
+  background:#2b7bba;
+  color:white;
+  padding:8px;
+  font-size:17px;
+  font-weight:bold;
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.titulo-topo { flex:1; text-align:center; line-height:1.2; }
+#total { font-size:14px; font-weight:normal; }
+
+.top-btn {
+  background:white;
+  color:#2b7bba;
+  border:none;
+  border-radius:8px;
+  padding:7px 12px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.top-btn.enviar { background:#25d366; color:white; }
+#btnEnviarPedido { display:none; }
+
+/* Marcas */
+#marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
+.marca-btn {
+  flex: 1 1 120px; min-width: 130px; max-width: 160px; padding:10px;
+  border:none; border-radius:10px; font-size:14px; background:#2b7bba; color:white;
+  cursor:pointer; word-wrap:break-word; white-space:normal;
+}
+.marca-btn.tudo {background:#25d366; font-weight:bold;}
+
+/* Telefone (contato) */
+#telefone-container { margin:15px auto 0; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; }
+#telefone-container span {font-weight:bold; color:#333;}
+#telefone-container button { border:none; background:#2b7bba; color:white; border-radius:8px; padding:6px 10px; cursor:pointer; }
+
+/* Produtos */
+#produtos-container { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:12px; max-width:700px; margin:auto; }
+.produto { background:white; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:10px; }
+.produto img { width:100%; height:160px; object-fit:contain; border-radius:10px; background:#fff; }
+
+/* Preços: unidade à esquerda | caixa à direita */
+.preco-linha {
+  display:flex;
+  justify-content:space-between;
+  margin-top:6px;
+  font-size:15px;
+  font-weight:bold;
+  white-space:nowrap; /* ✅ impede quebra de linha */
+}
+
+<div class="preco-linha">
+  <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
+  <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
+</div>
+
+/* Qtd */
+.qtd-container { display:flex; align-items:center; justify-content:center; margin-top:6px; }
+.qtd-container button { width:28px; height:28px; border:none; border-radius:6px; background:#2b7bba; color:white; font-size:18px; font-weight:bold; cursor:pointer; }
+.qtd-container input { width:40px; text-align:center; margin:0 5px; border:1px solid #ccc; border-radius:6px; }
+
+/* Carrinho */
+#tela-carrinho { padding:15px; }
+.carrinho-item {
+  background:white; border-radius:10px; margin:8px auto; padding:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+
+/* Miniaturas do carrinho com fundo branco */
+.carrinho-item img {
+  width:60px; height:60px; object-fit:contain !important;
+  background:#ffffff !important; border-radius:8px !important; padding:4px !important;
+}
+
+/* Popup telefone */
+.hidden {display:none;}
+#popup { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:100; }
+#popup-content { background:white; padding:20px; border-radius:10px; max-width:300px; text-align:center; }
+#popup input { width:90%; padding:6px; margin-top:8px; border:1px solid #ccc; border-radius:6px; text-align:center; }
+#popup button { margin-top:10px; background:#2b7bba; color:white; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
+
+/* Splash (tela azul + logo central) */
+#splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+#splash img { width: 180px; height: auto; }
+
+.linha-info {
+  display:flex;
+  justify-content:space-between;
+  margin-top:4px;
+  font-size:13px;
+  color:#444;
+}
+
+.preco-linha {
+  display:flex;
+  justify-content:space-between;
+  margin-top:6px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.produto h4 {
+  margin: 2px 0 0 0 !important; /* Remove espaço acima e abaixo */
+  font-size: 15px;
+}
+
+.produto small {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block; /* Garante alinhamento certinho */
+}
+
+.linha-info {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 !important;          /* sem espaço extra */
+  font-size:15px;               /* aumenta fonte */
+  font-weight:bold;             /* deixa cod + cx em negrito */
+  color:#111;
+  white-space:nowrap;           /* não quebra linha */
+  line-height:1.1;              /* compacta verticalmente */
+}
+
+.linha-info span {
+  font-weight:bold;             /* reforça o negrito */
+}
+
+                                 
+
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 </style>
 </head>
 <body>
 
+<<<<<<< HEAD
 <header>
   <span style="font-size:12px; margin-right:5px;">v1.4</span>
   <button id="voltar" onclick="mostrarMarcas()">?? Marcas</button>
   <div>Cat�logo Digital<br><span id="total">Total: R$ 0,00</span></div>
   <button id="enviar" onclick="mostrarCarrinho()">?? Carrinho</button>
+=======
+<!-- Splash -->
+<div id="splash">
+  <img src="ativos/logo.svg" alt="Master Distribuidora">
+</div>
+
+<header>
+  <button id="voltar" onclick="mostrarMarcas()" class="top-btn">🏷️ Marcas</button>
+
+  <div class="titulo-topo">
+    Pedidos OnLine<br>
+    <span id="total">Total: R$ 0,00</span>
+  </div>
+
+  <button id="btnCarrinho" onclick="mostrarCarrinho()" class="top-btn">
+    🛒 <span id="cart-count">0</span>
+  </button>
+
+  <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">
+    📦 Enviar
+  </button>
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 </header>
 
 <!-- TELA 1: MARCAS -->
 <div id="tela-marcas">
+<<<<<<< HEAD
   <h3>Escolha uma Marca</h3>
+=======
+  <!-- CONTATO -->
+  <div id="telefone-container"></div>
+
+  <h3>Escolha uma Marca</h3>
+
+  <button id="btnRecuperar" style="display:none; margin-bottom:10px; background:#ffcc00; color:#000; padding:8px 14px; border-radius:8px; border:none; font-weight:bold;" onclick="recuperarPedido()">
+    ♻️ Recuperar último pedido
+  </button>
+
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
   <div id="marcas-container">
     <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
     <button class="marca-btn" onclick="mostrarProdutos('Bauducco')">Bauducco</button>
@@ -105,7 +307,11 @@ button#voltar {
     <button class="marca-btn" onclick="mostrarProdutos('FRITOP')">FRITOP</button>
     <button class="marca-btn" onclick="mostrarProdutos('Frutap')">Frutap</button>
     <button class="marca-btn" onclick="mostrarProdutos('Kremoso')">Kremoso</button>
+<<<<<<< HEAD
     <button class="marca-btn" onclick="mostrarProdutos('Nestl�')">Nestl�</button>
+=======
+    <button class="marca-btn" onclick="mostrarProdutos('Nestlé')">Nestlé</button>
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
     <button class="marca-btn" onclick="mostrarProdutos('Oz')">Oz Pipocas</button>
     <button class="marca-btn" onclick="mostrarProdutos('Rebeka')">Rebeka Pudim</button>
     <button class="marca-btn" onclick="mostrarProdutos('Rei da Massa')">Rei da Massa</button>
@@ -113,15 +319,31 @@ button#voltar {
   </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- POPUP DE CONTATO -->
+<div id="popup">
+  <div id="popup-content">
+    <h4>Informe seu número de contato</h4>
+    <input id="telefone-input" placeholder="(19) 99999-9999" maxlength="15" inputmode="numeric">
+    <button id="btnSalvarContato">Salvar contato</button>
+  </div>
+</div>
+
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 <!-- TELA 2: PRODUTOS -->
 <div id="tela-produtos" class="hidden">
   <h3 id="titulo-marca"></h3>
   <div id="produtos-container"></div>
+<<<<<<< HEAD
   <button id="enviar" onclick="mostrarCarrinho()">?? Ver Carrinho</button>
+=======
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 </div>
 
 <!-- TELA 3: CARRINHO -->
 <div id="tela-carrinho" class="hidden">
+<<<<<<< HEAD
   <h3>??? Meu Carrinho</h3>
   <div id="itens-carrinho"></div>
   <h3 id="total-carrinho">Total: R$ 0,00</h3>
@@ -206,10 +428,199 @@ function mostrarCarrinho() {
       </div>
     `;
     container.appendChild(div);
+=======
+  <h3> Meu Carrinho</h3>
+  <div id="itens-carrinho"></div>
+  <h3 id="total-carrinho">Total: R$ 0,00</h3>
+</div>
+
+<script>
+/* ===== PWA + Splash ===== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js');
+  });
+}
+window.addEventListener('load', () => {
+  const sp = document.getElementById('splash');
+  setTimeout(()=>{ sp.style.display='none'; }, 400);
+});
+
+/* ===== PRODUTOS ===== */
+let produtos = [];
+fetch("produtos.json")
+  .then(r => r.json())
+  .then(dados => produtos = dados);
+
+/* ===== ESTADO ===== */
+let carrinho = {},
+    telefoneDigits = localStorage.getItem("telefone_digits")||"",
+    telefoneDisplay = localStorage.getItem("telefone_display")||"";
+
+/* ===== CONTATO (máscara + salvar) ===== */
+document.addEventListener("input", e=>{
+  if(e.target.id==="telefone-input"){
+    let v=e.target.value.replace(/\D/g,"");
+    if(v.length>11)v=v.slice(0,11);
+    if(v.length>=7)e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if(v.length>2)e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`;
+    else e.target.value=v;
+  }
+});
+
+function renderTelefone(){
+  const el=document.getElementById("telefone-container");
+  el.innerHTML = telefoneDigits
+    ? `<span>📞 ${telefoneDisplay}</span><button onclick="editarTelefone()">Editar</button>`
+    : `<span style="color:#666;">Nenhum contato cadastrado</span> <button onclick="abrirPopup()">Cadastrar</button>`;
+}
+function abrirPopup(){document.getElementById("popup").style.display="flex";}
+function fecharPopup(){document.getElementById("popup").style.display="none";}
+function salvarTelefone(){
+  const inp=document.getElementById("telefone-input");
+  const digits=inp.value.replace(/\D/g,"");
+  if(digits.length<10) return alert("Número inválido! Use DDD + celular.");
+  const ddd=digits.slice(0,2), corpo=digits.slice(2);
+  const exib=corpo.length===8?`(${ddd}) ${corpo.slice(0,4)}-${corpo.slice(4)}`:`(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
+  telefoneDigits=digits; telefoneDisplay=exib;
+  localStorage.setItem("telefone_digits", telefoneDigits);
+  localStorage.setItem("telefone_display", telefoneDisplay);
+  fecharPopup(); renderTelefone();
+}
+function editarTelefone(){
+  localStorage.removeItem("telefone_digits");
+  localStorage.removeItem("telefone_display");
+  telefoneDigits=""; telefoneDisplay="";
+  abrirPopup();
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  document.getElementById("btnSalvarContato").addEventListener("click", salvarTelefone);
+  renderTelefone();
+
+  // se não tiver contato salvo, abre popup
+  if(!telefoneDigits) abrirPopup();
+
+  // mostrar botão recuperar se existir pedido salvo
+  if(localStorage.getItem("ultimo_pedido")){
+    document.getElementById("btnRecuperar").style.display = "inline-block";
+  }
+});
+
+/* ===== Helpers ===== */
+function thumb(url) {
+  if (!url) return "https://i.imgur.com/jzjHhHG.png";
+  return url.replace(/(\.[a-zA-Z0-9]+)$/, "m$1"); // tenta usar uma miniatura se existir
+}
+
+/* tenta descobrir quantidade por caixa (para calcular preço unitário) */
+function qtdPorCaixa(p) {
+  const chaves = [
+    "unidades_caixa","qtd_caixa","qtdcx","itens_caixa","itens","qtd","qtdUnidade","qtd_unid","un_por_cx","unCx"
+  ];
+  for (const k of chaves) {
+    const v = Number(p[k]);
+    if (!Number.isNaN(v) && v > 0) return v;
+  }
+  return null; // desconhecido
+}
+
+function precoUnidade(p) {
+  const q = qtdPorCaixa(p);
+  const val = Number(p.valor);
+  if (!q || !val || Number.isNaN(val)) return null;
+  return val / q;
+}
+
+/* ===== Telas ===== */
+function mostrarProdutos(marca){
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="inline-block";
+  document.getElementById("btnEnviarPedido").style.display="none";
+
+  document.getElementById("titulo-marca").textContent = (marca==="Tudo"?"Todos os Produtos":"Marca: "+marca);
+
+  const container=document.getElementById("produtos-container");
+  container.innerHTML="";
+  produtos
+  .filter(p => marca === "Tudo" || p.marca === marca)
+  .forEach(prod => {
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+
+    const un = prod.unidades ? (Number(prod.valor) / Number(prod.unidades)) : null;
+
+    container.innerHTML += `
+      <div class="produto">
+        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+        <h4>${prod.descricao}</h4>
+
+        <div class="linha-info">
+          <span class="info-cod">(Cod ${prod.Código})</span>
+          <span class="info-cx">Cx c/ ${prod.unidades || "?"} un.</span>
+        </div>
+        
+        <div class="preco-linha">
+          <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
+          <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
+        </div>
+
+        <div class="qtd-container">
+          <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+          <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
+          <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+        </div>
+      </div>
+    `;
+  });
+} // ✅ ESTA LINHA É A CORREÇÃO
+
+
+function mostrarMarcas(){
+  document.getElementById("tela-produtos").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.add("hidden");
+  document.getElementById("tela-marcas").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="inline-block";
+  document.getElementById("btnEnviarPedido").style.display="none";
+}
+
+function mostrarCarrinho(){
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display="none";
+  document.getElementById("btnEnviarPedido").style.display="inline-block";
+
+  const container=document.getElementById("itens-carrinho");
+  container.innerHTML="";
+  if(Object.keys(carrinho).length===0){
+    container.innerHTML="<p>Seu carrinho está vazio 🛒</p>";
+    document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
+    return;
+  }
+  for (let c in carrinho){
+    const p=carrinho[c];
+    container.innerHTML += `
+      <div class="carrinho-item">
+        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async">
+        <div style="flex:1; text-align:left;">
+          <b>${p.descricao}</b><br>
+          <small>(${p.Código})</small><br>
+          <span>R$ ${Number(p.valor).toFixed(2)}</span>
+        </div>
+        <div class="qtd-container">
+          <button onclick="alterarQtd('${p.Código}', -1, true)">-</button>
+          <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
+          <button onclick="alterarQtd('${p.Código}', 1, true)">+</button>
+        </div>
+      </div>`;
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
   }
   atualizarTotal();
 }
 
+<<<<<<< HEAD
 // === ALTERAR QUANTIDADE ===
 function alterarQtd(codigo, delta) {
   const input = document.getElementById(`qtd-${codigo}`);
@@ -246,5 +657,91 @@ function enviarWhatsApp() {
 }
 </script>
 
+=======
+/* ===== Carrinho / Totais ===== */
+function alterarQtd(codigo, delta){
+  const prod = produtos.find(p => p.Código === codigo);
+  if(!prod) return;
+
+  // garante número
+  prod.valor = Number(prod.valor);
+
+  const qtdAtual = carrinho[codigo]?.qtd || 0;
+  let novaQtd = qtdAtual + delta;
+  if (novaQtd < 0) novaQtd = 0;
+
+  if (novaQtd > 0) carrinho[codigo] = { ...prod, qtd: novaQtd };
+  else delete carrinho[codigo];
+
+  const i1 = document.getElementById(`qtd-${codigo}`);
+  const i2 = document.getElementById(`qtd-carrinho-${codigo}`);
+  if (i1) i1.value = novaQtd;
+  if (i2) i2.value = novaQtd;
+
+  atualizarTotal();
+}
+
+function atualizarTotal(){
+  let total = 0;
+  for(let c in carrinho){
+    total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
+  }
+
+  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
+  const t = document.getElementById("total-carrinho");
+  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
+
+  // contador do carrinho no topo
+  let totalQtd = 0;
+  for (let c in carrinho){ totalQtd += Number(carrinho[c].qtd); }
+  document.getElementById("cart-count").innerText = totalQtd;
+}
+
+/* ===== Recuperar último pedido ===== */
+function recuperarPedido(){
+  const salvo = JSON.parse(localStorage.getItem("ultimo_pedido") || "{}");
+  if(Object.keys(salvo).length === 0){
+    alert("Não há nenhum pedido salvo.");
+    return;
+  }
+  carrinho = salvo;
+  atualizarTotal();
+  mostrarCarrinho();
+}
+
+/* ===== Enviar pedido (salva + envia) ===== */
+function enviarWhatsApp(){
+  if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
+
+  // Salvar pedido
+  localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
+
+  let msg="🛍️ *Pedido:*%0A";
+  for(let c in carrinho){
+    const p=carrinho[c];
+    msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
+  }
+  const total = Object.values(carrinho).reduce((a,b)=>a + (Number(b.valor)*Number(b.qtd)), 0);
+  msg += `%0A💰 *Total:* R$ ${total.toFixed(2)}`;
+  if(telefoneDisplay) msg += `%0A📞 *Contato:* ${telefoneDisplay}`;
+
+  window.open("https://wa.me/5519992394899?text=" + msg, "_blank");
+}
+</script>
+
+<script>
+/* Instalar PWA */
+let installPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  installPrompt = e;
+  setTimeout(() => {
+    if (confirm("Deseja instalar o aplicativo na tela inicial?")) {
+      installPrompt.prompt();
+    }
+  }, 3000);
+});
+</script>
+>>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 </body>
 </html>
