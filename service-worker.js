@@ -1,35 +1,46 @@
-﻿// Mude o nome do cache quando trocar arquivos para forçar atualização
-const CACHE_NAME = 'pedidos-online-v3';
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.json',
-  './ícones/ícone-192.png',
-  './ícones/ícone-512.png',
-  './ativos/logo.svg'
-];
+const CACHE_NAME = "pm-cache-v1";
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll([
+        "./",  // Garante que o arquivo inicial do PWA seja cacheado
+        "index.html",
+        "produtos.json",
+        "manifest.json",
+        "ativo/logo.svg",  // Atualiza o logo
+        "ícone/ícone-192.png",  // Atualiza o ícone 192
+        "ícone/ícone-512.png"   // Atualiza o ícone 512
+      ]);
+    })
+  );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-    ))
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+      )
+    )
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  const req = event.request;
+self.addEventListener("fetch", event => {
   event.respondWith(
-    fetch(req).then(res => {
-      const copy = res.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(req, copy)).catch(()=>{});
-      return res;
-    }).catch(() => caches.match(req).then(cached => cached || caches.match('./index.html')))
+    caches.match(event.request).then(response => {
+      return (
+        response ||  // Caso não ache na cache, vai fazer o fetch normalmente
+        fetch(event.request).then(fetchResponse => {
+          const clone = fetchResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, clone);
+          });
+          return fetchResponse;
+        })
+      );
+    })
   );
 });
