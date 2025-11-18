@@ -2,113 +2,41 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<<<<<<< HEAD
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Cat�logo Digital</title>
-<style>
-body {font-family: Arial, sans-serif; margin:0; background:#f7f7f7; text-align:center;}
-header {background:#2b7bba; color:white; padding:10px; font-size:18px; font-weight:bold;
-        position:sticky; top:0; z-index:10; display:flex; justify-content:space-between;
-        align-items:center;}
-#total {font-size:15px; font-weight:bold;}
-#marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
-.marca-btn {
-    flex: 1 1 120px;
-    min-width: 130px;
-    max-width: 160px;
-    padding:10px;
-    border:none;
-    border-radius:10px;
-    font-size:14px;
-    background:#2b7bba;
-    color:white;
-    cursor:pointer;
-    word-wrap:break-word;
-    white-space:normal;
-}
-.marca-btn.tudo {
-    background:#25d366;
-    font-weight:bold;
-}
-#produtos-container {
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-    padding:12px;
-    max-width:700px;
-    margin:auto;
-}
-.produto {
-    background:white;
-    border-radius:12px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-    padding:10px;
-}
-.produto img {
-    width: 100%;
-    height: 160px;
-    object-fit: contain;
-    border-radius: 10px;
-    background: #fff;
-}
-.qtd-container {
-    display:flex; align-items:center; justify-content:center; margin-top:5px;
-}
-.qtd-container button {
-    width:28px; height:28px; border:none; border-radius:6px;
-    background:#2b7bba; color:white; font-size:18px; font-weight:bold;
-    cursor:pointer;
-}
-.qtd-container input {
-    width:40px; text-align:center; margin:0 5px; border:1px solid #ccc; border-radius:6px;
-}
-button#enviar {
-    background:#25d366; color:white; border:none;
-    padding:8px 12px; font-size:14px; border-radius:8px; cursor:pointer;
-}
-button#voltar {
-    background:#e74c3c; color:white; border:none;
-    padding:8px 12px; font-size:14px; border-radius:8px; cursor:pointer;
-}
-#tela-carrinho {
-    padding:15px;
-}
-.carrinho-item {
-    background:white; border-radius:10px; margin:8px auto; padding:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px;
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-}
-.carrinho-item img {
-    width:60px; height:60px; border-radius:8px; object-fit:contain;
-}
-.hidden {display:none;}
-=======
-<!-- ? Modo APP / Fullscreen no celular -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#2b7bba">
 
-<!-- ? PWA -->
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" sizes="300x300" href="icones/icone-192.png">
-<link rel="apple-touch-icon" href="icones/icone-192.png">
+<link rel="icon" sizes="192x192" href="ícones/ícone-192.png">
+<link rel="apple-touch-icon" href="ícones/ícone-192.png">
+<meta name="theme-color" content="#2b7bba">
 
 <title>Pedidos OnLine</title>
 
 <style>
-/* Base */
 html, body {
-  height: 100%; margin:0; padding:0; overflow-x:hidden;
-  overscroll-behavior-y: none; background:#f7f7f7;
-  font-family: Arial, sans-serif; text-align:center;
+  height: 100%;
+  margin:0; padding:0;
+  overflow-x:hidden;
+  background:#f7f7f7;
+  font-family: Arial, sans-serif;
+  text-align:center;
 }
-/* iOS 100% */
 @supports (-webkit-touch-callout: none) { body { height: -webkit-fill-available; } }
 
-/* Topo */
+/* SPLASH */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #2b7bba;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#splash img { width: 180px; }
+
+/* HEADER */
 header {
   background:#2b7bba;
   color:white;
@@ -122,7 +50,6 @@ header {
   justify-content:space-between;
   align-items:center;
 }
-
 .titulo-topo { flex:1; text-align:center; line-height:1.2; }
 #total { font-size:14px; font-weight:normal; }
 
@@ -139,78 +66,63 @@ header {
 .top-btn.enviar { background:#25d366; color:white; }
 #btnEnviarPedido { display:none; }
 
-/* Marcas */
-#marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
-.marca-btn {
-  flex: 1 1 120px; min-width: 130px; max-width: 160px; padding:10px;
-  border:none; border-radius:10px; font-size:14px; background:#2b7bba; color:white;
-  cursor:pointer; word-wrap:break-word; white-space:normal;
-}
-.marca-btn.tudo {background:#25d366; font-weight:bold;}
-
-/* Telefone (contato) */
-#telefone-container { margin:15px auto 0; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; }
-#telefone-container span {font-weight:bold; color:#333;}
-#telefone-container button { border:none; background:#2b7bba; color:white; border-radius:8px; padding:6px 10px; cursor:pointer; }
-
-/* Produtos */
-#produtos-container { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:12px; max-width:700px; margin:auto; }
-.produto { background:white; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:10px; }
-.produto img { width:100%; height:160px; object-fit:contain; border-radius:10px; background:#fff; }
-
-/* Preços: unidade à esquerda | caixa à direita */
-.preco-linha {
+/* MARCAS */
+#marcas-container {
   display:flex;
-  justify-content:space-between;
-  margin-top:6px;
-  font-size:15px;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:10px;
+}
+.marca-btn {
+  flex: 1 1 120px;
+  min-width: 130px;
+  max-width: 160px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  font-size:14px;
+  background:#2b7bba;
+  color:white;
+  cursor:pointer;
+}
+.marca-btn.tudo {
+  background:#25d366;
   font-weight:bold;
-  white-space:nowrap; /* ✅ impede quebra de linha */
 }
 
-<div class="preco-linha">
-  <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
-  <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
-</div>
-
-/* Qtd */
-.qtd-container { display:flex; align-items:center; justify-content:center; margin-top:6px; }
-.qtd-container button { width:28px; height:28px; border:none; border-radius:6px; background:#2b7bba; color:white; font-size:18px; font-weight:bold; cursor:pointer; }
-.qtd-container input { width:40px; text-align:center; margin:0 5px; border:1px solid #ccc; border-radius:6px; }
-
-/* Carrinho */
-#tela-carrinho { padding:15px; }
-.carrinho-item {
-  background:white; border-radius:10px; margin:8px auto; padding:10px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px;
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
+/* PRODUTOS */
+#produtos-container {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  padding:12px;
+  max-width:700px;
+  margin:auto;
+}
+.produto {
+  background:white;
+  border-radius:12px;
+  padding:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+.produto img {
+  width:100%;
+  height:160px;
+  object-fit:contain;
+  background:white;
+  border-radius:10px;
 }
 
-/* Miniaturas do carrinho com fundo branco */
-.carrinho-item img {
-  width:60px; height:60px; object-fit:contain !important;
-  background:#ffffff !important; border-radius:8px !important; padding:4px !important;
-}
-
-/* Popup telefone */
-.hidden {display:none;}
-#popup { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:100; }
-#popup-content { background:white; padding:20px; border-radius:10px; max-width:300px; text-align:center; }
-#popup input { width:90%; padding:6px; margin-top:8px; border:1px solid #ccc; border-radius:6px; text-align:center; }
-#popup button { margin-top:10px; background:#2b7bba; color:white; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
-
-/* Splash (tela azul + logo central) */
-#splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
-#splash img { width: 180px; height: auto; }
-
+/* INFO */
 .linha-info {
   display:flex;
   justify-content:space-between;
   margin-top:4px;
-  font-size:13px;
-  color:#444;
+  font-size:15px;
+  font-weight:bold;
+  color:#111;
 }
-
 .preco-linha {
   display:flex;
   justify-content:space-between;
@@ -219,50 +131,81 @@ header {
   font-weight:bold;
 }
 
-.produto h4 {
-  margin: 2px 0 0 0 !important; /* Remove espaço acima e abaixo */
-  font-size: 15px;
-}
-
-.produto small {
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block; /* Garante alinhamento certinho */
-}
-
-.linha-info {
+/* QTD */
+.qtd-container {
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  margin:0 !important;          /* sem espaço extra */
-  font-size:15px;               /* aumenta fonte */
-  font-weight:bold;             /* deixa cod + cx em negrito */
-  color:#111;
-  white-space:nowrap;           /* não quebra linha */
-  line-height:1.1;              /* compacta verticalmente */
+  justify-content:center;
+  margin-top:6px;
+}
+.qtd-container button {
+  width:28px; height:28px;
+  background:#2b7bba;
+  color:white;
+  border:none; border-radius:6px;
+  font-size:18px;
+  cursor:pointer;
+}
+.qtd-container input {
+  width:40px; text-align:center;
+  margin:0 5px;
+  border:1px solid #ccc;
+  border-radius:6px;
 }
 
-.linha-info span {
-  font-weight:bold;             /* reforça o negrito */
+/* CARRINHO */
+#tela-carrinho { padding:15px; }
+.carrinho-item {
+  background:white;
+  border-radius:10px;
+  margin:8px auto;
+  padding:10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  max-width:700px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+.carrinho-item img {
+  width:60px; height:60px;
+  object-fit:contain;
+  background:white;
+  padding:4px;
+  border-radius:8px;
 }
 
-                                 
-
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
+/* POPUP TELEFONE */
+#popup {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:100;
+}
+#popup-content {
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  max-width:300px;
+}
+#popup input {
+  width:90%;
+  padding:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+.hidden{display:none;}
 </style>
 </head>
+
 <body>
 
-<<<<<<< HEAD
-<header>
-  <span style="font-size:12px; margin-right:5px;">v1.4</span>
-  <button id="voltar" onclick="mostrarMarcas()">?? Marcas</button>
-  <div>Cat�logo Digital<br><span id="total">Total: R$ 0,00</span></div>
-  <button id="enviar" onclick="mostrarCarrinho()">?? Carrinho</button>
-=======
-<!-- Splash -->
+<!-- SPLASH -->
 <div id="splash">
-  <img src="ativos/logo.svg" alt="Master Distribuidora">
+  <img src="ativos/logo.svg" alt="">
 </div>
 
 <header>
@@ -280,24 +223,25 @@ header {
   <button id="btnEnviarPedido" onclick="enviarWhatsApp()" class="top-btn enviar">
     📦 Enviar
   </button>
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 </header>
 
-<!-- TELA 1: MARCAS -->
+<!-- CONTATO -->
+<div id="popup">
+  <div id="popup-content">
+    <h4>Informe seu número de contato</h4>
+    <input id="telefone-input" placeholder="(19) 99999-9999" maxlength="15">
+    <button id="btnSalvarContato">Salvar contato</button>
+  </div>
+</div>
+
+<!-- TELA 1 -->
 <div id="tela-marcas">
-<<<<<<< HEAD
   <h3>Escolha uma Marca</h3>
-=======
-  <!-- CONTATO -->
   <div id="telefone-container"></div>
 
-  <h3>Escolha uma Marca</h3>
+  <button id="btnRecuperar" style="display:none"
+          onclick="recuperarPedido()">♻️ Recuperar último pedido</button>
 
-  <button id="btnRecuperar" style="display:none; margin-bottom:10px; background:#ffcc00; color:#000; padding:8px 14px; border-radius:8px; border:none; font-weight:bold;" onclick="recuperarPedido()">
-    ♻️ Recuperar último pedido
-  </button>
-
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
   <div id="marcas-container">
     <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
     <button class="marca-btn" onclick="mostrarProdutos('Bauducco')">Bauducco</button>
@@ -307,11 +251,7 @@ header {
     <button class="marca-btn" onclick="mostrarProdutos('FRITOP')">FRITOP</button>
     <button class="marca-btn" onclick="mostrarProdutos('Frutap')">Frutap</button>
     <button class="marca-btn" onclick="mostrarProdutos('Kremoso')">Kremoso</button>
-<<<<<<< HEAD
-    <button class="marca-btn" onclick="mostrarProdutos('Nestl�')">Nestl�</button>
-=======
     <button class="marca-btn" onclick="mostrarProdutos('Nestlé')">Nestlé</button>
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
     <button class="marca-btn" onclick="mostrarProdutos('Oz')">Oz Pipocas</button>
     <button class="marca-btn" onclick="mostrarProdutos('Rebeka')">Rebeka Pudim</button>
     <button class="marca-btn" onclick="mostrarProdutos('Rei da Massa')">Rei da Massa</button>
@@ -319,389 +259,221 @@ header {
   </div>
 </div>
 
-<<<<<<< HEAD
-=======
-<!-- POPUP DE CONTATO -->
-<div id="popup">
-  <div id="popup-content">
-    <h4>Informe seu número de contato</h4>
-    <input id="telefone-input" placeholder="(19) 99999-9999" maxlength="15" inputmode="numeric">
-    <button id="btnSalvarContato">Salvar contato</button>
-  </div>
-</div>
-
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
-<!-- TELA 2: PRODUTOS -->
+<!-- TELA 2 -->
 <div id="tela-produtos" class="hidden">
   <h3 id="titulo-marca"></h3>
   <div id="produtos-container"></div>
-<<<<<<< HEAD
-  <button id="enviar" onclick="mostrarCarrinho()">?? Ver Carrinho</button>
-=======
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
 </div>
 
-<!-- TELA 3: CARRINHO -->
+<!-- TELA 3 -->
 <div id="tela-carrinho" class="hidden">
-<<<<<<< HEAD
-  <h3>??? Meu Carrinho</h3>
-  <div id="itens-carrinho"></div>
-  <h3 id="total-carrinho">Total: R$ 0,00</h3>
-  <button id="enviar" onclick="enviarWhatsApp()">?? Enviar Pedido</button>
-  <button id="voltar" onclick="mostrarProdutos('Tudo')">?? Continuar Comprando</button>
-</div>
-
-<script>
-const produtos = [
-  {"C�digo":"129","descricao":"Danette Chocol 360G","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/CNshggM.png"},
-  {"C�digo":"64","descricao":"Danette Branco 360G","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/GCbUBfn.png"}
-];
-
-let carrinho = {};
-
-// === MOSTRAR PRODUTOS ===
-function mostrarProdutos(marca) {
-  document.getElementById("tela-marcas").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.add("hidden");
-  document.getElementById("tela-produtos").classList.remove("hidden");
-  document.getElementById("titulo-marca").textContent =
-    marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca;
-
-  const container = document.getElementById("produtos-container");
-  container.innerHTML = "";
-
-  produtos.filter(p => marca === "Tudo" || p.marca === marca).forEach(prod => {
-    const div = document.createElement("div");
-    div.className = "produto";
-    div.innerHTML = `
-      <img src="${prod.imagem}" alt="${prod.descricao}">
-      <h4>${prod.descricao}</h4>
-      <small>(${prod.C�digo})</small>
-      <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
-      <div class="qtd-container">
-        <button onclick="alterarQtd('${prod.C�digo}', -1)">-</button>
-        <input id="qtd-${prod.C�digo}" value="${carrinho[prod.C�digo]?.qtd || 0}">
-        <button onclick="alterarQtd('${prod.C�digo}', 1)">+</button>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-}
-
-// === VOLTAR � TELA DE MARCAS ===
-function mostrarMarcas() {
-  document.getElementById("tela-produtos").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.add("hidden");
-  document.getElementById("tela-marcas").classList.remove("hidden");
-}
-
-// === MOSTRAR CARRINHO ===
-function mostrarCarrinho() {
-  document.getElementById("tela-marcas").classList.add("hidden");
-  document.getElementById("tela-produtos").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.remove("hidden");
-
-  const container = document.getElementById("itens-carrinho");
-  container.innerHTML = "";
-
-  if (Object.keys(carrinho).length === 0) {
-    container.innerHTML = "<p>Seu carrinho est� vazio ??</p>";
-    document.getElementById("total-carrinho").textContent = "Total: R$ 0,00";
-    return;
-  }
-
-  for (let c in carrinho) {
-    const p = carrinho[c];
-    const div = document.createElement("div");
-    div.className = "carrinho-item";
-    div.innerHTML = `
-      <img src="${p.imagem}">
-      <div style="flex:1; text-align:left;">
-        <b>${p.descricao}</b><br>
-        <small>(${p.C�digo})</small><br>
-        <span>R$ ${p.valor.toFixed(2)}</span>
-      </div>
-      <div class="qtd-container">
-        <button onclick="alterarQtd('${p.C�digo}', -1)">-</button>
-        <input id="qtd-${p.C�digo}" value="${p.qtd}">
-        <button onclick="alterarQtd('${p.C�digo}', 1)">+</button>
-      </div>
-    `;
-    container.appendChild(div);
-=======
-  <h3> Meu Carrinho</h3>
+  <h3>Meu Carrinho</h3>
   <div id="itens-carrinho"></div>
   <h3 id="total-carrinho">Total: R$ 0,00</h3>
 </div>
 
 <script>
-/* ===== PWA + Splash ===== */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js');
-  });
-}
+/* SPLASH */
 window.addEventListener('load', () => {
-  const sp = document.getElementById('splash');
-  setTimeout(()=>{ sp.style.display='none'; }, 400);
+  setTimeout(() => {
+    document.getElementById("splash").style.display = "none";
+  }, 400);
 });
 
-/* ===== PRODUTOS ===== */
+/* SERVICE WORKER */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
+/* CARREGAR PRODUTOS */
 let produtos = [];
 fetch("produtos.json")
   .then(r => r.json())
-  .then(dados => produtos = dados);
+  .then(d => produtos = d);
 
-/* ===== ESTADO ===== */
-let carrinho = {},
-    telefoneDigits = localStorage.getItem("telefone_digits")||"",
-    telefoneDisplay = localStorage.getItem("telefone_display")||"";
+/* ESTADO */
+let carrinho = {};
+let telefoneDigits = localStorage.getItem("telefone_digits") || "";
+let telefoneDisplay = localStorage.getItem("telefone_display") || "";
 
-/* ===== CONTATO (máscara + salvar) ===== */
-document.addEventListener("input", e=>{
-  if(e.target.id==="telefone-input"){
-    let v=e.target.value.replace(/\D/g,"");
-    if(v.length>11)v=v.slice(0,11);
-    if(v.length>=7)e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-    else if(v.length>2)e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`;
-    else e.target.value=v;
-  }
-});
+/* TELEFONE */
+function abrirPopup(){ document.getElementById("popup").style.display="flex"; }
+function fecharPopup(){ document.getElementById("popup").style.display="none"; }
+
+document.getElementById("btnSalvarContato").onclick = () => {
+  const input = document.getElementById("telefone-input");
+  let digits = input.value.replace(/\D/g,"");
+
+  if(digits.length < 10){ alert("Número inválido."); return; }
+
+  let ddd = digits.slice(0,2);
+  let corpo = digits.slice(2);
+
+  let exib = corpo.length === 8
+    ? `(${ddd}) ${corpo.slice(0,4)}-${corpo.slice(4)}`
+    : `(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
+
+  telefoneDigits = digits;
+  telefoneDisplay = exib;
+
+  localStorage.setItem("telefone_digits", digits);
+  localStorage.setItem("telefone_display", exib);
+
+  fecharPopup();
+  renderTelefone();
+};
 
 function renderTelefone(){
-  const el=document.getElementById("telefone-container");
-  el.innerHTML = telefoneDigits
-    ? `<span>📞 ${telefoneDisplay}</span><button onclick="editarTelefone()">Editar</button>`
-    : `<span style="color:#666;">Nenhum contato cadastrado</span> <button onclick="abrirPopup()">Cadastrar</button>`;
-}
-function abrirPopup(){document.getElementById("popup").style.display="flex";}
-function fecharPopup(){document.getElementById("popup").style.display="none";}
-function salvarTelefone(){
-  const inp=document.getElementById("telefone-input");
-  const digits=inp.value.replace(/\D/g,"");
-  if(digits.length<10) return alert("Número inválido! Use DDD + celular.");
-  const ddd=digits.slice(0,2), corpo=digits.slice(2);
-  const exib=corpo.length===8?`(${ddd}) ${corpo.slice(0,4)}-${corpo.slice(4)}`:`(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
-  telefoneDigits=digits; telefoneDisplay=exib;
-  localStorage.setItem("telefone_digits", telefoneDigits);
-  localStorage.setItem("telefone_display", telefoneDisplay);
-  fecharPopup(); renderTelefone();
+  const div = document.getElementById("telefone-container");
+  div.innerHTML = telefoneDigits
+    ? `<span>📞 ${telefoneDisplay}</span> <button onclick="editarTelefone()">Editar</button>`
+    : `<span style="color:#666;">Nenhum contato cadastrado</span>
+       <button onclick="abrirPopup()">Cadastrar</button>`;
 }
 function editarTelefone(){
   localStorage.removeItem("telefone_digits");
   localStorage.removeItem("telefone_display");
-  telefoneDigits=""; telefoneDisplay="";
+  telefoneDigits = ""; telefoneDisplay = "";
   abrirPopup();
 }
+renderTelefone();
+if(!telefoneDigits) abrirPopup();
 
-document.addEventListener("DOMContentLoaded",()=>{
-  document.getElementById("btnSalvarContato").addEventListener("click", salvarTelefone);
-  renderTelefone();
-
-  // se não tiver contato salvo, abre popup
-  if(!telefoneDigits) abrirPopup();
-
-  // mostrar botão recuperar se existir pedido salvo
-  if(localStorage.getItem("ultimo_pedido")){
-    document.getElementById("btnRecuperar").style.display = "inline-block";
-  }
-});
-
-/* ===== Helpers ===== */
-function thumb(url) {
-  if (!url) return "https://i.imgur.com/jzjHhHG.png";
-  return url.replace(/(\.[a-zA-Z0-9]+)$/, "m$1"); // tenta usar uma miniatura se existir
-}
-
-/* tenta descobrir quantidade por caixa (para calcular preço unitário) */
-function qtdPorCaixa(p) {
-  const chaves = [
-    "unidades_caixa","qtd_caixa","qtdcx","itens_caixa","itens","qtd","qtdUnidade","qtd_unid","un_por_cx","unCx"
-  ];
-  for (const k of chaves) {
-    const v = Number(p[k]);
-    if (!Number.isNaN(v) && v > 0) return v;
-  }
-  return null; // desconhecido
-}
-
-function precoUnidade(p) {
-  const q = qtdPorCaixa(p);
-  const val = Number(p.valor);
-  if (!q || !val || Number.isNaN(val)) return null;
-  return val / q;
-}
-
-/* ===== Telas ===== */
-function mostrarProdutos(marca){
+/* MOSTRAR PRODUTOS */
+function mostrarProdutos(m){
   document.getElementById("tela-marcas").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
   document.getElementById("tela-produtos").classList.remove("hidden");
-  document.getElementById("btnCarrinho").style.display="inline-block";
   document.getElementById("btnEnviarPedido").style.display="none";
+  document.getElementById("btnCarrinho").style.display="inline-block";
 
-  document.getElementById("titulo-marca").textContent = (marca==="Tudo"?"Todos os Produtos":"Marca: "+marca);
+  document.getElementById("titulo-marca").innerText =
+    (m === "Tudo" ? "Todos os Produtos" : "Marca: " + m);
 
-  const container=document.getElementById("produtos-container");
-  container.innerHTML="";
+  const cont = document.getElementById("produtos-container");
+  cont.innerHTML = "";
+
   produtos
-  .filter(p => marca === "Tudo" || p.marca === marca)
-  .forEach(prod => {
-    const imgSrc = (prod.imagem && prod.imagem.trim() !== "") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+    .filter(p => m === "Tudo" || p.marca === m)
+    .forEach(p => {
+      const un = p.unidades ? (Number(p.valor) / Number(p.unidades)) : null;
+      const img = p.imagem && p.imagem.trim() !== ""
+        ? p.imagem
+        : "https://i.imgur.com/jzjHhHG.png";
 
-    const un = prod.unidades ? (Number(prod.valor) / Number(prod.unidades)) : null;
+      cont.innerHTML += `
+        <div class="produto">
+          <img src="${img}">
+          <h4>${p.descricao}</h4>
 
-    container.innerHTML += `
-      <div class="produto">
-        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-        <h4>${prod.descricao}</h4>
+          <div class="linha-info">
+            <span>(Cod ${p.Código})</span>
+            <span>Cx c/ ${p.unidades || "?"} un.</span>
+          </div>
 
-        <div class="linha-info">
-          <span class="info-cod">(Cod ${prod.Código})</span>
-          <span class="info-cx">Cx c/ ${prod.unidades || "?"} un.</span>
-        </div>
-        
-        <div class="preco-linha">
-          <span class="preco-un">R$ ${un ? un.toFixed(2) : "—"}</span>
-          <span class="preco-cx">Cx R$ ${Number(prod.valor).toFixed(2)}</span>
-        </div>
+          <div class="preco-linha">
+            <span>R$ ${un ? un.toFixed(2) : "—"}</span>
+            <span>Cx R$ ${Number(p.valor).toFixed(2)}</span>
+          </div>
 
-        <div class="qtd-container">
-          <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-          <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
-          <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
-        </div>
-      </div>
-    `;
-  });
-} // ✅ ESTA LINHA É A CORREÇÃO
+          <div class="qtd-container">
+            <button onclick="alterarQtd('${p.Código}', -1)">-</button>
+            <input id="qtd-${p.Código}" value="${carrinho[p.Código]?.qtd || 0}">
+            <button onclick="alterarQtd('${p.Código}', 1)">+</button>
+          </div>
+        </div>`;
+    });
+}
 
+/* ALTERAR QTD */
+function alterarQtd(cod, delta){
+  const prod = produtos.find(p => p.Código == cod);
+  if(!prod) return;
 
+  prod.valor = Number(prod.valor);
+
+  let qtd = (carrinho[cod]?.qtd || 0) + delta;
+  if(qtd < 0) qtd = 0;
+
+  if(qtd > 0) carrinho[cod] = {...prod, qtd};
+  else delete carrinho[cod];
+
+  const i1 = document.getElementById(`qtd-${cod}`);
+  const i2 = document.getElementById(`qtd-carrinho-${cod}`);
+  if(i1) i1.value = qtd;
+  if(i2) i2.value = qtd;
+
+  atualizarTotal();
+}
+
+/* MOSTRAR MARCAS */
 function mostrarMarcas(){
   document.getElementById("tela-produtos").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
   document.getElementById("tela-marcas").classList.remove("hidden");
-  document.getElementById("btnCarrinho").style.display="inline-block";
   document.getElementById("btnEnviarPedido").style.display="none";
+  document.getElementById("btnCarrinho").style.display="inline-block";
 }
 
+/* MOSTRAR CARRINHO */
 function mostrarCarrinho(){
   document.getElementById("tela-marcas").classList.add("hidden");
   document.getElementById("tela-produtos").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.remove("hidden");
+
   document.getElementById("btnCarrinho").style.display="none";
   document.getElementById("btnEnviarPedido").style.display="inline-block";
 
-  const container=document.getElementById("itens-carrinho");
-  container.innerHTML="";
-  if(Object.keys(carrinho).length===0){
-    container.innerHTML="<p>Seu carrinho está vazio 🛒</p>";
-    document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
+  const cont = document.getElementById("itens-carrinho");
+  cont.innerHTML = "";
+
+  if(Object.keys(carrinho).length === 0){
+    cont.innerHTML = "<p>Seu carrinho está vazio 🛒</p>";
+    document.getElementById("total-carrinho").innerText = "Total: R$ 0,00";
     return;
   }
-  for (let c in carrinho){
-    const p=carrinho[c];
-    container.innerHTML += `
+
+  for(let cod in carrinho){
+    const p = carrinho[cod];
+    cont.innerHTML += `
       <div class="carrinho-item">
-        <img src="${thumb(p.imagem)}" alt="${p.descricao}" loading="lazy" decoding="async">
+        <img src="${p.imagem}">
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
           <small>(${p.Código})</small><br>
           <span>R$ ${Number(p.valor).toFixed(2)}</span>
         </div>
         <div class="qtd-container">
-          <button onclick="alterarQtd('${p.Código}', -1, true)">-</button>
+          <button onclick="alterarQtd('${p.Código}', -1)">-</button>
           <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
-          <button onclick="alterarQtd('${p.Código}', 1, true)">+</button>
+          <button onclick="alterarQtd('${p.Código}', 1)">+</button>
         </div>
       </div>`;
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
   }
-  atualizarTotal();
-}
-
-<<<<<<< HEAD
-// === ALTERAR QUANTIDADE ===
-function alterarQtd(codigo, delta) {
-  const input = document.getElementById(`qtd-${codigo}`);
-  if (!input) return;
-  let qtd = parseInt(input.value) + delta;
-  if (qtd < 0) qtd = 0;
-  input.value = qtd;
-  const prod = produtos.find(p => p.C�digo === codigo);
-  if (qtd > 0) carrinho[codigo] = {...prod, qtd};
-  else delete carrinho[codigo];
-  atualizarTotal();
-}
-
-// === CALCULAR TOTAL ===
-function atualizarTotal() {
-  let total = 0;
-  for (let c in carrinho) total += carrinho[c].valor * carrinho[c].qtd;
-  document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
-  document.getElementById("total-carrinho").innerText = "Total: R$ " + total.toFixed(2);
-}
-
-// === ENVIAR WHATSAPP ===
-function enviarWhatsApp() {
-  if (Object.keys(carrinho).length === 0) return alert("Nenhum item no pedido!");
-  let msg = "?? *Pedido:*%0A";
-  for (let c in carrinho) {
-    const p = carrinho[c];
-    msg += `� ${p.descricao} (${p.C�digo}) - ${p.qtd} un.%0A`;
-  }
-  const total = Object.values(carrinho).reduce((a,b)=>a+b.valor*b.qtd,0);
-  msg += `%0A?? *Total:* R$ ${total.toFixed(2)}`;
-  const url = "https://wa.me/5519992394899?text=" + msg;
-  window.open(url, "_blank");
-}
-</script>
-
-=======
-/* ===== Carrinho / Totais ===== */
-function alterarQtd(codigo, delta){
-  const prod = produtos.find(p => p.Código === codigo);
-  if(!prod) return;
-
-  // garante número
-  prod.valor = Number(prod.valor);
-
-  const qtdAtual = carrinho[codigo]?.qtd || 0;
-  let novaQtd = qtdAtual + delta;
-  if (novaQtd < 0) novaQtd = 0;
-
-  if (novaQtd > 0) carrinho[codigo] = { ...prod, qtd: novaQtd };
-  else delete carrinho[codigo];
-
-  const i1 = document.getElementById(`qtd-${codigo}`);
-  const i2 = document.getElementById(`qtd-carrinho-${codigo}`);
-  if (i1) i1.value = novaQtd;
-  if (i2) i2.value = novaQtd;
 
   atualizarTotal();
 }
 
+/* TOTAL */
 function atualizarTotal(){
   let total = 0;
+  let itens = 0;
   for(let c in carrinho){
     total += Number(carrinho[c].valor) * Number(carrinho[c].qtd);
+    itens += Number(carrinho[c].qtd);
   }
 
   document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
-  const t = document.getElementById("total-carrinho");
-  if(t) t.innerText = "Total: R$ " + total.toFixed(2);
-
-  // contador do carrinho no topo
-  let totalQtd = 0;
-  for (let c in carrinho){ totalQtd += Number(carrinho[c].qtd); }
-  document.getElementById("cart-count").innerText = totalQtd;
+  const tc = document.getElementById("total-carrinho");
+  if(tc) tc.innerText = "Total: R$ " + total.toFixed(2);
+  document.getElementById("cart-count").innerText = itens;
 }
 
-/* ===== Recuperar último pedido ===== */
+/* RECUPERAR PEDIDO */
 function recuperarPedido(){
   const salvo = JSON.parse(localStorage.getItem("ultimo_pedido") || "{}");
   if(Object.keys(salvo).length === 0){
-    alert("Não há nenhum pedido salvo.");
+    alert("Nenhum pedido salvo.");
     return;
   }
   carrinho = salvo;
@@ -709,39 +481,10 @@ function recuperarPedido(){
   mostrarCarrinho();
 }
 
-/* ===== Enviar pedido (salva + envia) ===== */
+/* ENVIAR PEDIDO */
 function enviarWhatsApp(){
   if(Object.keys(carrinho).length===0) return alert("Nenhum item no pedido!");
 
-  // Salvar pedido
   localStorage.setItem("ultimo_pedido", JSON.stringify(carrinho));
 
-  let msg="🛍️ *Pedido:*%0A";
-  for(let c in carrinho){
-    const p=carrinho[c];
-    msg += `• ${p.descricao} (${p.Código}) - ${p.qtd} un.%0A`;
-  }
-  const total = Object.values(carrinho).reduce((a,b)=>a + (Number(b.valor)*Number(b.qtd)), 0);
-  msg += `%0A💰 *Total:* R$ ${total.toFixed(2)}`;
-  if(telefoneDisplay) msg += `%0A📞 *Contato:* ${telefoneDisplay}`;
-
-  window.open("https://wa.me/5519992394899?text=" + msg, "_blank");
-}
-</script>
-
-<script>
-/* Instalar PWA */
-let installPrompt;
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  installPrompt = e;
-  setTimeout(() => {
-    if (confirm("Deseja instalar o aplicativo na tela inicial?")) {
-      installPrompt.prompt();
-    }
-  }, 3000);
-});
-</script>
->>>>>>> 6436094a174a35f39987c2a8482c87e6598606b2
-</body>
-</html>
+  let msg = "🛍️ *Pedido:*%0A";
