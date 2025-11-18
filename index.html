@@ -167,13 +167,51 @@ window.addEventListener('load', () => {
 });
 
 // ===== PRODUTOS =====
-const produtos = [
-  {"Código":"129","descricao":"Danette Chocol 360G","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/CNshggM.png"},
-  {"Código":"64","descricao":"Danette Branco 360G","marca":"Danone","valor":82.56,"imagem":"https://imgur.com/GCbUBfn.png"},
-  {"Código":"142","descricao":"Danette Bd 540G Choc.","marca":"Danone","valor":74.4,"imagem":"https://imgur.com/1Xguy2c.png"},
-  {"Código":"143","descricao":"Danette Bd 540G Branco","marca":"Danone","valor":74.4,"imagem":"https://imgur.com/RDUQAqa.png"},
-  {"Código":"45","descricao":"Danoninho MOR","marca":"Danone","valor":118.8,"imagem":"https://imgur.com/D0pQUZg.png"}
-];
+// Carregar os produtos do arquivo JSON
+let produtos = [];  // Array de produtos carregado do JSON
+
+// Função para buscar e carregar os produtos
+fetch('produtos.json')
+  .then(response => response.json())  // Converte a resposta para JSON
+  .then(data => {
+    produtos = data;  // Agora produtos contém os dados do JSON
+    mostrarProdutos('Tudo');  // Exibe todos os produtos
+  })
+  .catch(error => console.error('Erro ao carregar produtos:', error));
+
+// Função para exibir os produtos (já existente no código)
+function mostrarProdutos(marca) {
+  document.getElementById("tela-marcas").classList.add("hidden");
+  document.getElementById("tela-carrinho").classList.add("hidden");
+  document.getElementById("tela-produtos").classList.remove("hidden");
+  document.getElementById("btnCarrinho").style.display = "inline-block";
+  document.getElementById("btnEnviarPedido").style.display = "none";
+
+  document.getElementById("titulo-marca").textContent = (marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca);
+
+  const container = document.getElementById("produtos-container");
+  container.innerHTML = "";
+
+  // Filtra os produtos pela marca
+  produtos
+    .filter(p => marca === "Tudo" || p.marca === marca)
+    .forEach(prod => {
+      const imgSrc = (prod.imagem && prod.imagem.trim() !== "") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+      container.innerHTML += `
+        <div class="produto">
+          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+          <h4>${prod.descricao}</h4>
+          <small>(${prod.Código})</small>
+          <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
+          <div class="qtd-container">
+            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
+            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+          </div>
+        </div>`;
+    });
+}
+
 
 let carrinho = {},
     telefoneDigits = localStorage.getItem("telefone_digits")||"",
