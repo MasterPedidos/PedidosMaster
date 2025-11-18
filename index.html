@@ -260,37 +260,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(!telefoneDigits) abrirPopup();
 });
 
-// Telas
-function mostrarProdutos(marca){
-  document.getElementById("tela-marcas").classList.add("hidden");
-  document.getElementById("tela-carrinho").classList.add("hidden");
-  document.getElementById("tela-produtos").classList.remove("hidden");
-  document.getElementById("btnCarrinho").style.display="inline-block";
-  document.getElementById("btnEnviarPedido").style.display="none";
-
-  document.getElementById("titulo-marca").textContent = (marca==="Tudo"?"Todos os Produtos":"Marca: "+marca);
-
-  const container=document.getElementById("produtos-container");
-  container.innerHTML="";
-  produtos
-    .filter(p=>marca==="Tudo"||p.marca===marca)
-    .forEach(prod=>{
-      const imgSrc = (prod.imagem && prod.imagem.trim()!=="") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
-      container.innerHTML += `
-        <div class="produto">
-          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-          <h4>${prod.descricao}</h4>
-          <small>(${prod.Código})</small>
-          <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
-          <div class="qtd-container">
-            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd||0}">
-            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
-          </div>
-        </div>`;
-    });
-}
-
 function mostrarMarcas(){
   document.getElementById("tela-produtos").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
