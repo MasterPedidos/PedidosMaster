@@ -33,7 +33,9 @@ header {
   display:flex; justify-content:space-between; align-items:center; gap:8px;
 }
 #versao {
-  display:none;
+  background:#ffcc00; color:#000; font-weight:bold; padding:4px 8px;
+  border-radius:8px; font-size:13px; border:1px solid #333;
+  display:none; /* 🔴 não exibir versão por enquanto */
 }
 #total {font-size:15px; font-weight:bold;}
 .logo-wrap{display:flex; align-items:center; gap:8px;}
@@ -78,7 +80,7 @@ header {
   object-fit:contain; border-radius:10px; background:#fff;
 }
 .produto h4{
-  margin:5px 0 0;
+  margin:5px 0 0; /* encosta mais na imagem */
 }
 .produto small{
   display:block;
@@ -145,29 +147,13 @@ button#voltar {
   border:none; border-radius:8px; padding:8px 12px; cursor:pointer;
 }
 
-/* Splash */
+/* Splash (tela azul + logo central) */
 #splash {
   position: fixed; inset: 0; background: #2b7bba;
   display: flex; align-items: center; justify-content: center;
   z-index: 9999;
 }
 #splash img { width: 180px; height: auto; }
-
-/* Modal quantidade */
-#modalQtd {
-  position:fixed; inset:0; background:rgba(0,0,0,0.6);
-  display:none; justify-content:center; align-items:center; z-index:9999;
-}
-#modalQtd .box {
-  background:white;padding:20px;border-radius:10px;text-align:center;width:220px;
-}
-#modalQtd input {
-  width:80%;padding:6px;font-size:18px;text-align:center;margin-top:10px;
-}
-#modalQtd button {
-  margin-top:12px;background:#2b7bba;color:white;border:none;
-  border-radius:8px;padding:8px 16px;cursor:pointer;
-}
 </style>
 </head>
 <body>
@@ -192,6 +178,7 @@ button#voltar {
 <div id="tela-marcas">
   <div id="telefone-container"></div>
 
+  <!-- BOTÃO VER ÚLTIMO PEDIDO (TOPO DAS MARCAS) -->
   <button onclick="exibirUltimoPedido()" 
           style="margin:10px auto; background:#ffcc00; color:#000;
                  border:none; padding:8px 12px; font-size:15px;
@@ -234,6 +221,8 @@ button#voltar {
 
 <!-- TELA 3: CARRINHO -->
 <div id="tela-carrinho" class="hidden">
+
+  <!-- BOTÃO VER ÚLTIMO PEDIDO NO TOPO DO CARRINHO -->
   <button onclick="exibirUltimoPedido()"
           style="margin:10px auto; background:#ffcc00; color:#000;
                  border:none; padding:8px 12px; font-size:15px;
@@ -242,17 +231,25 @@ button#voltar {
   </button>
 
   <h3>🛍️ Meu Carrinho</h3>
+
+  <!-- CONTAINER DO CARRINHO -->
   <div id="itens-carrinho"></div>
   <h3 id="total-carrinho">Total: R$ 0,00</h3>
   <p id="data-ultimo-pedido" style="margin-top:4px;font-size:13px;color:#555;"></p>
 </div>
 
 <!-- MODAL DIGITAR QUANTIDADE -->
-<div id="modalQtd">
-  <div class="box">
+<div id="modalQtd" style="
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  display:none; justify-content:center; align-items:center; z-index:9999;">
+  <div style="background:white;padding:20px;border-radius:10px;text-align:center;width:220px;">
     <h4>Quantidade</h4>
-    <input id="modalQtdInput" type="number">
-    <button onclick="confirmarQtdManual()">OK</button>
+    <input id="modalQtdInput" type="number"
+           style="width:80%;padding:6px;font-size:18px;text-align:center;margin-top:10px;">
+    <button onclick="confirmarQtdManual()"
+            style="margin-top:12px;background:#2b7bba;color:white;border:none;border-radius:8px;padding:8px 16px;">
+      OK
+    </button>
   </div>
 </div>
 
@@ -268,27 +265,23 @@ window.addEventListener('load', () => {
   setTimeout(()=>{ sp.style.display='none'; }, 400);
 });
 
-// ===== ESTADO GLOBAL =====
-let produtos = [];
-let carrinho = {};
+// ===== PRODUTOS =====
+let produtos = [];           // Dados do produtos.json
+let carrinho = {};           // Carrinho atual
 let telefoneDigits = localStorage.getItem("telefone_digits") || "";
 let telefoneDisplay = localStorage.getItem("telefone_display") || "";
 const STORAGE_ULTIMO = "ultimo_pedido";
 
-// Long press
-let longPressTimer = null;
-let prodLongPress = null;
-let dentroCarrinhoLongPress = false;
-
-// ===== CARREGAR PRODUTOS (SEM ABRIR TELA DE PRODUTOS) =====
+// Carrega produtos do JSON (AGORA NÃO CHAMA MAIS mostrarProdutos AO ABRIR)
 fetch('produtos.json')
   .then(response => response.json())
   .then(data => {
     produtos = data;
+    // Removido abrir automático: usuário começa na tela de MARCAS
   })
   .catch(error => console.error('Erro ao carregar produtos:', error));
 
-// ===== EXIBE PRODUTOS DE UMA MARCA =====
+// Exibe produtos de uma marca
 function mostrarProdutos(marca) {
   document.getElementById("tela-marcas").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
@@ -322,9 +315,9 @@ function mostrarProdutos(marca) {
           <div class="qtd-container">
             <button
               onmousedown="prepararLongPress('${prod.Código}', -1, false)"
-              ontouchstart="prepararLongPress('${prod.Código}', -1, false)"
               onmouseup="cancelarLongPress()"
               onmouseleave="cancelarLongPress()"
+              ontouchstart="prepararLongPress('${prod.Código}', -1, false)"
               ontouchend="cancelarLongPress()"
               onclick="if(longPressTimer!==null){ alterarQtd('${prod.Código}', -1); }">
               -
@@ -332,9 +325,9 @@ function mostrarProdutos(marca) {
             <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
             <button
               onmousedown="prepararLongPress('${prod.Código}', 1, false)"
-              ontouchstart="prepararLongPress('${prod.Código}', 1, false)"
               onmouseup="cancelarLongPress()"
               onmouseleave="cancelarLongPress()"
+              ontouchstart="prepararLongPress('${prod.Código}', 1, false)"
               ontouchend="cancelarLongPress()"
               onclick="if(longPressTimer!==null){ alterarQtd('${prod.Código}', 1); }">
               +
@@ -438,9 +431,9 @@ function mostrarCarrinho(){
         <div class="qtd-container">
           <button
             onmousedown="prepararLongPress('${p.Código}', -1, true)"
-            ontouchstart="prepararLongPress('${p.Código}', -1, true)"
             onmouseup="cancelarLongPress()"
             onmouseleave="cancelarLongPress()"
+            ontouchstart="prepararLongPress('${p.Código}', -1, true)"
             ontouchend="cancelarLongPress()"
             onclick="if(longPressTimer!==null){ alterarQtd('${p.Código}', -1, true); }">
             -
@@ -448,9 +441,9 @@ function mostrarCarrinho(){
           <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
           <button
             onmousedown="prepararLongPress('${p.Código}', 1, true)"
-            ontouchstart="prepararLongPress('${p.Código}', 1, true)"
             onmouseup="cancelarLongPress()"
             onmouseleave="cancelarLongPress()"
+            ontouchstart="prepararLongPress('${p.Código}', 1, true)"
             ontouchend="cancelarLongPress()"
             onclick="if(longPressTimer!==null){ alterarQtd('${p.Código}', 1, true); }">
             +
@@ -497,6 +490,7 @@ function atualizarTotal(){
   for(let c in carrinho){
     total += carrinho[c].valor * carrinho[c].qtd;
   }
+
   document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
   const t = document.getElementById("total-carrinho");
   if(t) t.innerText = "Total: R$ " + total.toFixed(2);
@@ -532,6 +526,7 @@ function enviarWhatsApp(){
     );
   }
 
+  // Contato no topo: dd-númerocontato (apenas dígitos)
   const ddd = telefoneDigits.slice(0,2);
   const resto = telefoneDigits.slice(2);
   const contatoLinha = `${ddd}-${resto}`;
@@ -542,6 +537,7 @@ function enviarWhatsApp(){
     linhas.join("\n") +
     `\nTOTAL: R$ ${total.toFixed(2)}`;
 
+  // Salvar último pedido no localStorage
   const ultimo = {
     data: new Date().toISOString(),
     itens: carrinho,
@@ -579,6 +575,7 @@ function exibirUltimoPedido(){
       };
     }
 
+    // Mostra carrinho com os itens do último pedido
     mostrarCarrinho();
 
     const elData = document.getElementById("data-ultimo-pedido");
@@ -589,7 +586,7 @@ function exibirUltimoPedido(){
           elData.textContent = "Último pedido em: " +
             dt.toLocaleString("pt-BR", {
               day:"2-digit", month:"2-digit", year:"numeric",
-              hour:"2-digit", minute:"2-digit"
+              hour:"2-digit", minute:"numeric"
             });
         } else {
           elData.textContent = "";
@@ -604,38 +601,46 @@ function exibirUltimoPedido(){
   }
 }
 
-// ===== MODAL QTD / LONG PRESS =====
-function abrirModalQtd(codigo, dentroCarrinho=false){
-  prodLongPress = codigo;
-  dentroCarrinhoLongPress = dentroCarrinho;
-  const entrada = document.getElementById("modalQtdInput");
-  const qtdAtual = carrinho[codigo]?.qtd || 0;
-  entrada.value = qtdAtual;
-  document.getElementById("modalQtd").style.display = "flex";
-  entrada.focus();
-}
-function fecharModalQtd(){
-  document.getElementById("modalQtd").style.display = "none";
-}
-function confirmarQtdManual(){
-  const entrada = document.getElementById("modalQtdInput");
-  const novaQtd = Number(entrada.value) || 0;
-  const qtdAtual = carrinho[prodLongPress]?.qtd || 0;
-  const delta = novaQtd - qtdAtual;
-  alterarQtd(prodLongPress, delta, dentroCarrinhoLongPress);
-  fecharModalQtd();
-}
+// ===== LONG PRESS + MODAL QUANTIDADE =====
+let longPressTimer = null;
+let prodLongPress = null;
+let dentroCarrinhoLongPress = false;
+
 function prepararLongPress(codigo, delta, dentroCarrinho){
   longPressTimer = setTimeout(()=>{
     longPressTimer = null;
     abrirModalQtd(codigo, dentroCarrinho);
   }, 600);
 }
+
 function cancelarLongPress(){
   if(longPressTimer){
     clearTimeout(longPressTimer);
     longPressTimer = null;
   }
+}
+
+function abrirModalQtd(codigo, dentroCarrinho=false){
+  prodLongPress = codigo;
+  dentroCarrinhoLongPress = dentroCarrinho;
+  const inp = document.getElementById("modalQtdInput");
+  const atual = carrinho[codigo]?.qtd || 0;
+  inp.value = atual;
+  document.getElementById("modalQtd").style.display = "flex";
+  inp.focus();
+}
+
+function fecharModalQtd(){
+  document.getElementById("modalQtd").style.display = "none";
+}
+
+function confirmarQtdManual(){
+  const inp = document.getElementById("modalQtdInput");
+  const novaQtd = Number(inp.value) || 0;
+  const atual = carrinho[prodLongPress]?.qtd || 0;
+  const delta = novaQtd - atual;
+  alterarQtd(prodLongPress, delta, dentroCarrinhoLongPress);
+  fecharModalQtd();
 }
 </script>
 </body>
