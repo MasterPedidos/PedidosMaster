@@ -609,30 +609,43 @@ function exibirUltimoPedido(){
 }
 
 // ===== LONG PRESS + MODAL QUANTIDADE =====
-let longPressTimer = null;
+let longPressTimeout = null;          // id do setTimeout
+let longPressDisparado = false;       // indica se o modal abriu
 let prodLongPress = null;
 let dentroCarrinhoLongPress = false;
 
-function prepararLongPress(codigo, delta, dentroCarrinho){
-  longPressTimer = setTimeout(()=>{
-    longPressTimer = null;
+function prepararLongPress(codigo, dentroCarrinho=false){
+  longPressDisparado = false;
+  prodLongPress = codigo;
+  dentroCarrinhoLongPress = dentroCarrinho;
+
+  if (longPressTimeout) {
+    clearTimeout(longPressTimeout);
+    longPressTimeout = null;
+  }
+
+  longPressTimeout = setTimeout(()=>{
+    longPressDisparado = true;
+    longPressTimeout = null;
     abrirModalQtd(codigo, dentroCarrinho);
   }, 600);
 }
 
 function cancelarLongPress(){
-  if(longPressTimer){
-    clearTimeout(longPressTimer);
-    longPressTimer = null;
+  if (longPressTimeout) {
+    clearTimeout(longPressTimeout);
+    longPressTimeout = null;
   }
 }
 
 function abrirModalQtd(codigo, dentroCarrinho=false){
   prodLongPress = codigo;
   dentroCarrinhoLongPress = dentroCarrinho;
+
   const inp = document.getElementById("modalQtdInput");
   const atual = carrinho[codigo]?.qtd || 0;
   inp.value = atual;
+
   document.getElementById("modalQtd").style.display = "flex";
   inp.focus();
 }
@@ -646,19 +659,30 @@ function confirmarQtdManual(){
   const novaQtd = Number(inp.value) || 0;
   const atual = carrinho[prodLongPress]?.qtd || 0;
   const delta = novaQtd - atual;
+
   alterarQtd(prodLongPress, delta, dentroCarrinhoLongPress);
   fecharModalQtd();
+
+  longPressDisparado = false;
 }
-  function cliqueRapido(codigo, delta, dentroCarrinho) {
-  // Se o long-press já disparou, não executa clique simples
-  if (longPressTimer === null) return;
 
-  clearTimeout(longPressTimer);
-  longPressTimer = null;
+function cliqueRapido(codigo, delta, dentroCarrinho) {
+  // Limpa timer, se existir
+  if (longPressTimeout) {
+    clearTimeout(longPressTimeout);
+    longPressTimeout = null;
+  }
 
-  // Ação normal
+  // Se o long press disparou e abriu modal → não mexe
+  if (longPressDisparado) {
+    longPressDisparado = false;
+    return;
+  }
+
+  // Aqui é clique simples → soma/subtrai normalmente
   alterarQtd(codigo, delta, dentroCarrinho);
 }
+  
 </script>
 </body>
 </html>
