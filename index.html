@@ -649,6 +649,16 @@ function confirmarQtdManual(){
   alterarQtd(prodLongPress, delta, dentroCarrinhoLongPress);
   fecharModalQtd();
 }
+  function cliqueRapido(codigo, delta, dentroCarrinho) {
+  // Se o long-press já disparou, não executa clique simples
+  if (longPressTimer === null) return;
+
+  clearTimeout(longPressTimer);
+  longPressTimer = null;
+
+  // Ação normal
+  alterarQtd(codigo, delta, dentroCarrinho);
+}
 </script>
 </body>
 </html>
