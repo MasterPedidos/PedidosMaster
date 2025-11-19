@@ -307,33 +307,39 @@ function mostrarProdutos(marca) {
       const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
 
       container.innerHTML += `
-        <div class="produto">
-          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-          <h4>${prod.descricao}</h4>
-          <small><b>Qt Cx: ${unidadesCx} · (${prod.Código})</b></small>
-          <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
-          <div class="qtd-container">
-            <button
-              onmousedown="prepararLongPress('${prod.Código}', -1, false)"
-              onmouseup="cancelarLongPress()"
-              onmouseleave="cancelarLongPress()"
-              ontouchstart="prepararLongPress('${prod.Código}', -1, false)"
-              ontouchend="cancelarLongPress()"
-              onclick="if(longPressTimer!==null){ alterarQtd('${prod.Código}', -1); }">
-              -
-            </button>
-            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
-            <button
-              onmousedown="prepararLongPress('${prod.Código}', 1, false)"
-              onmouseup="cancelarLongPress()"
-              onmouseleave="cancelarLongPress()"
-              ontouchstart="prepararLongPress('${prod.Código}', 1, false)"
-              ontouchend="cancelarLongPress()"
-              onclick="if(longPressTimer!==null){ alterarQtd('${prod.Código}', 1); }">
-              +
-            </button>
-          </div>
-        </div>`;
+      <div class="produto">
+        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+        <h4>${prod.descricao}</h4>
+        <small><b>Qt Cx: ${unidadesCx} · (${prod.Código})</b></small>
+        <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
+    
+        <div class="qtd-container">
+    
+          <button
+            onmousedown="prepararLongPress('${prod.Código}', -1, false)"
+            ontouchstart="prepararLongPress('${prod.Código}', -1, false)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            ontouchend="cancelarLongPress()"
+            onclick="cliqueRapido('${prod.Código}', -1, false)">
+            -
+          </button>
+    
+          <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
+    
+          <button
+            onmousedown="prepararLongPress('${prod.Código}', 1, false)"
+            ontouchstart="prepararLongPress('${prod.Código}', 1, false)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            ontouchend="cancelarLongPress()"
+            onclick="cliqueRapido('${prod.Código}', 1, false)">
+            +
+          </button>
+    
+        </div>
+      </div>`;
+
     });
 }
 
@@ -419,7 +425,6 @@ function mostrarCarrinho(){
     const p = carrinho[c];
     const valorCx = Number(p.valor) || 0;
     const unidadesCx = Number(p.unidades) || 1;
-
     container.innerHTML += `
       <div class="carrinho-item">
         <img src="${p.imagem}" alt="${p.descricao}">
@@ -431,21 +436,23 @@ function mostrarCarrinho(){
         <div class="qtd-container">
           <button
             onmousedown="prepararLongPress('${p.Código}', -1, true)"
+            ontouchstart="prepararLongPress('${p.Código}', -1, true)"
             onmouseup="cancelarLongPress()"
             onmouseleave="cancelarLongPress()"
-            ontouchstart="prepararLongPress('${p.Código}', -1, true)"
             ontouchend="cancelarLongPress()"
-            onclick="if(longPressTimer!==null){ alterarQtd('${p.Código}', -1, true); }">
+            onclick="cliqueRapido('${p.Código}', -1, true)">
             -
           </button>
+          
           <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
+          
           <button
             onmousedown="prepararLongPress('${p.Código}', 1, true)"
+            ontouchstart="prepararLongPress('${p.Código}', 1, true)"
             onmouseup="cancelarLongPress()"
             onmouseleave="cancelarLongPress()"
-            ontouchstart="prepararLongPress('${p.Código}', 1, true)"
             ontouchend="cancelarLongPress()"
-            onclick="if(longPressTimer!==null){ alterarQtd('${p.Código}', 1, true); }">
+            onclick="cliqueRapido('${p.Código}', 1, true)">
             +
           </button>
         </div>
