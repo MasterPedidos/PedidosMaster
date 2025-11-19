@@ -282,7 +282,7 @@ function mostrarProdutos(marca) {
           <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
           <h4>${prod.descricao}</h4>
           <small>Qt Cx: ${unidadesCx} · (${prod.Código})</small>
-          <p><b>UN => R$ ${valorUn.toFixed(2)} · Cx => R$ ${valorCx.toFixed(2)}</b></p>
+          <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
           <div class="qtd-container">
             <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
             <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
