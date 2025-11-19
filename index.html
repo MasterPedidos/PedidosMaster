@@ -299,9 +299,23 @@ function mostrarProdutos(marca) {
           <small><b>Qt Cx: ${unidadesCx} · (${prod.Código})</b></small>
           <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
           <div class="qtd-container">
-            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
-            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+            <button 
+              onmousedown="prepararLongPress('${prod.Código}', -1, false)"
+              onmouseup="cancelarLongPress()"
+              onmouseleave="cancelarLongPress()"
+              onclick="if(longPressTimer!==null){ alterarQtd('${prod.Código}', -1); }">
+              -
+          </button>
+<input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
+<button
+  onmousedown="prepararLongPress('${prod.Código}', 1, false)"
+  onmouseup="cancelarLongPress()"
+  onmouseleave="cancelarLongPress()"
+  onclick="if(longPressTimer!==null){ alterarQtd('${prod.Código}', 1); }">
+  +
+</button>
+
+            
           </div>
         </div>`;
     });
@@ -394,11 +408,28 @@ function mostrarCarrinho(){
           <b>${p.descricao}</b><br>
           <small>Qt Cx: ${p.unidades} · (${p.Código})</small><br>
           <span>UN R$ ${(p.valor / p.unidades).toFixed(2)} · Cx R$ ${p.valor.toFixed(2)}</span>
-        </div>
+        
+        
         <div class="qtd-container">
-          <button onclick="alterarQtd('${p.Código}', -1, true)">-</button>
+
+          <button 
+            onmousedown="prepararLongPress('${p.Código}', -1, true)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            onclick="if(longPressTimer!==null){ alterarQtd('${p.Código}', -1, true); }">
+            -
+          </button>
+        
           <input id="qtd-carrinho-${p.Código}" value="${p.qtd}">
-          <button onclick="alterarQtd('${p.Código}', 1, true)">+</button>
+
+          <button 
+            onmousedown="prepararLongPress('${p.Código}', 1, true)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            onclick="if(longPressTimer!==null){ alterarQtd('${p.Código}', 1, true); }">
+            +
+          </button>
+        
         </div>
       </div>`;
   }
@@ -549,6 +580,127 @@ function exibirUltimoPedido(){
   } catch(e){
     console.error("Erro ao carregar último pedido:", e);
     alert("Erro ao carregar último pedido salvo.");
+  }
+}
+
+<!-- ================= MODAL DIGITAR QUANTIDADE ================= -->
+<div id="modalQtd" style="
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  display:none; justify-content:center; align-items:center; z-index:9999;">
+  <div style="background:white;padding:20px;border-radius:10px;text-align:center;width:220px;">
+    <h4>Quantidade</h4>
+    <input id="modalQtdInput" type="number"
+           style="width:80%;padding:6px;font-size:18px;text-align:center;margin-top:10px;">
+    <button onclick="confirmarQtdManual()"
+            style="margin-top:12px;background:#2b7bba;color:white;border:none;border-radius:8px;padding:8px 16px;">
+      OK
+    </button>
+  </div>
+</div>
+
+<script>
+let longPressTimer = null;
+let prodLongPress = null;
+let dentroCarrinhoLongPress = false;
+
+// abrir modal
+function abrirModalQtd(codigo, dentroCarrinho=false){
+  prodLongPress = codigo;
+  dentroCarrinhoLongPress = dentroCarrinho;
+  const entrada = document.getElementById("modalQtdInput");
+
+  // quantidade atual
+  const qtdAtual = carrinho[codigo]?.qtd || 0;
+  entrada.value = qtdAtual;
+
+  document.getElementById("modalQtd").style.display = "flex";
+  entrada.focus();
+}
+
+// fechar modal
+function fecharModalQtd(){
+  document.getElementById("modalQtd").style.display = "none";
+}
+
+// confirmar quantidade
+function confirmarQtdManual(){
+  const novaQtd = Number(document.getElementById("modalQtdInput").value) || 0;
+  alterarQtd(prodLongPress, novaQtd - (carrinho[prodLongPress]?.qtd || 0), dentroCarrinhoLongPress);
+  fecharModalQtd();
+}
+
+/* --- Captura de LONG PRESS nos botões + e - --- */
+function prepararLongPress(codigo, delta, dentroCarrinho){
+  longPressTimer = setTimeout(()=>{
+    longPressTimer = null;
+    abrirModalQtd(codigo, dentroCarrinho);
+  }, 600); // manter pressionado 0.6s = digitar quantidade
+}
+
+function cancelarLongPress(){
+  if(longPressTimer){
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+}
+
+ <!-- ================= MODAL DIGITAR QUANTIDADE ================= -->
+<div id="modalQtd" style="
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  display:none; justify-content:center; align-items:center; z-index:9999;">
+  <div style="background:white;padding:20px;border-radius:10px;text-align:center;width:220px;">
+    <h4>Quantidade</h4>
+    <input id="modalQtdInput" type="number"
+           style="width:80%;padding:6px;font-size:18px;text-align:center;margin-top:10px;">
+    <button onclick="confirmarQtdManual()"
+            style="margin-top:12px;background:#2b7bba;color:white;border:none;border-radius:8px;padding:8px 16px;">
+      OK
+    </button>
+  </div>
+</div>
+
+<script>
+let longPressTimer = null;
+let prodLongPress = null;
+let dentroCarrinhoLongPress = false;
+
+// abrir modal
+function abrirModalQtd(codigo, dentroCarrinho=false){
+  prodLongPress = codigo;
+  dentroCarrinhoLongPress = dentroCarrinho;
+  const entrada = document.getElementById("modalQtdInput");
+
+  const qtdAtual = carrinho[codigo]?.qtd || 0;
+  entrada.value = qtdAtual;
+
+  document.getElementById("modalQtd").style.display = "flex";
+  entrada.focus();
+}
+
+// fechar modal
+function fecharModalQtd(){
+  document.getElementById("modalQtd").style.display = "none";
+}
+
+// confirmar
+function confirmarQtdManual(){
+  const novaQtd = Number(document.getElementById("modalQtdInput").value) || 0;
+  alterarQtd(prodLongPress, novaQtd - (carrinho[prodLongPress]?.qtd || 0), dentroCarrinhoLongPress);
+  fecharModalQtd();
+}
+
+// long press
+function prepararLongPress(codigo, delta, dentroCarrinho){
+  longPressTimer = setTimeout(()=>{
+    longPressTimer = null;
+    abrirModalQtd(codigo, dentroCarrinho);
+  }, 600);
+}
+
+function cancelarLongPress(){
+  if(longPressTimer){
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
   }
 }
 </script>
