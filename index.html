@@ -43,7 +43,10 @@ header {
 .logo-wrap img{height:38px; width:auto;}
 
 /* Marcas */
-#marcas-container {display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px;}
+#marcas-container {
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:10px; margin:10px;
+}
 .marca-btn {
   flex: 1 1 120px; min-width: 130px; max-width: 160px; padding:10px;
   border:none; border-radius:10px; font-size:14px; background:#2b7bba; color:white;
@@ -77,12 +80,8 @@ header {
   width:100%; height:160px;
   object-fit:contain; border-radius:10px; background:#fff;
 }
-.produto h4 {
-    margin-top: 5px;   /* antes era muito grande */
-    margin-bottom: 0px;
-} 
 .produto h4{
-  margin:8px 0 4px;
+  margin:5px 0 0; /* encosta mais na imagem */
 }
 .produto small{
   display:block;
@@ -234,13 +233,11 @@ button#voltar {
 
   <h3>🛍️ Meu Carrinho</h3>
 
-<!-- TELA 4: ÚLTIMO PEDIDO (reservado, se quiser usar depois) -->
-<div id="ultimo-pedido" class="hidden">
-  <h3>Último Pedido</h3>
-  <div id="itens-ultimo-pedido"></div>
+  <!-- CONTAINER DO CARRINHO (FALTAVA NO SEU HTML) -->
+  <div id="itens-carrinho"></div>
+  <h3 id="total-carrinho">Total: R$ 0,00</h3>
+  <p id="data-ultimo-pedido" style="margin-top:4px;font-size:13px;color:#555;"></p>
 </div>
-
-<button onclick="exibirUltimoPedido()">Ver Último Pedido</button>
 
 <script>
 // ===== PWA + Splash =====
