@@ -33,8 +33,11 @@ header {
   font-size:18px; font-weight:bold; position:sticky; top:0; z-index:10;
   display:flex; justify-content:space-between; align-items:center; gap:8px;
 }
-#versao { background:#ffcc00; color:#000; font-weight:bold; padding:4px 8px;
-  border-radius:8px; font-size:13px; border:1px solid #333; }
+#versao {
+  background:#ffcc00; color:#000; font-weight:bold; padding:4px 8px;
+  border-radius:8px; font-size:13px; border:1px solid #333;
+  display:none; /* 🔴 não exibir versão por enquanto */
+}
 #total {font-size:15px; font-weight:bold;}
 .logo-wrap{display:flex; align-items:center; gap:8px;}
 .logo-wrap img{height:38px; width:auto;}
@@ -49,39 +52,105 @@ header {
 .marca-btn.tudo {background:#25d366; font-weight:bold;}
 
 /* Telefone */
-#telefone-container { margin:15px auto 0; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; }
+#telefone-container {
+  margin:15px auto 0;
+  display:flex; justify-content:center; align-items:center;
+  gap:8px; flex-wrap:wrap;
+}
 #telefone-container span {font-weight:bold; color:#333;}
-#telefone-container button { border:none; background:#2b7bba; color:white; border-radius:8px; padding:6px 10px; cursor:pointer; }
+#telefone-container button {
+  border:none; background:#2b7bba; color:white;
+  border-radius:8px; padding:6px 10px; cursor:pointer;
+}
 
 /* Produtos */
-#produtos-container { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:12px; max-width:700px; margin:auto; }
-.produto { background:white; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:10px; }
-.produto img { width:100%; height:160px; object-fit:contain; border-radius:10px; background:#fff; }
+#produtos-container {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:12px; padding:12px; max-width:700px; margin:auto;
+}
+.produto {
+  background:white; border-radius:12px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  padding:10px;
+}
+.produto img {
+  width:100%; height:160px;
+  object-fit:contain; border-radius:10px; background:#fff;
+}
+.produto h4{
+  margin:8px 0 4px;
+}
+.produto small{
+  display:block;
+  margin-bottom:4px;
+}
+.produto p{
+  margin:4px 0;
+}
 
 /* Qtd */
-.qtd-container { display:flex; align-items:center; justify-content:center; margin-top:5px; }
-.qtd-container button { width:28px; height:28px; border:none; border-radius:6px; background:#2b7bba; color:white; font-size:18px; font-weight:bold; cursor:pointer; }
-.qtd-container input { width:40px; text-align:center; margin:0 5px; border:1px solid #ccc; border-radius:6px; }
+.qtd-container {
+  display:flex; align-items:center; justify-content:center; margin-top:5px;
+}
+.qtd-container button {
+  width:28px; height:28px; border:none; border-radius:6px;
+  background:#2b7bba; color:white; font-size:18px; font-weight:bold; cursor:pointer;
+}
+.qtd-container input {
+  width:40px; text-align:center; margin:0 5px;
+  border:1px solid #ccc; border-radius:6px;
+}
 
 /* Botões topo direito */
-button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; font-size:14px; border-radius:8px; cursor:pointer; }
-#btnCarrinho, #btnEnviarPedido { background:white; color:#2b7bba; border:2px solid #2b7bba; font-size:16px; padding:10px 18px; border-radius:10px; font-weight:bold; cursor:pointer; }
-#btnEnviarPedido { display:none; background:#25d366; color:white; border:none; }
+button#voltar {
+  background:#e74c3c; color:white; border:none;
+  padding:8px 12px; font-size:14px; border-radius:8px; cursor:pointer;
+}
+#btnCarrinho, #btnEnviarPedido {
+  background:white; color:#2b7bba; border:2px solid #2b7bba;
+  font-size:16px; padding:10px 18px; border-radius:10px;
+  font-weight:bold; cursor:pointer;
+}
+#btnEnviarPedido {
+  display:none; background:#25d366; color:white; border:none;
+}
 
 /* Carrinho */
 #tela-carrinho { padding:15px; }
-.carrinho-item { background:white; border-radius:10px; margin:8px auto; padding:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.carrinho-item img { width:60px; height:60px; border-radius:8px; object-fit:contain; }
+.carrinho-item {
+  background:white; border-radius:10px; margin:8px auto; padding:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1); max-width:700px;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.carrinho-item img {
+  width:60px; height:60px; border-radius:8px; object-fit:contain;
+}
 
 /* Popup telefone */
 .hidden {display:none;}
-#popup { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:100; }
-#popup-content { background:white; padding:20px; border-radius:10px; max-width:300px; text-align:center; }
-#popup input { width:90%; padding:6px; margin-top:8px; border:1px solid #ccc; border-radius:6px; text-align:center; }
-#popup button { margin-top:10px; background:#2b7bba; color:white; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
+#popup {
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  display:none; justify-content:center; align-items:center; z-index:100;
+}
+#popup-content {
+  background:white; padding:20px; border-radius:10px;
+  max-width:300px; text-align:center;
+}
+#popup input {
+  width:90%; padding:6px; margin-top:8px;
+  border:1px solid #ccc; border-radius:6px; text-align:center;
+}
+#popup button {
+  margin-top:10px; background:#2b7bba; color:white;
+  border:none; border-radius:8px; padding:8px 12px; cursor:pointer;
+}
 
 /* Splash (tela azul + logo central) */
-#splash { position: fixed; inset: 0; background: #2b7bba; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+#splash {
+  position: fixed; inset: 0; background: #2b7bba;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
 #splash img { width: 180px; height: auto; }
 </style>
 </head>
@@ -142,12 +211,13 @@ button#voltar { background:#e74c3c; color:white; border:none; padding:8px 12px; 
 <!-- TELA 3: CARRINHO -->
 <div id="tela-carrinho" class="hidden">
   <h3>🛍️ Meu Carrinho</h3>
+  <p id="data-ultimo-pedido" style="margin:4px 0; font-size:13px; color:#333;"></p>
   <div id="itens-carrinho"></div>
   <h3 id="total-carrinho">Total: R$ 0,00</h3>
 </div>
 
-<!-- TELA 4: ÚLTIMO PEDIDO -->
-<div id="ultimo-pedido">
+<!-- TELA 4: ÚLTIMO PEDIDO (reservado, se quiser usar depois) -->
+<div id="ultimo-pedido" class="hidden">
   <h3>Último Pedido</h3>
   <div id="itens-ultimo-pedido"></div>
 </div>
@@ -167,19 +237,22 @@ window.addEventListener('load', () => {
 });
 
 // ===== PRODUTOS =====
-// Carregar os produtos do arquivo JSON
-let produtos = [];  // Array de produtos carregado do JSON
+let produtos = [];           // Dados do produtos.json
+let carrinho = {};           // Carrinho atual
+let telefoneDigits = localStorage.getItem("telefone_digits") || "";
+let telefoneDisplay = localStorage.getItem("telefone_display") || "";
+const STORAGE_ULTIMO = "ultimo_pedido";
 
-// Função para buscar e carregar os produtos
+// Carrega produtos do JSON
 fetch('produtos.json')
-  .then(response => response.json())  // Converte a resposta para JSON
+  .then(response => response.json())
   .then(data => {
-    produtos = data;  // Agora produtos contém os dados do JSON
-    mostrarProdutos('Tudo');  // Exibe todos os produtos
+    produtos = data;
+    mostrarProdutos('Tudo'); // Exibe tudo ao abrir
   })
   .catch(error => console.error('Erro ao carregar produtos:', error));
 
-// Função para exibir os produtos (já existente no código)
+// Exibe produtos de uma marca
 function mostrarProdutos(marca) {
   document.getElementById("tela-marcas").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
@@ -187,22 +260,29 @@ function mostrarProdutos(marca) {
   document.getElementById("btnCarrinho").style.display = "inline-block";
   document.getElementById("btnEnviarPedido").style.display = "none";
 
-  document.getElementById("titulo-marca").textContent = (marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca);
+  document.getElementById("titulo-marca").textContent =
+    (marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca);
 
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  // Filtra os produtos pela marca
   produtos
     .filter(p => marca === "Tudo" || p.marca === marca)
     .forEach(prod => {
-      const imgSrc = (prod.imagem && prod.imagem.trim() !== "") ? prod.imagem : "https://i.imgur.com/jzjHhHG.png";
+      const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+        ? prod.imagem
+        : "https://i.imgur.com/jzjHhHG.png";
+
+      const valorCx = Number(prod.valor) || 0;
+      const unidadesCx = Number(prod.unidades) || 1;
+      const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+
       container.innerHTML += `
         <div class="produto">
           <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
           <h4>${prod.descricao}</h4>
-          <small>(${prod.Código})</small>
-          <p><b>R$ ${prod.valor.toFixed(2)}</b></p>
+          <small>Qt Cx: ${unidadesCx} · (${prod.Código})</small>
+          <p><b>UN => R$ ${valorUn.toFixed(2)} · Cx => R$ ${valorCx.toFixed(2)}</b></p>
           <div class="qtd-container">
             <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
             <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
@@ -212,24 +292,19 @@ function mostrarProdutos(marca) {
     });
 }
 
-
-let carrinho = {},
-    telefoneDigits = localStorage.getItem("telefone_digits")||"",
-    telefoneDisplay = localStorage.getItem("telefone_display")||"";
-
-// Máscara telefone
+// ===== TELEFONE =====
 document.addEventListener("input", e=>{
   if(e.target.id==="telefone-input"){
-    let v=e.target.value.replace(/\D/g,"");
-    if(v.length>11)v=v.slice(0,11);
-    if(v.length>=7)e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-    else if(v.length>2)e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`;
+    let v = e.target.value.replace(/\D/g,"");
+    if(v.length>11) v = v.slice(0,11);
+    if(v.length>=7) e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if(v.length>2) e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`;
     else e.target.value=v;
   }
 });
 
 function renderTelefone(){
-  const el=document.getElementById("telefone-container");
+  const el = document.getElementById("telefone-container");
   el.innerHTML = telefoneDigits
     ? `<span>${telefoneDisplay}</span><button onclick="editarTelefone()">✏️ Editar</button>`
     : `<span style="color:#666;">Nenhum contato cadastrado</span> <button onclick="abrirPopup()">Cadastrar</button>`;
@@ -237,15 +312,24 @@ function renderTelefone(){
 function abrirPopup(){document.getElementById("popup").style.display="flex";}
 function fecharPopup(){document.getElementById("popup").style.display="none";}
 function salvarTelefone(){
-  const inp=document.getElementById("telefone-input");
-  const digits=inp.value.replace(/\D/g,"");
-  if(digits.length<10) return alert("Número inválido! Use DDD + celular.");
-  const ddd=digits.slice(0,2), corpo=digits.slice(2);
-  const exib=corpo.length===8?`(${ddd}) ${corpo.slice(0,4)}-${corpo.slice(4)}`:`(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
-  telefoneDigits=digits; telefoneDisplay=exib;
+  const inp = document.getElementById("telefone-input");
+  const digits = inp.value.replace(/\D/g,"");
+  if(digits.length<10){
+    alert("Número inválido! Use DDD + celular.");
+    return;
+  }
+  const ddd = digits.slice(0,2);
+  const corpo = digits.slice(2);
+  const exib = corpo.length===8
+    ? `(${ddd}) ${corpo.slice(0,4)}-${corpo.slice(4)}`
+    : `(${ddd}) ${corpo.slice(0,5)}-${corpo.slice(5)}`;
+
+  telefoneDigits = digits;
+  telefoneDisplay = exib;
   localStorage.setItem("telefone_digits", telefoneDigits);
   localStorage.setItem("telefone_display", telefoneDisplay);
-  fecharPopup(); renderTelefone();
+  fecharPopup();
+  renderTelefone();
 }
 function editarTelefone(){
   localStorage.removeItem("telefone_digits");
@@ -260,6 +344,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(!telefoneDigits) abrirPopup();
 });
 
+// ===== TELAS =====
 function mostrarMarcas(){
   document.getElementById("tela-produtos").classList.add("hidden");
   document.getElementById("tela-carrinho").classList.add("hidden");
@@ -275,22 +360,25 @@ function mostrarCarrinho(){
   document.getElementById("btnCarrinho").style.display="none";
   document.getElementById("btnEnviarPedido").style.display="inline-block";
 
-  const container=document.getElementById("itens-carrinho");
-  container.innerHTML="";
+  const container = document.getElementById("itens-carrinho");
+  container.innerHTML = "";
+
   if(Object.keys(carrinho).length===0){
     container.innerHTML="<p>Seu carrinho está vazio 🛒</p>";
     document.getElementById("total-carrinho").textContent="Total: R$ 0,00";
+    document.getElementById("data-ultimo-pedido").textContent="";
     return;
   }
+
   for (let c in carrinho){
-    const p=carrinho[c];
+    const p = carrinho[c];
     container.innerHTML += `
       <div class="carrinho-item">
         <img src="${p.imagem}" alt="${p.descricao}">
         <div style="flex:1; text-align:left;">
           <b>${p.descricao}</b><br>
-          <small>(${p.Código})</small><br>
-          <span>R$ ${p.valor.toFixed(2)}</span>
+          <small>Qt Cx: ${p.unidades} · (${p.Código})</small><br>
+          <span>UN => R$ ${(p.valor / p.unidades).toFixed(2)} · Cx => R$ ${p.valor.toFixed(2)}</span>
         </div>
         <div class="qtd-container">
           <button onclick="alterarQtd('${p.Código}', -1, true)">-</button>
@@ -302,32 +390,151 @@ function mostrarCarrinho(){
   atualizarTotal();
 }
 
+// ===== CARRINHO / QTD =====
 function alterarQtd(codigo, delta, dentroCarrinho=false){
-  const prod=produtos.find(p=>p.Código===codigo);
+  const prod = produtos.find(p=>p.Código===codigo);
   if(!prod) return;
 
-  const qtdAtual=carrinho[codigo]?.qtd||0;
-  let novaQtd=qtdAtual+delta;
+  const qtdAtual = carrinho[codigo]?.qtd || 0;
+  let novaQtd = qtdAtual + delta;
   if(novaQtd<0) novaQtd=0;
 
-  if(novaQtd>0) carrinho[codigo]={...prod, qtd:novaQtd};
-  else delete carrinho[codigo];
+  const valorCx = Number(prod.valor) || 0;
+  const unidadesCx = Number(prod.unidades) || 1;
 
-  const i1=document.getElementById(`qtd-${codigo}`);
-  const i2=document.getElementById(`qtd-carrinho-${codigo}`);
-  if(i1) i1.value=novaQtd;
-  if(i2) i2.value=novaQtd;
+  if(novaQtd>0){
+    carrinho[codigo] = {
+      ...prod,
+      valor: valorCx,
+      unidades: unidadesCx,
+      qtd: novaQtd
+    };
+  } else {
+    delete carrinho[codigo];
+  }
+
+  const i1 = document.getElementById(`qtd-${codigo}`);
+  const i2 = document.getElementById(`qtd-carrinho-${codigo}`);
+  if(i1) i1.value = novaQtd;
+  if(i2) i2.value = novaQtd;
 
   atualizarTotal();
 }
 
 function atualizarTotal(){
-  let total=0;
-  for(let c in carrinho) total += carrinho[c].valor * carrinho[c].qtd;
+  let total = 0;
+  for(let c in carrinho){
+    total += carrinho[c].valor * carrinho[c].qtd;
+  }
 
   document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
-  const t=document.getElementById("total-carrinho");
+  const t = document.getElementById("total-carrinho");
   if(t) t.innerText = "Total: R$ " + total.toFixed(2);
+}
+
+// ===== ENVIAR WHATSAPP =====
+function enviarWhatsApp(){
+  if(!telefoneDigits){
+    alert("Cadastre um telefone de contato antes de enviar o pedido.");
+    abrirPopup();
+    return;
+  }
+  if(Object.keys(carrinho).length===0){
+    alert("Seu carrinho está vazio.");
+    return;
+  }
+
+  let total = 0;
+  let linhas = [];
+
+  for(const cod in carrinho){
+    const p = carrinho[cod];
+    const valorCx = Number(p.valor) || 0;
+    const unidadesCx = Number(p.unidades) || 1;
+    const valorUn = (unidadesCx>0 ? valorCx / unidadesCx : valorCx);
+    total += valorCx * p.qtd;
+
+    linhas.push(
+      `${p.descricao}\n` +
+      `Qt Cx: ${unidadesCx} . (${p.Código})\n` +
+      `UN => R$ ${valorUn.toFixed(2)}  . Cx => R$ ${valorCx.toFixed(2)}\n` +
+      `Qtd Pedida: ${p.qtd} Cx\n`
+    );
+  }
+
+  // Contato no topo: dd-númerocontato (apenas dígitos)
+  const ddd = telefoneDigits.slice(0,2);
+  const resto = telefoneDigits.slice(2);
+  const contatoLinha = `${ddd}-${resto}`;
+
+  const msg =
+    `Contato: ${contatoLinha}\n` +
+    `PEDIDO ONLINE\n\n` +
+    linhas.join("\n") +
+    `\nTOTAL: R$ ${total.toFixed(2)}`;
+
+  // Salvar último pedido no localStorage
+  const ultimo = {
+    data: new Date().toISOString(),
+    itens: carrinho,
+    total: total,
+    telefoneDigits: telefoneDigits
+  };
+  localStorage.setItem(STORAGE_ULTIMO, JSON.stringify(ultimo));
+
+  const url = `https://wa.me/55${telefoneDigits}?text=${encodeURIComponent(msg)}`;
+  window.open(url, "_blank");
+}
+
+// ===== ÚLTIMO PEDIDO =====
+function exibirUltimoPedido(){
+  const raw = localStorage.getItem(STORAGE_ULTIMO);
+  if(!raw){
+    alert("Nenhum pedido anterior encontrado.");
+    return;
+  }
+  try{
+    const ultimo = JSON.parse(raw);
+    if(!ultimo.itens || Object.keys(ultimo.itens).length===0){
+      alert("Nenhum pedido anterior encontrado.");
+      return;
+    }
+
+    carrinho = {};
+    for(const cod in ultimo.itens){
+      const p = ultimo.itens[cod];
+      carrinho[cod] = {
+        ...p,
+        valor: Number(p.valor) || 0,
+        unidades: Number(p.unidades) || 1,
+        qtd: Number(p.qtd) || 0
+      };
+    }
+
+    // Mostra carrinho com os itens do último pedido
+    mostrarCarrinho();
+
+    const elData = document.getElementById("data-ultimo-pedido");
+    if(elData){
+      if(ultimo.data){
+        const dt = new Date(ultimo.data);
+        if(!isNaN(dt.getTime())){
+          elData.textContent = "Último pedido em: " +
+            dt.toLocaleString("pt-BR", {
+              day:"2-digit", month:"2-digit", year:"numeric",
+              hour:"2-digit", minute:"2-digit"
+            });
+        } else {
+          elData.textContent = "";
+        }
+      } else {
+        elData.textContent = "";
+      }
+    }
+  } catch(e){
+    console.error("Erro ao carregar último pedido:", e);
+    alert("Erro ao carregar último pedido salvo.");
+  }
 }
 </script>
 </body>
