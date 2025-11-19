@@ -179,6 +179,15 @@ button#voltar {
 <!-- TELA 1: MARCAS -->
 <div id="tela-marcas">
   <div id="telefone-container"></div>
+
+  <!-- BOTÃO VER ÚLTIMO PEDIDO (TOPO DAS MARCAS) -->
+  <button onclick="exibirUltimoPedido()" 
+          style="margin:10px auto; background:#ffcc00; color:#000;
+                 border:none; padding:8px 12px; font-size:15px;
+                 font-weight:bold; border-radius:8px; cursor:pointer;">
+      📦 Ver Último Pedido
+  </button>
+
   <h3>Escolha uma Marca</h3>
   <div id="marcas-container">
     <button class="marca-btn tudo" onclick="mostrarProdutos('Tudo')">Tudo</button>
@@ -214,11 +223,16 @@ button#voltar {
 
 <!-- TELA 3: CARRINHO -->
 <div id="tela-carrinho" class="hidden">
+
+  <!-- BOTÃO VER ÚLTIMO PEDIDO NO TOPO DO CARRINHO -->
+  <button onclick="exibirUltimoPedido()"
+          style="margin:10px auto; background:#ffcc00; color:#000;
+                 border:none; padding:8px 12px; font-size:15px;
+                 font-weight:bold; border-radius:8px; cursor:pointer;">
+      📦 Ver Último Pedido
+  </button>
+
   <h3>🛍️ Meu Carrinho</h3>
-  <p id="data-ultimo-pedido" style="margin:4px 0; font-size:13px; color:#333;"></p>
-  <div id="itens-carrinho"></div>
-  <h3 id="total-carrinho">Total: R$ 0,00</h3>
-</div>
 
 <!-- TELA 4: ÚLTIMO PEDIDO (reservado, se quiser usar depois) -->
 <div id="ultimo-pedido" class="hidden">
