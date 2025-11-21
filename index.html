@@ -345,24 +345,30 @@ function mostrarProdutos(marca) {
   // 🔥 EXTRA — Quando for “TUDO”, mostrar cards das marcas que estão sem produtos
   if (marca === "Tudo") {
 
-    const marcasUnicas = [...new Set(produtos.map(p => p.marca))];
+  // Lista fixa das marcas que aparecem nos botões
+  const MARCAS_FIXAS = [
+    "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
+    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka",
+    "Rei da Massa", "Sacola"
+  ];
 
-    marcasUnicas.forEach(m => {
-      const qtd = produtos.filter(p => p.marca === m).length;
+  MARCAS_FIXAS.forEach(m => {
+    const qtd = produtos.filter(p => p.marca === m).length;
 
-      if (qtd === 0) {
-        container.innerHTML += `
-          <div style="grid-column:1 / -1; text-align:center; padding:25px 10px;">
-            <img src="ativo/sem-estoque.png"
-                 style="width:160px; opacity:0.7; margin-bottom:10px;">
-            <p style="font-size:18px; font-weight:bold; color:#444;">
-              Sem estoque hoje de produtos ${m}
-            </p>
-          </div>
-        `;
-      }
-    });
-  }
+    if (qtd === 0) {
+      container.innerHTML += `
+        <div style="grid-column:1 / -1; text-align:center; padding:25px 10px;">
+          <img src="ativo/sem-estoque.png"
+               style="width:160px; opacity:0.7; margin-bottom:10px;">
+          <p style="font-size:18px; font-weight:bold; color:#444;">
+            Sem estoque hoje de produtos ${m}
+          </p>
+        </div>
+      `;
+    }
+  });
+
+}
 
   // 🔥 Renderiza os produtos normalmente
   lista.forEach(prod => {
