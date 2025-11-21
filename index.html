@@ -298,6 +298,10 @@ function mostrarProdutos(marca) {
   produtos
     .filter(p => marca === "Tudo" || p.marca === marca)
     .forEach(prod => {
+
+      // 🔥 CORREÇÃO FUNDAMENTAL
+      const cod = String(prod.Código).trim();
+
       const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
         ? prod.imagem
         : "https://i.imgur.com/jzjHhHG.png";
@@ -310,38 +314,39 @@ function mostrarProdutos(marca) {
       <div class="produto">
         <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
         <h4>${prod.descricao}</h4>
-        <small><b>Qt Cx: ${unidadesCx} · (${prod.Código})</b></small>
+        <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
         <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
-    
+
         <div class="qtd-container">
-    
+
           <button
-            onmousedown="prepararLongPress('${prod.Código}', false)"
-            ontouchstart="prepararLongPress('${prod.Código}', false)"
+            onmousedown="prepararLongPress('${cod}', false)"
+            ontouchstart="prepararLongPress('${cod}', false)"
             onmouseup="cancelarLongPress()"
             onmouseleave="cancelarLongPress()"
             ontouchend="cancelarLongPress()"
-            onclick="cliqueRapido('${prod.Código}', -1, false)">
+            onclick="cliqueRapido('${cod}', -1, false)">
             -
           </button>
-    
-          <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
-    
+
+          <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
+
           <button
-            onmousedown="prepararLongPress('${prod.Código}', false)"
-            ontouchstart="prepararLongPress('${prod.Código}', false)"
+            onmousedown="prepararLongPress('${cod}', false)"
+            ontouchstart="prepararLongPress('${cod}', false)"
             onmouseup="cancelarLongPress()"
             onmouseleave="cancelarLongPress()"
             ontouchend="cancelarLongPress()"
-            onclick="cliqueRapido('${prod.Código}', 1, false)">
+            onclick="cliqueRapido('${cod}', 1, false)">
             +
           </button>
-    
+
         </div>
       </div>`;
 
     });
 }
+
 
 // ===== TELEFONE =====
 document.addEventListener("input", e=>{
