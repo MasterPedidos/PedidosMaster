@@ -302,117 +302,95 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  // 🔥 Lista filtrada
+  // =============================
+  // 🔥 FILTRAR PRODUTOS
+  // =============================
   const lista = produtos.filter(p => marca === "Tudo" || p.marca === marca);
 
-  // 🔥 Se a marca estiver vazia → mostrar card de "sem estoque"
-  if (lista.length === 0) {
-
-    const nomeExibicao =
-      (marca === "Tudo")
-      ? "Sem produtos disponíveis hoje"
-      : `Sem estoque hoje de produtos ${marca}`;
-
+  // =============================
+  // 🔥 SE MARCA INDIVIDUAL NÃO TIVER NADA
+  // =============================
+  if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
-      <div style="grid-column:1 / -1; text-align:center; padding:25px 10px;">
-        
-        <img src="ativo/sem-estoque.png"
-             style="width:200px; opacity:0.8; margin-bottom:10px;">
-
-        <div style="
-            background:white;
-            border-radius:12px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.15);
-            padding:15px;
-            display:inline-block;
-            max-width:260px;">
-          
-          <p style="
-            font-size:18px;
-            font-weight:bold;
-            color:#333;
-            margin:0;">
-            ${nomeExibicao}
-          </p>
-
-        </div>
-
-      </div>
-    `;
+      <div style="grid-column:1/-1; text-align:center; padding:25px;">
+        <img src="ativo/sem-estoque.png" style="width:200px; opacity:0.8; margin-bottom:10px;">
+        <p style="font-size:18px; font-weight:bold; color:#333;">
+          Sem estoque hoje de produtos ${marca}
+        </p>
+      </div>`;
     return;
   }
 
-  // 🔥 EXTRA — Quando for “TUDO”, mostrar cards das marcas que estão sem produtos
-if (marca === "Tudo") {
+  // =============================
+  // 🔥 SE FOR "TUDO": MOSTRAR MARCAS QUE NÃO TÊM PRODUTOS
+  // =============================
+  if (marca === "Tudo") {
+    const MARCAS_FIXAS = [
+      "Bauducco","Danone","Divinitos","Elma Chips","FRITOP",
+      "Frutap","Kremoso","Nestlé","Oz","Rebeka",
+      "Rei da Massa","Sacola"
+    ];
 
-  // Lista REAL de marcas que existem no JSON
-  const marcasUnicas = [...new Set(produtos.map(p => p.marca))];
+    MARCAS_FIXAS.forEach(m => {
+      if (!produtos.some(p => p.marca === m)) {
+        container.innerHTML += `
+          <div style="grid-column:1/-1; text-align:center; padding:25px;">
+            <img src="ativo/sem-estoque.png" style="width:160px; opacity:0.7; margin-bottom:10px;">
+            <p style="font-size:18px; font-weight:bold; color:#444;">
+              Sem estoque hoje de produtos ${m}
+            </p>
+          </div>`;
+      }
+    });
+  }
 
-  marcasUnicas.forEach(m => {
-    const qtd = produtos.filter(p => p.marca === m).length;
+  // =============================
+  // 🔥 RENDERIZAR PRODUTOS NORMALMENTE
+  // =============================
+  lista.forEach(prod => {
+    const cod = String(prod.Código).trim();
 
-    if (qtd === 0) {
-      container.innerHTML += `
-        <div style="grid-column:1 / -1; text-align:center; padding:25px 10px;">
-          <img src="ativo/sem-estoque.png"
-               style="width:160px; opacity:0.7; margin-bottom:10px;">
-          <p style="font-size:18px; font-weight:bold; color:#444;">
-            Sem estoque hoje de produtos ${m}
-          </p>
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+      ? prod.imagem
+      : "https://i.imgur.com/jzjHhHG.png";
+
+    const valorCx = Number(prod.valor) || 0;
+    const unidadesCx = Number(prod.unidades) || 1;
+    const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+
+    container.innerHTML += `
+      <div class="produto">
+        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+        <h4>${prod.descricao}</h4>
+        <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
+        <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
+
+        <div class="qtd-container">
+          <button
+            onmousedown="prepararLongPress('${cod}', false)"
+            ontouchstart="prepararLongPress('${cod}', false)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            ontouchend="cancelarLongPress()"
+            onclick="cliqueRapido('${cod}', -1, false)">
+            -
+          </button>
+
+          <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
+
+          <button
+            onmousedown="prepararLongPress('${cod}', false)"
+            ontouchstart="prepararLongPress('${cod}', false)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            ontouchend="cancelarLongPress()"
+            onclick="cliqueRapido('${cod}', 1, false)">
+            +
+          </button>
         </div>
-      `;
-    }
+      </div>`;
   });
 }
-
-  // 🔥 Renderiza os produtos normalmente
-  lista.forEach(prod => {
-
-  const cod = String(prod.Código).trim();
-  const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
-    ? prod.imagem
-    : "https://i.imgur.com/jzjHhHG.png";
-
-  const valorCx = Number(prod.valor) || 0;
-  const unidadesCx = Number(prod.unidades) || 1;
-  const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
-
-  container.innerHTML += `
-    <div class="produto">
-      <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-      <h4>${prod.descricao}</h4>
-      <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
-      <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
-
-      <div class="qtd-container">
-
-        <button
-          onmousedown="prepararLongPress('${cod}', false)"
-          ontouchstart="prepararLongPress('${cod}', false)"
-          onmouseup="cancelarLongPress()"
-          onmouseleave="cancelarLongPress()"
-          ontouchend="cancelarLongPress()"
-          onclick="cliqueRapido('${cod}', -1, false)">
-          -
-        </button>
-
-        <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
-
-        <button
-          onmousedown="prepararLongPress('${cod}', false)"
-          ontouchstart="prepararLongPress('${cod}', false)"
-          onmouseup="cancelarLongPress()"
-          onmouseleave="cancelarLongPress()"
-          ontouchend="cancelarLongPress()"
-          onclick="cliqueRapido('${cod}', 1, false)">
-          +
-        </button>
-
-      </div>
-    </div>
-  `;
-});
-} // ← FECHAMENTO CORRETO DA FUNÇÃO mostrarProdutos()
 
 // ===== TELEFONE =====
 document.addEventListener("input", e=>{
