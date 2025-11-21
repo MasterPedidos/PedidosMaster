@@ -302,26 +302,45 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  // 🔥 NOVO: lista filtrada
+    // 🔥 NOVO: lista filtrada
   const lista = produtos.filter(p => marca === "Tudo" || p.marca === marca);
 
   // 🔥 NOVO: se não tiver produtos → mostrar imagem SEM ESTOQUE
   if (lista.length === 0) {
 
-  const nomeExibicao = (marca === "Tudo")
+    const nomeExibicao =
+      (marca === "Tudo")
       ? "Sem produtos disponíveis hoje"
       : `Sem estoque hoje de produtos ${marca}`;
 
-  container.innerHTML = `
-    <div style="grid-column:1 / -1; text-align:center; padding:20px;">
-      <img src="ativo/sem-estoque.png" style="width:200px; opacity:0.8;">
-      <p style="font-size:20px; font-weight:bold; color:#333; margin-top:12px;">
-        ${nomeExibicao}
-      </p>
-    </div>
-  `;
-  return;
-}
+    container.innerHTML = `
+      <div style="grid-column:1 / -1; text-align:center; padding:25px 10px;">
+        
+        <img src="ativo/sem-estoque.png"
+             style="width:200px; opacity:0.8; margin-bottom:10px;">
+
+        <div style="
+            background:white;
+            border-radius:12px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
+            padding:15px;
+            display:inline-block;
+            max-width:260px;">
+          
+          <p style="
+            font-size:18px;
+            font-weight:bold;
+            color:#333;
+            margin:0;">
+            ${nomeExibicao}
+          </p>
+
+        </div>
+
+      </div>
+    `;
+    return;
+  }
 
   // 🔥 agora usa a lista filtrada
   lista.forEach(prod => {
