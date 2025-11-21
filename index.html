@@ -304,13 +304,16 @@ function mostrarProdutos(marca) {
 
   const MARCAS_FIXAS = [
     "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
-    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka", "Rei da Massa", "Sacola"
+    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka",
+    "Rei da Massa", "Sacola"
   ];
 
-  // Lista filtrada da marca
+  // Filtrar produtos da marca
   const lista = produtos.filter(p => p.marca === marca);
 
-  // 🔴 CASO 1 — MARCA SEM ESTOQUE (marca individual)
+  // ============================================================
+  // 🔴 CASO 1 — MARCA CLICADA E NÃO EXISTE EM produtos.json
+  // ============================================================
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
@@ -322,11 +325,13 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // 🔵 CASO 2 — EM "TUDO": mostrar CARDS das marcas sem estoque
+  // ============================================================
+  // 🔵 CASO 2 — EM "TUDO": MOSTRAR CARDS DAS MARCAS SEM ESTOQUE
+  // ============================================================
   if (marca === "Tudo") {
     MARCAS_FIXAS.forEach(m => {
-      const tem = produtos.some(p => p.marca === m);
-      if (!tem) {
+      const existe = produtos.some(p => p.marca === m);
+      if (!existe) {
         container.innerHTML += `
           <div style="grid-column:1/-1; text-align:center; padding:20px;">
             <img src="ativo/sem-estoque.png" style="width:150px; opacity:0.7;">
@@ -338,7 +343,9 @@ function mostrarProdutos(marca) {
     });
   }
 
-  // 🟢 CASO 3 — listar produtos normalmente
+  // ============================================================
+  // 🟢 CASO 3 — LISTAR PRODUTOS NORMALMENTE
+  // ============================================================
   const listaRender = marca === "Tudo" ? produtos : lista;
 
   listaRender.forEach(prod => {
