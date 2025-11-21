@@ -694,23 +694,6 @@ function cliqueRapido(codigo, delta, dentroCarrinho) {
   // AQUI É CLIQUE SIMPLES → soma/subtrai quantidade
   alterarQtd(codigo, delta, dentroCarrinho);
 }
-
-function cliqueRapido(codigo, delta, dentroCarrinho) {
-  // Limpa timer, se existir
-  if (longPressTimeout) {
-    clearTimeout(longPressTimeout);
-    longPressTimeout = null;
-  }
-
-  // Se o long press disparou e abriu modal → não mexe
-  if (longPressDisparado) {
-    longPressDisparado = false;
-    return;
-  }
-
-  // Aqui é clique simples → soma/subtrai normalmente
-  alterarQtd(codigo, delta, dentroCarrinho);
-}
   
 </script>
 </body>
