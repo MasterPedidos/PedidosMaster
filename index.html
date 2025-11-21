@@ -344,19 +344,16 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // Normalização
   const marcaNorm = normalizarMarca(marca);
+  const lista = produtos.filter(
+    p => normalizarMarca(p.marca) === marcaNorm
+  );
 
-  // Lista filtrada
-  const lista = produtos.filter(p => normalizarMarca(p.marca) === marcaNorm);
-
-  // ===============================
-  // 🔴 CASO 1 — MARCA INDIVIDUAL SEM ESTOQUE
-  // ===============================
+  // CASO 1 — Marca individual sem estoque
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
-        <img src="ativo/sem-estoque.png" style="width:180px; opacity:0.8;">
+        <img src="ativo/SemEstoque.png" style="width:180px; opacity:0.85;">
         <p style="font-size:18px; font-weight:bold; color:#333;">
           Sem estoque hoje de produtos ${marca}
         </p>
@@ -364,40 +361,22 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // ===============================
-  // 🔵 CASO 2 — TUDO → verificar marcas sem estoque
-  // ===============================
+  // CASO 2 — TUDO → identificar marcas faltando
   let faltando = [];
-
-  // ===============================
-  // 🔵 CASO 4 — Após listar produtos → exibir cards SEM estoque
-  // ===============================
-  if (marca === "Tudo" && faltando.length > 0) {
-    faltando.forEach(m => {
-      container.innerHTML += `
-        <div style="
-          grid-column: 1 / -1;
-          text-align:center;
-          padding: 25px 10px;
-          margin-top: 18px;
-          display:block;
-        ">
-          <img src="ativo/SemEstoque.png"
-               style="width:140px; opacity:0.85; margin-bottom:6px;">
-          <p style="font-size:17px; font-weight:bold; color:#333;">
-            Sem estoque hoje de produtos ${m}
-          </p>
-        </div>`;
+  if (marca === "Tudo") {
+    MARCAS_FIXAS.forEach(m => {
+      const tem = produtos.some(
+        p => normalizarMarca(p.marca) === normalizarMarca(m)
+      );
+      if (!tem) faltando.push(m);
     });
   }
-  // ===============================
-  // 🟢 CASO 3 — Renderizar produtos normalmente
-  // ===============================
+
+  // CASO 3 — renderizar produtos
   const listaRender = marca === "Tudo" ? produtos : lista;
 
   listaRender.forEach(prod => {
     const cod = String(prod.Código).trim();
-
     const imgSrc = (prod.imagem && String(prod.imagem).trim() !== "")
       ? prod.imagem
       : "https://i.imgur.com/jzjHhHG.png";
@@ -439,15 +418,19 @@ function mostrarProdutos(marca) {
       </div>`;
   });
 
-  // ===============================
-  // 🔵 CASO 4 — Após listar produtos → exibir cards SEM estoque
-  // ===============================
+  // CASO 4 — exibir cards sem estoque
   if (marca === "Tudo" && faltando.length > 0) {
     faltando.forEach(m => {
       container.innerHTML += `
-        <div style="grid-column:1/-1; text-align:center; padding:20px;">
-          <img src="ativo/sem-estoque.png" style="width:150px; opacity:0.7;">
-          <p style="font-size:16px; font-weight:bold; color:#444;">
+        <div style="
+          grid-column:1/-1;
+          text-align:center;
+          padding:22px 10px;
+          margin-top:10px;
+        ">
+          <img src="ativo/SemEstoque.png"
+               style="width:150px; opacity:0.8; margin-bottom:5px;">
+          <p style="font-size:17px; font-weight:bold; color:#444;">
             Sem estoque hoje de produtos ${m}
           </p>
         </div>`;
