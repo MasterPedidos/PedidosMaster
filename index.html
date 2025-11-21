@@ -302,22 +302,36 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  produtos
-    .filter(p => marca === "Tudo" || p.marca === marca)
-    .forEach(prod => {
+  // 🔥 NOVO: lista filtrada
+  const lista = produtos.filter(p => marca === "Tudo" || p.marca === marca);
 
-      // 🔥 CORREÇÃO FUNDAMENTAL
-      const cod = String(prod.Código).trim();
+  // 🔥 NOVO: se não tiver produtos → mostrar imagem SEM ESTOQUE
+  if (lista.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column:1 / -1; text-align:center; padding:20px;">
+        <img src="ativo/sem-estoque.png" style="width:200px; opacity:0.8;">
+        <p style="font-size:18px; color:#555; margin-top:10px;">
+          Nenhum produto disponível no momento
+        </p>
+      </div>
+    `;
+    return; // 🔥 IMPORTANTE: impede renderização do restante
+  }
 
-      const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
-        ? prod.imagem
-        : "https://i.imgur.com/jzjHhHG.png";
+  // 🔥 agora usa a lista filtrada
+  lista.forEach(prod => {
 
-      const valorCx = Number(prod.valor) || 0;
-      const unidadesCx = Number(prod.unidades) || 1;
-      const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+    const cod = String(prod.Código).trim();
 
-      container.innerHTML += `
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+      ? prod.imagem
+      : "https://i.imgur.com/jzjHhHG.png";
+
+    const valorCx = Number(prod.valor) || 0;
+    const unidadesCx = Number(prod.unidades) || 1;
+    const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+
+    container.innerHTML += `
       <div class="produto">
         <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
         <h4>${prod.descricao}</h4>
@@ -350,10 +364,8 @@ function mostrarProdutos(marca) {
 
         </div>
       </div>`;
-
-    });
+  });
 }
-
 
 // ===== TELEFONE =====
 document.addEventListener("input", e=>{
