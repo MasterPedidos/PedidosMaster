@@ -335,12 +335,11 @@ function mostrarProdutos(marca) {
 
   if (!produtosCarregados) {
     container.innerHTML = `
-      <div class="produto" style="grid-column: span 2; padding:20px;">
-        <p style="font-size:18px; font-weight:bold; margin-bottom:10px; color:#333; line-height:22px;">
-          Sem Estoque hoje de<br>
-          Produtos ${marca}
+      <div style="grid-column:1/-1; text-align:center; padding:25px;">
+        <p style="font-size:16px; color:#333;">
+          Carregando produtos...<br>
+          Aguarde um instante e toque novamente na marca.
         </p>
-        <img src="ativo/sem-estoque.png" style="width:120px; opacity:0.9; margin-top:10px;">
       </div>`;
     return;
   }
