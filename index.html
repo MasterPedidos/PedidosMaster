@@ -274,10 +274,41 @@ window.addEventListener('load', () => {
 
 // ===== PRODUTOS =====
 let produtos = [];           // Dados do produtos.json
+let produtosCarregados = false; // Flag: terminou de carregar JSON?
 let carrinho = {};           // Carrinho atual
 let telefoneDigits = localStorage.getItem("telefone_digits") || "";
 let telefoneDisplay = localStorage.getItem("telefone_display") || "";
 const STORAGE_ULTIMO = "ultimo_pedido";
+
+// Normaliza nome de marca (remove acentos, espaços extras e ignora maiúsculas/minúsculas)
+function normalizarMarca(str) {
+  if (!str) return "";
+  return String(str)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+// Lista fixa de marcas utilizada para exibir cards de 'sem estoque' em TUDO
+const MARCAS_FIXAS = [
+  "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
+  "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka",
+  "Rei da Massa", "Sacola"
+];
+
+// Carrega produtos do JSON (AGORA NÃO CHAMA MAIS mostrarProdutos AO ABRIR)
+fetch('produtos.json')
+  .then(response => response.json())
+  .then(data => {
+    produtos = data || [];
+    produtosCarregados = true;
+  })
+  .catch(error => {
+    console.error('Erro ao carregar produtos:', error);
+    produtos = [];
+    produtosCarregados = true;
+  });
 
 // Carrega produtos do JSON (AGORA NÃO CHAMA MAIS mostrarProdutos AO ABRIR)
 fetch('produtos.json')
@@ -302,18 +333,23 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  const MARCAS_FIXAS = [
-    "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
-    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka",
-    "Rei da Massa", "Sacola"
-  ];
+  // Se o JSON ainda não terminou de carregar, não mostrar 'sem estoque'
+  if (!produtosCarregados) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:25px;">
+        <p style="font-size:16px; color:#333;">
+          Carregando produtos...<br>
+          Aguarde um instante e toque novamente na marca.
+        </p>
+      </div>`;
+    return;
+  }
 
-  // Filtrar produtos da marca
-  const lista = produtos.filter(p => p.marca === marca);
+  // 1) Filtrar produtos da marca (normalizando texto)
+  const marcaNorm = normalizarMarca(marca);
+  const lista = produtos.filter(p => normalizarMarca(p.marca) === marcaNorm);
 
-  // ============================================================
-  // 🔴 CASO 1 — MARCA CLICADA E NÃO EXISTE EM produtos.json
-  // ============================================================
+  // 2) Caso 1 — Marca individual sem estoque
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
@@ -325,12 +361,11 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // ============================================================
-  // 🔵 CASO 2 — EM "TUDO": MOSTRAR CARDS DAS MARCAS SEM ESTOQUE
-  // ============================================================
+  // 3) Caso 2 — TUDO: exibir cards das marcas que não existem no JSON
   if (marca === "Tudo") {
     MARCAS_FIXAS.forEach(m => {
-      const existe = produtos.some(p => p.marca === m);
+      const mNorm = normalizarMarca(m);
+      const existe = produtos.some(p => normalizarMarca(p.marca) === mNorm);
       if (!existe) {
         container.innerHTML += `
           <div style="grid-column:1/-1; text-align:center; padding:20px;">
@@ -343,15 +378,13 @@ function mostrarProdutos(marca) {
     });
   }
 
-  // ============================================================
-  // 🟢 CASO 3 — LISTAR PRODUTOS NORMALMENTE
-  // ============================================================
-  const listaRender = marca === "Tudo" ? produtos : lista;
+  // 4) Caso 3 — listar produtos normalmente
+  const listaRender = (marca === "Tudo") ? produtos : lista;
 
   listaRender.forEach(prod => {
     const cod = String(prod.Código).trim();
 
-    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+    const imgSrc = (prod.imagem && String(prod.imagem).trim() !== "")
       ? prod.imagem
       : "https://i.imgur.com/jzjHhHG.png";
 
