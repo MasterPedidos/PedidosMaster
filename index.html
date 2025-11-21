@@ -343,16 +343,12 @@ function mostrarProdutos(marca) {
   }
 
   // 🔥 EXTRA — Quando for “TUDO”, mostrar cards das marcas que estão sem produtos
-  if (marca === "Tudo") {
+if (marca === "Tudo") {
 
-  // Lista fixa das marcas que aparecem nos botões
-  const MARCAS_FIXAS = [
-    "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
-    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka",
-    "Rei da Massa", "Sacola"
-  ];
+  // Lista REAL de marcas que existem no JSON
+  const marcasUnicas = [...new Set(produtos.map(p => p.marca))];
 
-  MARCAS_FIXAS.forEach(m => {
+  marcasUnicas.forEach(m => {
     const qtd = produtos.filter(p => p.marca === m).length;
 
     if (qtd === 0) {
@@ -367,7 +363,6 @@ function mostrarProdutos(marca) {
       `;
     }
   });
-
 }
 
   // 🔥 Renderiza os produtos normalmente
