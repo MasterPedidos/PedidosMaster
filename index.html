@@ -290,7 +290,7 @@ function normalizarMarca(str) {
     .trim();
 }
 
-// Lista fixa de marcas utilizada para exibir cards de 'sem estoque' em TUDO
+// Lista fixa de marcas utilizada para exibir cards de 'SemEstoque' em TUDO
 const MARCAS_FIXAS = [
   "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
   "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka",
@@ -349,13 +349,13 @@ function mostrarProdutos(marca) {
     p => normalizarMarca(p.marca) === marcaNorm
   );
 
-  // CASO 1 — Marca individual sem estoque
+  // CASO 1 — Marca individual SemEstoque
   if (marca !== "Tudo" && lista.length === 0) {
   container.innerHTML = `
     <div class="produto" style="grid-column:1/-1; padding:25px;">
-      <img src="ativo/semestoque2.png"
+      <img src="ativo/SemEstoque.png"
            style="width:120px; height:120px; object-fit:contain; margin:auto;">
-      <h4 style="margin-top:10px;">Sem estoque hoje de produtos ${marca}</h4>
+      <h4 style="margin-top:10px;">SemEstoque hoje de produtos ${marca}</h4>
     </div>`;
   return;
 }
@@ -417,14 +417,14 @@ function mostrarProdutos(marca) {
       </div>`;
   });
 
-  // CASO 4 — exibir cards sem estoque
+  // CASO 4 — exibir cards SemEstoque
     if (marca === "Tudo" && faltando.length > 0) {
     faltando.forEach(m => {
       container.innerHTML += `
         <div class="produto" style="grid-column:1/-1; padding:25px;">
-          <img src="ativo/semestoque2.png"
+          <img src="ativo/SemEstoque.png"
                style="width:120px; height:120px; object-fit:contain; margin:auto;">
-          <h4 style="margin-top:10px;">Sem estoque hoje de produtos ${m}</h4>
+          <h4 style="margin-top:10px;">SemEstoque hoje de produtos ${m}</h4>
         </div>`;
     });
   }
