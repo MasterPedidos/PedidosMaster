@@ -287,7 +287,7 @@ fetch('produtos.json')
     // Removido abrir automático: usuário começa na tela de MARCAS
   })
   .catch(error => console.error('Erro ao carregar produtos:', error));
-  
+
 // Exibe produtos de uma marca
 function mostrarProdutos(marca) {
   document.getElementById("tela-marcas").classList.add("hidden");
@@ -302,56 +302,43 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  // 🔵 LISTA FIXA: vem dos botões
   const MARCAS_FIXAS = [
     "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
     "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka", "Rei da Massa", "Sacola"
   ];
 
-  // 🔵 Produtos apenas da marca clicada
+  // Lista filtrada da marca
   const lista = produtos.filter(p => p.marca === marca);
 
-  // ======================================================
-  // 🔴 CASO 1 — MARCA INDIVIDUAL SEM PRODUTOS
-  // ======================================================
+  // 🔴 CASO 1 — MARCA SEM ESTOQUE (marca individual)
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
-      <div style="grid-column:1/-1; text-align:center; padding:25px 10px;">
-        <img src="ativo/sem-estoque.png"
-             style="width:180px; opacity:0.8; margin-bottom:12px;">
-        <p style="font-size:18px; font-weight:bold; color:#444;">
+      <div style="grid-column:1/-1; text-align:center; padding:25px;">
+        <img src="ativo/sem-estoque.png" style="width:180px; opacity:0.8;">
+        <p style="font-size:18px; font-weight:bold; color:#333;">
           Sem estoque hoje de produtos ${marca}
         </p>
-      </div>
-    `;
+      </div>`;
     return;
   }
 
-  // ======================================================
-  // 🔵 CASO 2 — EXIBIR CARDS DAS MARCAS FALTANTES EM “TUDO”
-  // ======================================================
+  // 🔵 CASO 2 — EM "TUDO": mostrar CARDS das marcas sem estoque
   if (marca === "Tudo") {
     MARCAS_FIXAS.forEach(m => {
-      // existe algum produto desta marca no JSON?
-      const existe = produtos.some(p => p.marca === m);
-
-      if (!existe) {
+      const tem = produtos.some(p => p.marca === m);
+      if (!tem) {
         container.innerHTML += `
-          <div style="grid-column:1/-1; text-align:center; padding:25px 10px;">
-            <img src="ativo/sem-estoque.png"
-                 style="width:150px; opacity:0.7; margin-bottom:10px;">
-            <p style="font-size:17px; font-weight:bold; color:#555;">
+          <div style="grid-column:1/-1; text-align:center; padding:20px;">
+            <img src="ativo/sem-estoque.png" style="width:150px; opacity:0.7;">
+            <p style="font-size:16px; font-weight:bold; color:#444;">
               Sem estoque hoje de produtos ${m}
             </p>
-          </div>
-        `;
+          </div>`;
       }
     });
   }
 
-  // ======================================================
-  // 🟢 CASO 3 — EXIBIR PRODUTOS NORMALMENTE
-  // ======================================================
+  // 🟢 CASO 3 — listar produtos normalmente
   const listaRender = marca === "Tudo" ? produtos : lista;
 
   listaRender.forEach(prod => {
@@ -367,36 +354,17 @@ function mostrarProdutos(marca) {
 
     container.innerHTML += `
       <div class="produto">
-        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy">
+        <img src="${imgSrc}" alt="${prod.descricao}">
         <h4>${prod.descricao}</h4>
         <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
         <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
 
         <div class="qtd-container">
-          <button
-            onmousedown="prepararLongPress('${cod}', false)"
-            ontouchstart="prepararLongPress('${cod}', false)"
-            onmouseup="cancelarLongPress()"
-            onmouseleave="cancelarLongPress()"
-            ontouchend="cancelarLongPress()"
-            onclick="cliqueRapido('${cod}', -1, false)">
-            -
-          </button>
-
+          <button onclick="cliqueRapido('${cod}', -1, false)">-</button>
           <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
-
-          <button
-            onmousedown="prepararLongPress('${cod}', false)"
-            ontouchstart="prepararLongPress('${cod}', false)"
-            onmouseup="cancelarLongPress()"
-            onmouseleave="cancelarLongPress()"
-            ontouchend="cancelarLongPress()"
-            onclick="cliqueRapido('${cod}', 1, false)">
-            +
-          </button>
+          <button onclick="cliqueRapido('${cod}', 1, false)">+</button>
         </div>
-      </div>
-    `;
+      </div>`;
   });
 }
 
