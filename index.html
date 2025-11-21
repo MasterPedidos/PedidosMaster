@@ -353,9 +353,13 @@ function mostrarProdutos(marca) {
   if (marca !== "Tudo" && lista.length === 0) {
   container.innerHTML = `
     <div class="produto" style="grid-column:1/-1; padding:25px;">
+      <h4 style="margin-bottom:10px; line-height:22px;">
+        Sem Estoque hoje de<br>
+        Produtos ${marca}
+      </h4>
+
       <img src="ativo/SemEstoque.png"
-           style="width:120px; height:120px; object-fit:contain; margin:auto;">
-      <h4 style="margin-top:10px;">SemEstoque hoje de produtos ${marca}</h4>
+           style="width:140px; height:140px; object-fit:contain; margin:auto;">
     </div>`;
   return;
 }
@@ -421,12 +425,14 @@ function mostrarProdutos(marca) {
     if (marca === "Tudo" && faltando.length > 0) {
     faltando.forEach(m => {
       container.innerHTML += `
-        <div class="produto" style="grid-column: span 2; padding:20px;">
-          <p style="font-size:17px; font-weight:bold; margin-bottom:10px; color:#333; line-height:22px;">
+        <div class="produto" style="grid-column:1/-1; padding:25px;">
+          <h4 style="margin-bottom:10px; line-height:22px;">
             Sem Estoque hoje de<br>
             Produtos ${m}
-          </p>
-          <img src="ativo/sem-estoque.png" style="width:120px; opacity:0.9; margin-top:10px;">
+          </h4>
+  
+          <img src="ativo/SemEstoque.png"
+               style="width:140px; height:140px; object-fit:contain; margin:auto;">
         </div>`;
     });
   }
