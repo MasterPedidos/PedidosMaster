@@ -418,20 +418,13 @@ function mostrarProdutos(marca) {
   });
 
   // CASO 4 — exibir cards sem estoque
-  if (marca === "Tudo" && faltando.length > 0) {
+    if (marca === "Tudo" && faltando.length > 0) {
     faltando.forEach(m => {
       container.innerHTML += `
-        <div style="
-          grid-column:1/-1;
-          text-align:center;
-          padding:22px 10px;
-          margin-top:10px;
-        ">
-          <img src="ativo/SemEstoque.png"
-               style="width:150px; opacity:0.8; margin-bottom:5px;">
-          <p style="font-size:17px; font-weight:bold; color:#444;">
-            Sem estoque hoje de produtos ${m}
-          </p>
+        <div class="produto" style="grid-column:1/-1; padding:25px;">
+          <img src="ativo/semestoque2.png"
+               style="width:120px; height:120px; object-fit:contain; margin:auto;">
+          <h4 style="margin-top:10px;">Sem estoque hoje de produtos ${m}</h4>
         </div>`;
     });
   }
