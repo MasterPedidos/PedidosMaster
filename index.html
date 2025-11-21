@@ -287,7 +287,7 @@ fetch('produtos.json')
     // Removido abrir automático: usuário começa na tela de MARCAS
   })
   .catch(error => console.error('Erro ao carregar produtos:', error));
-
+  
 // Exibe produtos de uma marca
 function mostrarProdutos(marca) {
   document.getElementById("tela-marcas").classList.add("hidden");
@@ -297,35 +297,82 @@ function mostrarProdutos(marca) {
   document.getElementById("btnEnviarPedido").style.display = "none";
 
   document.getElementById("titulo-marca").textContent =
-    (marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca);
+    marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca;
 
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  produtos
-    .filter(p => marca === "Tudo" || p.marca === marca)
-    .forEach(prod => {
+  // 🔵 LISTA FIXA: vem dos botões
+  const MARCAS_FIXAS = [
+    "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
+    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka", "Rei da Massa", "Sacola"
+  ];
 
-      // 🔥 CORREÇÃO FUNDAMENTAL
-      const cod = String(prod.Código).trim();
+  // 🔵 Produtos apenas da marca clicada
+  const lista = produtos.filter(p => p.marca === marca);
 
-      const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
-        ? prod.imagem
-        : "https://i.imgur.com/jzjHhHG.png";
+  // ======================================================
+  // 🔴 CASO 1 — MARCA INDIVIDUAL SEM PRODUTOS
+  // ======================================================
+  if (marca !== "Tudo" && lista.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:25px 10px;">
+        <img src="ativo/sem-estoque.png"
+             style="width:180px; opacity:0.8; margin-bottom:12px;">
+        <p style="font-size:18px; font-weight:bold; color:#444;">
+          Sem estoque hoje de produtos ${marca}
+        </p>
+      </div>
+    `;
+    return;
+  }
 
-      const valorCx = Number(prod.valor) || 0;
-      const unidadesCx = Number(prod.unidades) || 1;
-      const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+  // ======================================================
+  // 🔵 CASO 2 — EXIBIR CARDS DAS MARCAS FALTANTES EM “TUDO”
+  // ======================================================
+  if (marca === "Tudo") {
+    MARCAS_FIXAS.forEach(m => {
+      // existe algum produto desta marca no JSON?
+      const existe = produtos.some(p => p.marca === m);
 
-      container.innerHTML += `
+      if (!existe) {
+        container.innerHTML += `
+          <div style="grid-column:1/-1; text-align:center; padding:25px 10px;">
+            <img src="ativo/sem-estoque.png"
+                 style="width:150px; opacity:0.7; margin-bottom:10px;">
+            <p style="font-size:17px; font-weight:bold; color:#555;">
+              Sem estoque hoje de produtos ${m}
+            </p>
+          </div>
+        `;
+      }
+    });
+  }
+
+  // ======================================================
+  // 🟢 CASO 3 — EXIBIR PRODUTOS NORMALMENTE
+  // ======================================================
+  const listaRender = marca === "Tudo" ? produtos : lista;
+
+  listaRender.forEach(prod => {
+    const cod = String(prod.Código).trim();
+
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+      ? prod.imagem
+      : "https://i.imgur.com/jzjHhHG.png";
+
+    const valorCx = Number(prod.valor) || 0;
+    const unidadesCx = Number(prod.unidades) || 1;
+    const valorUn = unidadesCx > 0 ? valorCx / unidadesCx : valorCx;
+
+    container.innerHTML += `
       <div class="produto">
-        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy">
         <h4>${prod.descricao}</h4>
         <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
         <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
 
         <div class="qtd-container">
-
           <button
             onmousedown="prepararLongPress('${cod}', false)"
             ontouchstart="prepararLongPress('${cod}', false)"
@@ -347,13 +394,11 @@ function mostrarProdutos(marca) {
             onclick="cliqueRapido('${cod}', 1, false)">
             +
           </button>
-
         </div>
-      </div>`;
-
-    });
+      </div>
+    `;
+  });
 }
-
 
 // ===== TELEFONE =====
 document.addEventListener("input", e=>{
