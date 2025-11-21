@@ -673,24 +673,6 @@ function confirmarQtdManual() {
 
 // CLIQUE NORMAL NOS BOTÕES +/-
 function cliqueRapido(codigo, delta, dentroCarrinho) {
-
-  // Se ainda existe timer → cancelar
-  if (longPressTimeout) {
-    clearTimeout(longPressTimeout);
-    longPressTimeout = null;
-  }
-
-  // Se o long-press abriu modal → não somar/subtrair
-  if (longPressDisparado) {
-    longPressDisparado = false;
-    return;
-  }
-
-  // AQUI É CLIQUE SIMPLES → soma/subtrai quantidade
-  alterarQtd(codigo, delta, dentroCarrinho);
-}
-
-function cliqueRapido(codigo, delta, dentroCarrinho) {
   // Limpa timer, se existir
   if (longPressTimeout) {
     clearTimeout(longPressTimeout);
