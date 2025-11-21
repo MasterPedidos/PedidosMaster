@@ -353,7 +353,7 @@ function mostrarProdutos(marca) {
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
-        <img src="ativo/sem-estoque.png" style="width:180px; opacity:0.8;">
+        <img src="ativo/SemEstoque.png" style="width:180px; opacity:0.8;">
         <p style="font-size:18px; font-weight:bold; color:#333;">
           Sem estoque hoje de produtos ${marca}
         </p>
@@ -369,7 +369,7 @@ function mostrarProdutos(marca) {
       if (!existe) {
         container.innerHTML += `
           <div style="grid-column:1/-1; text-align:center; padding:20px;">
-            <img src="ativo/sem-estoque.png" style="width:150px; opacity:0.7;">
+            <img src="ativo/SemEstoque.png" style="width:150px; opacity:0.7;">
             <p style="font-size:16px; font-weight:bold; color:#444;">
               Sem estoque hoje de produtos ${m}
             </p>
