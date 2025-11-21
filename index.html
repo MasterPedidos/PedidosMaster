@@ -333,7 +333,6 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  // Se o JSON ainda não terminou de carregar, não mostrar 'sem estoque'
   if (!produtosCarregados) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
@@ -345,15 +344,19 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // 1) Filtrar produtos da marca (normalizando texto)
+  // Normalização
   const marcaNorm = normalizarMarca(marca);
+
+  // Lista filtrada
   const lista = produtos.filter(p => normalizarMarca(p.marca) === marcaNorm);
 
-  // 2) Caso 1 — Marca individual sem estoque
+  // ===============================
+  // 🔴 CASO 1 — MARCA INDIVIDUAL SEM ESTOQUE
+  // ===============================
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
-        <img src="ativo/SemEstoque.png" style="width:180px; opacity:0.8;">
+        <img src="ativo/sem-estoque.png" style="width:180px; opacity:0.8;">
         <p style="font-size:18px; font-weight:bold; color:#333;">
           Sem estoque hoje de produtos ${marca}
         </p>
@@ -361,25 +364,24 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // 3) Caso 2 — TUDO: exibir cards das marcas que não existem no JSON
+  // ===============================
+  // 🔵 CASO 2 — TUDO → verificar marcas sem estoque
+  // ===============================
+  let faltando = [];
+
   if (marca === "Tudo") {
     MARCAS_FIXAS.forEach(m => {
-      const mNorm = normalizarMarca(m);
-      const existe = produtos.some(p => normalizarMarca(p.marca) === mNorm);
-      if (!existe) {
-        container.innerHTML += `
-          <div style="grid-column:1/-1; text-align:center; padding:20px;">
-            <img src="ativo/SemEstoque.png" style="width:150px; opacity:0.7;">
-            <p style="font-size:16px; font-weight:bold; color:#444;">
-              Sem estoque hoje de produtos ${m}
-            </p>
-          </div>`;
-      }
+      const tem = produtos.some(p =>
+        normalizarMarca(p.marca) === normalizarMarca(m)
+      );
+      if (!tem) faltando.push(m);
     });
   }
 
-  // 4) Caso 3 — listar produtos normalmente
-  const listaRender = (marca === "Tudo") ? produtos : lista;
+  // ===============================
+  // 🟢 CASO 3 — Renderizar produtos normalmente
+  // ===============================
+  const listaRender = marca === "Tudo" ? produtos : lista;
 
   listaRender.forEach(prod => {
     const cod = String(prod.Código).trim();
@@ -400,12 +402,45 @@ function mostrarProdutos(marca) {
         <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
 
         <div class="qtd-container">
-          <button onclick="cliqueRapido('${cod}', -1, false)">-</button>
+          <button
+            onmousedown="prepararLongPress('${cod}', false)"
+            ontouchstart="prepararLongPress('${cod}', false)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            ontouchend="cancelarLongPress()"
+            onclick="cliqueRapido('${cod}', -1, false)">
+            -
+          </button>
+
           <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
-          <button onclick="cliqueRapido('${cod}', 1, false)">+</button>
+
+          <button
+            onmousedown="prepararLongPress('${cod}', false)"
+            ontouchstart="prepararLongPress('${cod}', false)"
+            onmouseup="cancelarLongPress()"
+            onmouseleave="cancelarLongPress()"
+            ontouchend="cancelarLongPress()"
+            onclick="cliqueRapido('${cod}', 1, false)">
+            +
+          </button>
         </div>
       </div>`;
   });
+
+  // ===============================
+  // 🔵 CASO 4 — Após listar produtos → exibir cards SEM estoque
+  // ===============================
+  if (marca === "Tudo" && faltando.length > 0) {
+    faltando.forEach(m => {
+      container.innerHTML += `
+        <div style="grid-column:1/-1; text-align:center; padding:20px;">
+          <img src="ativo/sem-estoque.png" style="width:150px; opacity:0.7;">
+          <p style="font-size:16px; font-weight:bold; color:#444;">
+            Sem estoque hoje de produtos ${m}
+          </p>
+        </div>`;
+    });
+  }
 }
 
 // ===== TELEFONE =====
