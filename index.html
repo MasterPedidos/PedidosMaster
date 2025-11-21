@@ -297,23 +297,31 @@ function mostrarProdutos(marca) {
   document.getElementById("btnEnviarPedido").style.display = "none";
 
   document.getElementById("titulo-marca").textContent =
-    (marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca);
+    marca === "Tudo" ? "Todos os Produtos" : "Marca: " + marca;
 
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-  // =============================
-  // 🔥 FILTRAR PRODUTOS
-  // =============================
-  const lista = produtos.filter(p => marca === "Tudo" || p.marca === marca);
+  // ======================================================
+  // LISTA FIXA DE MARCAS (botões)
+  // ======================================================
+  const MARCAS_FIXAS = [
+    "Bauducco", "Danone", "Divinitos", "Elma Chips", "FRITOP",
+    "Frutap", "Kremoso", "Nestlé", "Oz", "Rebeka", "Rei da Massa", "Sacola"
+  ];
 
-  // =============================
-  // 🔥 SE MARCA INDIVIDUAL NÃO TIVER NADA
-  // =============================
+  // ======================================================
+  // LISTA DOS PRODUTOS DA MARCA
+  // ======================================================
+  const lista = produtos.filter(p => p.marca === marca);
+
+  // ======================================================
+  // 🔴 CASO 1 — MARCA INDIVIDUAL SEM ESTOQUE
+  // ======================================================
   if (marca !== "Tudo" && lista.length === 0) {
     container.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:25px;">
-        <img src="ativo/sem-estoque.png" style="width:200px; opacity:0.8; margin-bottom:10px;">
+        <img src="ativo/sem-estoque.png" style="width:180px; opacity:0.8;">
         <p style="font-size:18px; font-weight:bold; color:#333;">
           Sem estoque hoje de produtos ${marca}
         </p>
@@ -321,28 +329,58 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // =============================
-  // 🔥 SE FOR "TUDO": MOSTRAR MARCAS QUE NÃO TÊM PRODUTOS
-  // =============================
+  // ======================================================
+  // 🔵 CASO 2 — EXIBIR CARDS DAS MARCAS FALTANTES EM "TUDO"
+  // ======================================================
   if (marca === "Tudo") {
-    const MARCAS_FIXAS = [
-      "Bauducco","Danone","Divinitos","Elma Chips","FRITOP",
-      "Frutap","Kremoso","Nestlé","Oz","Rebeka",
-      "Rei da Massa","Sacola"
-    ];
-
     MARCAS_FIXAS.forEach(m => {
-      if (!produtos.some(p => p.marca === m)) {
+
+      // Verifica se existe algum produto dessa marca
+      const tem = produtos.some(p => p.marca === m);
+
+      if (!tem) {
         container.innerHTML += `
           <div style="grid-column:1/-1; text-align:center; padding:25px;">
-            <img src="ativo/sem-estoque.png" style="width:160px; opacity:0.7; margin-bottom:10px;">
-            <p style="font-size:18px; font-weight:bold; color:#444;">
+            <img src="ativo/sem-estoque.png" style="width:150px; opacity:0.7;">
+            <p style="font-size:17px; font-weight:bold; color:#444;">
               Sem estoque hoje de produtos ${m}
             </p>
           </div>`;
       }
     });
   }
+
+  // ======================================================
+  // 🟢 CASO 3 — LISTAR PRODUTOS DA MARCA (OU DE TODAS AS MARCAS)
+  // ======================================================
+  const listaRender = marca === "Tudo" ? produtos : lista;
+
+  listaRender.forEach(prod => {
+    const cod = String(prod.Código).trim();
+
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+      ? prod.imagem
+      : "https://i.imgur.com/jzjHhHG.png";
+
+    const valorCx = Number(prod.valor) || 0;
+    const unidadesCx = Number(prod.unidades) || 1;
+    const valorUn = unidadesCx > 0 ? valorCx / unidadesCx : valorCx;
+
+    container.innerHTML += `
+      <div class="produto">
+        <img src="${imgSrc}" alt="${prod.descricao}">
+        <h4>${prod.descricao}</h4>
+        <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
+        <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
+
+        <div class="qtd-container">
+          <button onclick="cliqueRapido('${cod}', -1, false)">-</button>
+          <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
+          <button onclick="cliqueRapido('${cod}', 1, false)">+</button>
+        </div>
+      </div>`;
+  });
+}
 
   // =============================
   // 🔥 RENDERIZAR PRODUTOS NORMALMENTE
