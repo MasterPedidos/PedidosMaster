@@ -306,7 +306,7 @@ function mostrarProdutos(marca) {
       const unidadesCx = Number(prod.unidades) || 1;
       const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
 
-      container.innerHTML += `
+      container.insertAdjacentHTML("beforeend",
       <div class="produto">
         <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
         <h4>${prod.descricao}</h4>
@@ -425,7 +425,7 @@ function mostrarCarrinho(){
     const p = carrinho[c];
     const valorCx = Number(p.valor) || 0;
     const unidadesCx = Number(p.unidades) || 1;
-    container.innerHTML += `
+    container.insertAdjacentHTML("beforeend",
       <div class="carrinho-item">
         <img src="${p.imagem}" alt="${p.descricao}">
         <div style="flex:1; text-align:left;">
