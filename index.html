@@ -369,15 +369,27 @@ function mostrarProdutos(marca) {
   // ===============================
   let faltando = [];
 
-  if (marca === "Tudo") {
-    MARCAS_FIXAS.forEach(m => {
-      const tem = produtos.some(p =>
-        normalizarMarca(p.marca) === normalizarMarca(m)
-      );
-      if (!tem) faltando.push(m);
+  // ===============================
+  // 🔵 CASO 4 — Após listar produtos → exibir cards SEM estoque
+  // ===============================
+  if (marca === "Tudo" && faltando.length > 0) {
+    faltando.forEach(m => {
+      container.innerHTML += `
+        <div style="
+          grid-column: 1 / -1;
+          text-align:center;
+          padding: 25px 10px;
+          margin-top: 18px;
+          display:block;
+        ">
+          <img src="ativo/SemEstoque.png"
+               style="width:140px; opacity:0.85; margin-bottom:6px;">
+          <p style="font-size:17px; font-weight:bold; color:#333;">
+            Sem estoque hoje de produtos ${m}
+          </p>
+        </div>`;
     });
   }
-
   // ===============================
   // 🟢 CASO 3 — Renderizar produtos normalmente
   // ===============================
