@@ -282,29 +282,32 @@ function mostrarProdutos(marca) {
   container.innerHTML = "";
 
   produtos
-    .filter(p => marca === "Tudo" || p.marca === marca)
-    .forEach(prod => {
-      const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
-        ? prod.imagem
-        : "https://i.imgur.com/jzjHhHG.png";
+  .filter(p => marca === "Tudo" || p.marca === marca)
+  .forEach(prod => {
 
-      const valorCx = Number(prod.valor) || 0;
-      const unidadesCx = Number(prod.unidades) || 1;
-      const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+      ? prod.imagem
+      : "https://i.imgur.com/jzjHhHG.png";
 
-      container.innerHTML += `
-        <div class="produto">
-          <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-          <h4>${prod.descricao}</h4>
-          <small><b>Qt Cx: ${unidadesCx} · (${prod.Código})</b></small>
-          <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
-          <div class="qtd-container">
-            <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
-            <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
-            <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
-          </div>
-        </div>`;
-    });
+    const valorCx = Number(prod.valor) || 0;
+    const unidadesCx = Number(prod.unidades) || 1;
+    const valorUn = unidadesCx > 0 ? valorCx / unidadesCx : valorCx;
+
+    const html =
+      `<div class="produto">
+         <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+         <h4>${prod.descricao}</h4>
+         <small><b>Qt Cx: ${unidadesCx} · (${prod.Código})</b></small>
+         <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
+         <div class="qtd-container">
+           <button onclick="alterarQtd('${prod.Código}', -1)">-</button>
+           <input id="qtd-${prod.Código}" value="${carrinho[prod.Código]?.qtd || 0}">
+           <button onclick="alterarQtd('${prod.Código}', 1)">+</button>
+         </div>
+       </div>`;
+
+    container.insertAdjacentHTML("beforeend", html);
+  });
 }
 
 // ===== TELEFONE =====
