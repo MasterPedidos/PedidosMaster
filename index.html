@@ -287,7 +287,7 @@ fetch('produtos.json')
     // Removido abrir automático: usuário começa na tela de MARCAS
   })
   .catch(error => console.error('Erro ao carregar produtos:', error));
-
+//--------------------------------------------------------------------------------------------------------------------
 // Exibe produtos de uma marca
 function mostrarProdutos(marca) {
   document.getElementById("tela-marcas").classList.add("hidden");
@@ -302,10 +302,10 @@ function mostrarProdutos(marca) {
   const container = document.getElementById("produtos-container");
   container.innerHTML = "";
 
-    // 🔥 NOVO: lista filtrada
+  // 🔥 Lista filtrada
   const lista = produtos.filter(p => marca === "Tudo" || p.marca === marca);
 
-  // 🔥 NOVO: se não tiver produtos → mostrar imagem SEM ESTOQUE
+  // 🔥 Se a marca estiver vazia → mostrar card de "sem estoque"
   if (lista.length === 0) {
 
     const nomeExibicao =
@@ -342,54 +342,76 @@ function mostrarProdutos(marca) {
     return;
   }
 
-  // 🔥 agora usa a lista filtrada
+  // 🔥 EXTRA — Quando for “TUDO”, mostrar cards das marcas que estão sem produtos
+  if (marca === "Tudo") {
+
+    const marcasUnicas = [...new Set(produtos.map(p => p.marca))];
+
+    marcasUnicas.forEach(m => {
+      const qtd = produtos.filter(p => p.marca === m).length;
+
+      if (qtd === 0) {
+        container.innerHTML += `
+          <div style="grid-column:1 / -1; text-align:center; padding:25px 10px;">
+            <img src="ativo/sem-estoque.png"
+                 style="width:160px; opacity:0.7; margin-bottom:10px;">
+            <p style="font-size:18px; font-weight:bold; color:#444;">
+              Sem estoque hoje de produtos ${m}
+            </p>
+          </div>
+        `;
+      }
+    });
+  }
+
+  // 🔥 Renderiza os produtos normalmente
   lista.forEach(prod => {
 
-    const cod = String(prod.Código).trim();
+  const cod = String(prod.Código).trim();
+  const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
+    ? prod.imagem
+    : "https://i.imgur.com/jzjHhHG.png";
 
-    const imgSrc = (prod.imagem && prod.imagem.trim() !== "")
-      ? prod.imagem
-      : "https://i.imgur.com/jzjHhHG.png";
+  const valorCx = Number(prod.valor) || 0;
+  const unidadesCx = Number(prod.unidades) || 1;
+  const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
 
-    const valorCx = Number(prod.valor) || 0;
-    const unidadesCx = Number(prod.unidades) || 1;
-    const valorUn = (unidadesCx > 0) ? (valorCx / unidadesCx) : valorCx;
+  container.innerHTML += `
+    <div class="produto">
+      <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
+      <h4>${prod.descricao}</h4>
+      <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
+      <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
 
-    container.innerHTML += `
-      <div class="produto">
-        <img src="${imgSrc}" alt="${prod.descricao}" loading="lazy" decoding="async">
-        <h4>${prod.descricao}</h4>
-        <small><b>Qt Cx: ${unidadesCx} · (${cod})</b></small>
-        <p><b>UN R$ ${valorUn.toFixed(2)} · Cx R$ ${valorCx.toFixed(2)}</b></p>
+      <div class="qtd-container">
 
-        <div class="qtd-container">
+        <button
+          onmousedown="prepararLongPress('${cod}', false)"
+          ontouchstart="prepararLongPress('${cod}', false)"
+          onmouseup="cancelarLongPress()"
+          onmouseleave="cancelarLongPress()"
+          ontouchend="cancelarLongPress()"
+          onclick="cliqueRapido('${cod}', -1, false)">
+          -
+        </button>
 
-          <button
-            onmousedown="prepararLongPress('${cod}', false)"
-            ontouchstart="prepararLongPress('${cod}', false)"
-            onmouseup="cancelarLongPress()"
-            onmouseleave="cancelarLongPress()"
-            ontouchend="cancelarLongPress()"
-            onclick="cliqueRapido('${cod}', -1, false)">
-            -
-          </button>
+        <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
 
-          <input id="qtd-${cod}" value="${carrinho[cod]?.qtd || 0}">
+        <button
+          onmousedown="prepararLongPress('${cod}', false)"
+          ontouchstart="prepararLongPress('${cod}', false)"
+          onmouseup="cancelarLongPress()"
+          onmouseleave="cancelarLongPress()"
+          ontouchend="cancelarLongPress()"
+          onclick="cliqueRapido('${cod}', 1, false)">
+          +
+        </button>
 
-          <button
-            onmousedown="prepararLongPress('${cod}', false)"
-            ontouchstart="prepararLongPress('${cod}', false)"
-            onmouseup="cancelarLongPress()"
-            onmouseleave="cancelarLongPress()"
-            ontouchend="cancelarLongPress()"
-            onclick="cliqueRapido('${cod}', 1, false)">
-            +
-          </button>
-
-        </div>
-      </div>`;
-  });
-}
+      </div>
+    </div>
+  `;
+});
+} // ← FECHAMENTO CORRETO DA FUNÇÃO mostrarProdutos()
 
 // ===== TELEFONE =====
 document.addEventListener("input", e=>{
