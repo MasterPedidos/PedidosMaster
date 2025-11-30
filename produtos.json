@@ -8,7 +8,6 @@
 {"Código":"89289","descricao":"Bol Baun/Choc.9X16","marca":"Bauducco","valor": 24.8,"unidades":16,"imagem":"https://i.ibb.co/RkLnB9Rd/89289.webp"},
 {"Código":"89359","descricao":"Bolin GOTAS Ch 9X16","marca":"Bauducco","valor": 24.8,"unidades":16,"imagem":"https://i.ibb.co/kVXp5r8F/89359.webp"},
 {"Código":"89369","descricao":"Baud Barrinha Choc.","marca":"Bauducco","valor": 24,"unidades":20,"imagem":"https://i.ibb.co/20GbxCmg/89369.webp"},
-{"Código":"15289","descricao":"Barrinha Goiaba 30G","marca":"Bauducco","valor": 24,"unidades":20,"imagem":"https://i.ibb.co/pBq3syTg/15289.webp"},
 {"Código":"129","descricao":"Danette Chocol 360G","marca":"Danone","valor": 82.56,"unidades":12,"imagem":"https://i.ibb.co/4ngdHyVN/129-Danone-Danette-0-360-preto-2024.webp"},
 {"Código":"64","descricao":"Danette Branco 360G","marca":"Danone","valor": 82.56,"unidades":12,"imagem":"https://i.ibb.co/kgq9FtF7/64-Danone-Danette-0-Branco-360g.webp"},
 {"Código":"142","descricao":"Danette Bd 540G Choc.","marca":"Danone","valor": 74.4,"unidades":8,"imagem":"https://i.ibb.co/XfYxm0p9/142-Danone-Danette-540g-Chocolate.webp"},
@@ -123,4 +122,5 @@
 {"Código":"1331","descricao":" Gfinha Dan Vit 170G C/20","marca":"Danone","valor": 54,"unidades":20,"imagem":"https://i.ibb.co/jZBBHkFS/1331.webp"},
 {"Código":"8921","descricao":"Pão Visc. Trad","marca":"Bauducco","valor": 39,"unidades":10,"imagem":"https://i.ibb.co/QjpjTfLQ/8921-Bauducco-Visconti-P-o-Tradicional.webp","Validade":"2025-12-05","promo":true},
 {"Código":"8922","descricao":"Pão BAUD. Integral","marca":"Bauducco","valor": 45,"unidades":10,"imagem":"https://i.ibb.co/S4f4BjTY/8922-Bauducco-P-o-integral.webp","Validade":"2025-12-17","promo":true}
+
 ]
