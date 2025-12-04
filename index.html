@@ -678,8 +678,8 @@ function enviarWhatsApp(){
     telefoneDigits:telefoneDigits
   };
   localStorage.setItem(STORAGE_ULTIMO,JSON.stringify(ultimo));
-
-  const url=`https://wa.me/55${telefoneDigits}?text=${encodeURIComponent(msg)}`;
+  const NUMERO_EMPRESA = "19992394899";
+  const url = `https://wa.me/55${NUMERO_EMPRESA}?text=${encodeURIComponent(msg)}`;
   window.open(url,"_blank");
 }
 
@@ -719,3 +719,4 @@ function exibirUltimoPedido(){
 </script>
 </body>
 </html>
+
