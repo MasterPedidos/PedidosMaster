@@ -1,5 +1,4 @@
 [
-{"codigo":"8934","descricao":"Pão Baud. Tradic.","marca":"Bauducco","valor": 34.5,"unidades":10,"imagem":"https://i.ibb.co/KjqNJPMz/8934-Bauducco-P-o-Trad.webp"},
 {"codigo":"8926","descricao":"Bol Baun C/Mor 9X16","marca":"Bauducco","valor": 223.2,"unidades":144,"imagem":"https://i.ibb.co/zWyKMQZT/8926-Bauducco-Bolinho-morango.webp"},
 {"codigo":"8928","descricao":"Bol Bau Choc.9X16","marca":"Bauducco","valor": 223.2,"unidades":144,"imagem":"https://i.ibb.co/60Sxn6Rv/8928-Bauducco-Bolinho-Baunilha-Chocolate.webp"},
 {"codigo":"8935","descricao":"Bolin GOTAS Ch 9X16","marca":"Bauducco","valor": 223.2,"unidades":144,"imagem":"https://i.ibb.co/CpPXnSg0/8935-Bauducco-Bolinho-Gotas-de-Chocolate.webp"},
@@ -132,5 +131,6 @@
 {"codigo":"8975","descricao":"Sacola Bca 30X40 - 1,2 Kilo","marca":"Sacola","valor": 28,"unidades":1,"imagem":"https://i.ibb.co/8nkBJKj9/8975.webp"},
 {"codigo":"8970","descricao":"Sacola Verde 30X40 - 4 Kilo","marca":"Sacola","valor": 48,"unidades":1,"imagem":"https://i.ibb.co/JR7r44yF/8970-Sacolas-Verdes-30x40-4-kilos.webp"},
 {"codigo":"8972","descricao":"Sacola Verde 45X60 - 4 Kilo","marca":"Sacola","valor": 48,"unidades":1,"imagem":"https://i.ibb.co/JR7r44yF/8970-Sacolas-Verdes-30x40-4-kilos.webp"},
+{"codigo":"8922","descricao":"Pão Baud. Integral.","marca":"Bauducco","valor": 34.5,"unidades":10,"imagem":"https://i.ibb.co/QjpjTfLQ/8921-Bauducco-Visconti-P-o-Tradicional.webp","Validade":"2025-12-05","promo":true},
 {"codigo":"8921","descricao":"Pão Visc. Trad","marca":"Bauducco","valor": 34.5,"unidades":10,"imagem":"https://i.ibb.co/QjpjTfLQ/8921-Bauducco-Visconti-P-o-Tradicional.webp","Validade":"2025-12-05","promo":true}
 ]
